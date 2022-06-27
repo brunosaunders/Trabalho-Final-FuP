@@ -141,6 +141,43 @@ def listar_estilos():
 
 def listar_pecas_doadas():
     return # TODO: Listar peças de acordo com a ONG/Pessoa que você fez a doação.
+
+def listar_pecas_vendidas():
+    return
+
+def interface_usuario():
+    """
+    # carregar arquivo de peças e listas ao executar o programa
+
+    0 -> Cadastrar Peça
+    1 -> Cadastrar Estilo
+
+    2 -> Pesquisar estilo por nome # Edson
+    3 -> Listar peças por tamanho e padrão # Bruno
+    4 -> Listar peças para venda # Israel
+    5 -> Listar peças para doação # Israel
+    6 -> Listar estilos # Israel
+    7 -> Listar peças doadas # Bruno
+    8 -> Listar peças vendidas # Edson
+    9 -> Vender peça # Edson (histórico de vendas)
+    10 -> Doar peça # Bruno (histórico de doações)
+
+    # Depois
+    11 -> Carregar arquivos (peças, estilos, historico_vendas, historico_doações)
+    12 -> Salvar alterações (peças, estilos, historico_vendas, historico_doações)
+
+    """
+    return # Printar a interface pro usuário.
+
+
+def vender_peca(id, nome_comprador, preco):
+    # atualizar situação da peça
+    return
+
+
+def doar_peca(id, doado_para):
+    # atualizar situação da peça
+    return
     
 
 def main():
