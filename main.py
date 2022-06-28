@@ -116,14 +116,79 @@ def retorna_peca_por_id(id):
 def checa_tipo_peca(peca:dict, tipo):
     return peca["tipo"] == tipo
 
-# Função rápida para visualizar peças, poderá ser apagada futuramente
-def print_pecas():
-    for item in pecas:
-        print(item)
+
+# Printa todas as peças passadas em uma lista, em formato organizado e com cabeçalho
+def print_pecas_filtradas(pecas_filtradas:list):
+    # Cabeçalho
+    print("  Id     Tipo    Tamanho    Padrão       Cor        Data      Situação     Preço")
+
+    for peca in pecas_filtradas:
+        print_peca(peca)
 
 
-def listar_pecas_tamanho_padrao(tamanho, padrao):
-    return # TODO: Listar as peças que possuem o mesmo tamanho e padrão especificados.
+# Printa uma única peça
+def print_peca(peca:dict):
+    print(f"{peca['id']:4d}   {peca['tipo']:8s}     {peca['tamanho']}     {peca['padrão']:9s}    {peca['cor']:8s}  {peca['data']}     {peca['situação']:6s}   {peca['preço']:7.2f}")
+
+
+# Lista peças de mesmo tamanho
+def listar_pecas_tamanho(tamanho):
+    pecas_filtradas = []
+    for peca in pecas:
+        if peca["tamanho"] == tamanho:
+            pecas_filtradas.append(peca)
+
+    if len(pecas_filtradas) == 0:
+        raise Exception(f"Não foram encontradas peças de tamanho {tamanho}") 
+
+    print_pecas_filtradas(pecas_filtradas)
+
+
+# Lista peças de mesmo padrão
+def listar_pecas_padrao(padrao):
+    pecas_filtradas = []
+    for peca in pecas:
+        if peca["padrão"] == padrao:
+            pecas_filtradas.append(peca)
+
+    if len(pecas_filtradas) == 0:
+        raise Exception(f"Não foram encontradas peças de tamanho {padrao}") 
+
+    print_pecas_filtradas(pecas_filtradas)
+
+
+# Lista as peças de mesmo tamanho e padrão, também lista com apenas tamanho ou padrão especificados
+def listar_pecas_tamanho_padrao(tamanho="", padrao=""):
+    # Se tamanho ou padrão não estiverem no formato especificado, será jogado um erro
+    if tamanho != TAMANHO_P and tamanho != TAMANHO_M and tamanho != TAMANHO_G and tamanho != "":
+        raise Exception("Tamanho de peça inválido")
+    if padrao != PADRAO_FEMININO and padrao != PADRAO_MASCULINO and padrao != PADRAO_UNISSEX and padrao != "":
+        raise Exception("Padrão de peça inválido")
+
+    # passa TODAS as peças para print_pecas_filtradas
+    if tamanho == "" and padrao == "":
+        print_pecas_filtradas(pecas)
+
+    # Peças serão listadas pelo padrão
+    elif tamanho == "":
+        listar_pecas_padrao(padrao)
+
+    # Peças serão listadas pelo tamanho
+    elif padrao == "":
+        listar_pecas_tamanho(tamanho)
+
+    # Peças serão listadas pelo tamanho e padrão
+    else:
+        pecas_filtradas = []
+
+        for peca in pecas:
+            if peca["tamanho"] == tamanho and peca["padrão"] == padrao:
+                pecas_filtradas.append(peca)
+        
+        if len(pecas_filtradas) == 0:
+            raise Exception(f"Não foram encontradas peças de tamanho {tamanho} e padrão {padrao}")
+        
+        print_pecas_filtradas(pecas_filtradas)
 
 
 def listar_pecas_situacao(situacao):
@@ -153,7 +218,7 @@ def interface_usuario():
     1 -> Cadastrar Estilo
 
     2 -> Pesquisar estilo por nome # Edson
-    3 -> Listar peças por tamanho e padrão # Bruno
+    3 -> Listar peças por tamanho e padrão # Bruno (done)
     4 -> Listar peças para venda # Israel
     5 -> Listar peças para doação # Israel
     6 -> Listar estilos # Israel
@@ -187,16 +252,18 @@ def main():
     inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_DOACAO, 0.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    inserir_peca(TIPO_INFERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 270.0)
+    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 330.0)
+    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 3330.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 15.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
 
-    print_pecas()
-    inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
-    print(estilos)
+    # print_pecas()
+    # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
+    # print(estilos)
+    listar_pecas_tamanho_padrao(padrao=PADRAO_FEMININO, tamanho=TAMANHO_M)
 
 
 if __name__ == "__main__":
