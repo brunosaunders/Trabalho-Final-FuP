@@ -142,6 +142,12 @@ def print_pecas_filtradas(pecas_filtradas:list):
         print_peca(peca)
 
 
+# Lista todas as peças
+def listar_pecas():
+    print("\nTodas as peças:")
+    print_pecas_filtradas(pecas)
+
+
 # Printa uma única peça
 def print_peca(peca:dict):
     print(f"{peca['id']:4d}   {peca['tipo']:8s}     {peca['tamanho']}     {peca['padrão']:9s}    {peca['cor']:8s}  {peca['data']}     {peca['situação']:6s}   {peca['preço']:7.2f}")
@@ -156,7 +162,8 @@ def listar_pecas_tamanho(tamanho):
 
     if len(pecas_filtradas) == 0:
         raise Exception(f"Não foram encontradas peças de tamanho {tamanho}") 
-
+    
+    print(f"\nPeças de tamanho {tamanho}:")
     print_pecas_filtradas(pecas_filtradas)
 
 
@@ -168,8 +175,9 @@ def listar_pecas_padrao(padrao):
             pecas_filtradas.append(peca)
 
     if len(pecas_filtradas) == 0:
-        raise Exception(f"Não foram encontradas peças de tamanho {padrao}") 
-
+        raise Exception(f"Não foram encontradas peças de padrão {padrao}") 
+    
+    print(f"\nPeças de padrão {padrao}:")
     print_pecas_filtradas(pecas_filtradas)
 
 
@@ -181,9 +189,9 @@ def listar_pecas_tamanho_padrao(tamanho="", padrao=""):
     if padrao != PADRAO_FEMININO and padrao != PADRAO_MASCULINO and padrao != PADRAO_UNISSEX and padrao != "":
         raise Exception("Padrão de peça inválido")
 
-    # passa TODAS as peças para print_pecas_filtradas
+    # Lista todas as peças, pois não tem filtro
     if tamanho == "" and padrao == "":
-        print_pecas_filtradas(pecas)
+        listar_pecas()
 
     # Peças serão listadas pelo padrão
     elif tamanho == "":
@@ -204,6 +212,7 @@ def listar_pecas_tamanho_padrao(tamanho="", padrao=""):
         if len(pecas_filtradas) == 0:
             raise Exception(f"Não foram encontradas peças de tamanho {tamanho} e padrão {padrao}")
         
+        print(f"\nPeças filtradas por tamanho {tamanho} e padrão {padrao}:")
         print_pecas_filtradas(pecas_filtradas)
 
 
@@ -251,7 +260,7 @@ def interface_usuario():
     8 -> Listar peças vendidas # Edson
     9 -> Vender peça # Edson (histórico de vendas)
     10 -> Doar peça # Bruno (histórico de doações) (done)
-    11 -> Alterar peça
+    11 -> Alterar peça (done)
     12 -> Alterar estilo
     13 -> Remover peça (done)
     14 -> Remover estilo
@@ -263,14 +272,46 @@ def interface_usuario():
     """
     return # Printar a interface pro usuário.
 
+# Altera uma peça ao especificar o Id dela.
+# Altera apenas os campos especificados e mantém os não especificados.
+def alterar_peca(id, tipo="", tamanho="", padrao="", cor="", data="", situacao="", preco=""):
+    peca = retorna_peca_por_id(id) # Retorna um erro se não existir
 
+    # se algum campo não for especificado, usar a informação já encontrada na peça.
+    if tipo == "":
+        tipo = peca["tipo"]
+    if tamanho == "":
+        tamanho = peca["tamanho"]
+    if padrao == "":
+        padrao = peca["padrão"]
+    if cor == "":
+        cor = peca["cor"]
+    if data == "":
+        data = peca["data"]
+    if situacao == "":
+        situacao = peca["situação"]
+    if preco == "":
+        preco = peca["preço"]
+    
+    # Pega o índice da peça na lista pecas para poder alterá-la.
+    index_peca = pecas.index(peca) # Sempre funciona, pois a peça passada sempre existirá em pecas.
+    pecas[index_peca] = {
+        "id": id,
+        "tipo": tipo,
+        "tamanho": tamanho,
+        "padrão": padrao,
+        "cor": cor,
+        "data": data,
+        "situação": situacao,
+        "preço": preco
+    }
+    print(f"Peça de id {id} alterada com sucesso!")
+
+# Remove a peça por id, se o id não existir, não será possível encontrar a peça e um erro será jogado.
 def remover_peca(id):
-    for peca in pecas:
-        if peca["id"] == id:
-            # Remove o dicionário peca da lista pecas
-            pecas.remove(peca)
-            return
-    raise Exception(f"Não foi possível remover a peça de id: {id}, pois ela não existe.")
+    peca = retorna_peca_por_id(id)
+    pecas.remove(peca) # Remove o dicionário peca da lista pecas.
+    print(f"Atenção: Peça de id {id} foi removida do Guarda Roupa Virtual.")
 
 # vender_para = nome do comprador.
 def vender_peca(id, vender_para, preco):
@@ -299,7 +340,6 @@ def doar_peca(id, doar_para):
     remover_peca(id)
 
     
-
 def main():
     # TODO: Criar interface para interagir com o usuário
     # Lembrar de usar Try catch para inserir_estilo()
@@ -322,7 +362,10 @@ def main():
     # doar_peca(1, "Coração de Jesus")
     # doar_peca(9, "César")
     # doar_peca(10, "Lar Criança Feliz")
-    listar_pecas_doadas()
+    listar_pecas()
+    alterar_peca(3, data=date(2002,6,15), preco=5.21)
+    remover_peca(4)
+    listar_pecas()
 
 
 if __name__ == "__main__":
