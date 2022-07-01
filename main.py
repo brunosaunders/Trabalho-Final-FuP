@@ -35,7 +35,7 @@ SITUACAO_FICAR = "ficar"
 
 pecas = []
 estilos = {}
-pecas_doadas = []
+historico_pecas_doadas = []
 
 """"
 Estrutura de pecas
@@ -73,6 +73,7 @@ pecas_doadas = [
         "padrão": "masculino",
         "cor": "azul",
         "data_doação": date(),
+        "data_guarda_roupa": date(),
         "quem_recebeu": "Lar Carla Alcântara"
     }
 ]
@@ -252,15 +253,27 @@ def interface_usuario():
     """
     return # Printar a interface pro usuário.
 
-
-def vender_peca(id, nome_comprador, preco):
-    # atualizar situação da peça
+# vender_para = nome do comprador
+def vender_peca(id, vender_para, preco):
     return
 
-
-def doar_peca(id, doado_para):
-    # atualizar situação da peça
-    return
+# doar_para = nome da instituição ou pessoa que recebeu a doação
+def doar_peca(id, doar_para):
+    peca = retorna_peca_por_id(id)
+    if peca["situação"] != SITUACAO_DOACAO:
+        raise Exception("Peça não disponível para doação. Tente alterar a situação da peça antes em 'Alterar peça'.")
+    
+    # adiciona informações da peça doada ao historico_pecas_doadas
+    historico_pecas_doadas.append({
+        "id": id,
+        "tipo": peca["tipo"],
+        "tamanho": peca["tamanho"],
+        "padrão": peca["padrão"],
+        "cor": peca["cor"],
+        "data_doação": date.today,
+        "data_guarda_roupa": peca["data"],
+        "quem_recebeu": doar_para
+    })
     
 
 def main():
