@@ -226,10 +226,14 @@ def interface_usuario():
     8 -> Listar peças vendidas # Edson
     9 -> Vender peça # Edson (histórico de vendas)
     10 -> Doar peça # Bruno (histórico de doações)
+    11 -> Alterar peça
+    12 -> Alterar estilo
+    13 -> Remover peça
+    14 -> Remover estilo
 
     # Depois
-    11 -> Carregar arquivos (peças, estilos, historico_vendas, historico_doações)
-    12 -> Salvar alterações (peças, estilos, historico_vendas, historico_doações)
+    15 -> Carregar arquivos (peças, estilos, historico_vendas, historico_doações)
+    16 -> Salvar alterações (peças, estilos, historico_vendas, historico_doações)
 
     """
     return # Printar a interface pro usuário.
