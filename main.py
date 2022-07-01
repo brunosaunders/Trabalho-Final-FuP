@@ -35,6 +35,7 @@ SITUACAO_FICAR = "ficar"
 
 pecas = []
 estilos = {}
+pecas_doadas = []
 
 """"
 Estrutura de pecas
@@ -62,6 +63,19 @@ estilos = {
         ]    
     }
 }
+
+Estrutura de pecas_doadas
+pecas_doadas = [
+    {
+        "id": 1,
+        "tipo": "calçado",
+        "tamanho": "m",
+        "padrão": "masculino",
+        "cor": "azul",
+        "data_doação": date(),
+        "quem_recebeu": "Lar Carla Alcântara"
+    }
+]
 """
 
 
