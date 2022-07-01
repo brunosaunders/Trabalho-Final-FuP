@@ -82,7 +82,7 @@ pecas_doadas = [
 
 
 def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
-    # TODO: Assegurar a integridade de cada peça. ex: não cadastrar tamanhos que não existem, etc.
+    # Integridade das peças é garantida na interface do usuário.
 
     id = len(pecas) + 1
     peca = {
@@ -106,14 +106,14 @@ def inserir_estilo(nome, calcados_id:list, inferiores_id:list, superiores_id:lis
 # Com uma lista de ids, seleciona 3 peças e assegura que possuem o mesmo tipo especificado na função
 def retorna_3pecas_mesmo_tipo(id_list:list, tipo):
     if len(id_list) != 3:
-        raise Exception("Lista de ids com tamanho diferente de 3.")
+        raise Exception("Erro: Lista de ids com tamanho diferente de 3.")
 
     pecas = []
 
     for id in id_list:
         peca = retorna_peca_por_id(id)
         if checa_tipo_peca(peca, tipo) == False:
-            raise Exception(f"Peça de id-{id} não é uma peça {tipo}!")
+            raise Exception(f"Erro: Peça de id-{id} não é uma peça do tipo {tipo}!")
         
         pecas.append(peca)
     
@@ -125,7 +125,7 @@ def retorna_peca_por_id(id):
     for item in pecas:
         if item["id"] == id:
             return item
-    raise Exception("id não existente!")
+    raise Exception(f"Erro: id {id} não existente!")
 
 
 # Retorna True se o tipo da peça for o mesmo que o passado na função e False se diferente
