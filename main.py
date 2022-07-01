@@ -222,7 +222,7 @@ def listar_estilos():
 # Lista todas as peças doadas
 def listar_pecas_doadas():
     if len(historico_pecas_doadas) == 0:
-        print("Nenhuma peça foi doada até o momento")
+        print("\nPeças doadas:\nNenhuma peça foi doada até o momento :/")
         return
     
     # Header da tabela de peças doadas (notação ^ do format permite centralizar o conteúdo em determinado espaço)
@@ -247,13 +247,13 @@ def interface_usuario():
     4 -> Listar peças para venda # Israel
     5 -> Listar peças para doação # Israel
     6 -> Listar estilos # Israel
-    7 -> Listar peças doadas # Bruno
+    7 -> Listar peças doadas # Bruno (done)
     8 -> Listar peças vendidas # Edson
     9 -> Vender peça # Edson (histórico de vendas)
     10 -> Doar peça # Bruno (histórico de doações) (done)
     11 -> Alterar peça
     12 -> Alterar estilo
-    13 -> Remover peça
+    13 -> Remover peça (done)
     14 -> Remover estilo
 
     # Depois
@@ -262,6 +262,15 @@ def interface_usuario():
 
     """
     return # Printar a interface pro usuário.
+
+
+def remover_peca(id):
+    for peca in pecas:
+        if peca["id"] == id:
+            # Remove o dicionário peca da lista pecas
+            pecas.remove(peca)
+            return
+    raise Exception(f"Não foi possível remover a peça de id: {id}, pois ela não existe.")
 
 # vender_para = nome do comprador.
 def vender_peca(id, vender_para, preco):
@@ -287,10 +296,7 @@ def doar_peca(id, doar_para):
     })
 
     # remove peça do guarda roupa (pecas)
-    for peca in pecas:
-        if peca["id"] == id:
-            # Remove o dicionário peca da lista pecas
-            pecas.remove(peca)
+    remover_peca(id)
 
     
 
@@ -298,7 +304,7 @@ def main():
     # TODO: Criar interface para interagir com o usuário
     # Lembrar de usar Try catch para inserir_estilo()
 
-    inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_DOACAO, 0.0)
+    inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_FICAR, 0.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_INFERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 270.0)
@@ -306,16 +312,16 @@ def main():
     inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 3330.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 15.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_VENDA, 0.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2022, 2, 12), SITUACAO_VENDA, 0.0)
 
     # print_pecas()
     # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
     # print(estilos)
     # listar_pecas_tamanho_padrao(padrao=PADRAO_FEMININO, tamanho=TAMANHO_M)
-    doar_peca(1, "Coração de Jesus")
-    doar_peca(9, "César")
-    doar_peca(10, "Lar Criança Feliz")
+    # doar_peca(1, "Coração de Jesus")
+    # doar_peca(9, "César")
+    # doar_peca(10, "Lar Criança Feliz")
     listar_pecas_doadas()
 
 
