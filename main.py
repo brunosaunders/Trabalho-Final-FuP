@@ -1,4 +1,5 @@
 from datetime import date
+import datetime
 
 # Constantes Tipo
 TIPO_CALCADO = "calçado"
@@ -35,6 +36,7 @@ SITUACAO_FICAR = "ficar"
 
 pecas = []
 estilos = {}
+historico_pecas_doadas = []
 
 """"
 Estrutura de pecas
@@ -62,11 +64,25 @@ estilos = {
         ]    
     }
 }
+
+Estrutura de pecas_doadas
+pecas_doadas = [
+    {
+        "id": 1,
+        "tipo": "calçado",
+        "tamanho": "m",
+        "padrão": "masculino",
+        "cor": "azul",
+        "data_doação": date(),
+        "data_guarda_roupa": date(),
+        "doado_para": "Lar Carla Alcântara"
+    }
+]
 """
 
 
 def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
-    # TODO: Assegurar a integridade de cada peça. ex: não cadastrar tamanhos que não existem, etc.
+    # Integridade das peças é garantida na interface do usuário.
 
     id = len(pecas) + 1
     peca = {
@@ -90,14 +106,14 @@ def inserir_estilo(nome, calcados_id:list, inferiores_id:list, superiores_id:lis
 # Com uma lista de ids, seleciona 3 peças e assegura que possuem o mesmo tipo especificado na função
 def retorna_3pecas_mesmo_tipo(id_list:list, tipo):
     if len(id_list) != 3:
-        raise Exception("Lista de ids com tamanho diferente de 3.")
+        raise Exception("Erro: Lista de ids com tamanho diferente de 3.")
 
     pecas = []
 
     for id in id_list:
         peca = retorna_peca_por_id(id)
         if checa_tipo_peca(peca, tipo) == False:
-            raise Exception(f"Peça de id-{id} não é uma peça {tipo}!")
+            raise Exception(f"Erro: Peça de id-{id} não é uma peça do tipo {tipo}!")
         
         pecas.append(peca)
     
@@ -109,7 +125,7 @@ def retorna_peca_por_id(id):
     for item in pecas:
         if item["id"] == id:
             return item
-    raise Exception("id não existente!")
+    raise Exception(f"Erro: id {id} não existente!")
 
 
 # Retorna True se o tipo da peça for o mesmo que o passado na função e False se diferente
@@ -126,6 +142,12 @@ def print_pecas_filtradas(pecas_filtradas:list):
         print_peca(peca)
 
 
+# Lista todas as peças
+def listar_pecas():
+    print("\nTodas as peças:")
+    print_pecas_filtradas(pecas)
+
+
 # Printa uma única peça
 def print_peca(peca:dict):
     print(f"{peca['id']:4d}   {peca['tipo']:8s}     {peca['tamanho']}     {peca['padrão']:9s}    {peca['cor']:8s}  {peca['data']}     {peca['situação']:6s}   {peca['preço']:7.2f}")
@@ -140,7 +162,8 @@ def listar_pecas_tamanho(tamanho):
 
     if len(pecas_filtradas) == 0:
         raise Exception(f"Não foram encontradas peças de tamanho {tamanho}") 
-
+    
+    print(f"\nPeças de tamanho {tamanho}:")
     print_pecas_filtradas(pecas_filtradas)
 
 
@@ -152,8 +175,9 @@ def listar_pecas_padrao(padrao):
             pecas_filtradas.append(peca)
 
     if len(pecas_filtradas) == 0:
-        raise Exception(f"Não foram encontradas peças de tamanho {padrao}") 
-
+        raise Exception(f"Não foram encontradas peças de padrão {padrao}") 
+    
+    print(f"\nPeças de padrão {padrao}:")
     print_pecas_filtradas(pecas_filtradas)
 
 
@@ -165,9 +189,9 @@ def listar_pecas_tamanho_padrao(tamanho="", padrao=""):
     if padrao != PADRAO_FEMININO and padrao != PADRAO_MASCULINO and padrao != PADRAO_UNISSEX and padrao != "":
         raise Exception("Padrão de peça inválido")
 
-    # passa TODAS as peças para print_pecas_filtradas
+    # Lista todas as peças, pois não tem filtro
     if tamanho == "" and padrao == "":
-        print_pecas_filtradas(pecas)
+        listar_pecas()
 
     # Peças serão listadas pelo padrão
     elif tamanho == "":
@@ -188,6 +212,7 @@ def listar_pecas_tamanho_padrao(tamanho="", padrao=""):
         if len(pecas_filtradas) == 0:
             raise Exception(f"Não foram encontradas peças de tamanho {tamanho} e padrão {padrao}")
         
+        print(f"\nPeças filtradas por tamanho {tamanho} e padrão {padrao}:")
         print_pecas_filtradas(pecas_filtradas)
 
 
@@ -203,9 +228,18 @@ def selecionar_estilo(nome):
 def listar_estilos():
     return # TODO: Listar estilos em ordem crescente de usos.
 
-
+# Lista todas as peças doadas
 def listar_pecas_doadas():
-    return # TODO: Listar peças de acordo com a ONG/Pessoa que você fez a doação.
+    if len(historico_pecas_doadas) == 0:
+        print("\nPeças doadas:\nNenhuma peça foi doada até o momento :/")
+        return
+    
+    # Header da tabela de peças doadas (notação ^ do format permite centralizar o conteúdo em determinado espaço)
+    print("\nPeças doadas:")
+    print(f"{'Instituição/Pessoa':^35} {'Tipo':^10} {'Tamanho':^10} {'Padrão':^6} {'Cor':^13}  {'Data Doação'}  {'Data Cadastro'}")
+    for peca in historico_pecas_doadas:
+        print(f"{peca['doado_para']:35s}  {peca['tipo']:10s}  {peca['tamanho']:^6}  {peca['padrão']:10s}  {peca['cor']:8s}   {peca['data_doação']}     {peca['data_guarda_roupa']}")
+
 
 def listar_pecas_vendidas():
     return
@@ -222,34 +256,95 @@ def interface_usuario():
     4 -> Listar peças para venda # Israel
     5 -> Listar peças para doação # Israel
     6 -> Listar estilos # Israel
-    7 -> Listar peças doadas # Bruno
+    7 -> Listar peças doadas # Bruno (done)
     8 -> Listar peças vendidas # Edson
     9 -> Vender peça # Edson (histórico de vendas)
-    10 -> Doar peça # Bruno (histórico de doações)
+    10 -> Doar peça # Bruno (histórico de doações) (done)
+    11 -> Alterar peça (done)
+    12 -> Alterar estilo
+    13 -> Remover peça (done)
+    14 -> Remover estilo
 
     # Depois
-    11 -> Carregar arquivos (peças, estilos, historico_vendas, historico_doações)
-    12 -> Salvar alterações (peças, estilos, historico_vendas, historico_doações)
+    15 -> Carregar arquivos (peças, estilos, historico_vendas, historico_doações)
+    16 -> Salvar alterações (peças, estilos, historico_vendas, historico_doações)
 
     """
     return # Printar a interface pro usuário.
 
+# Altera uma peça ao especificar o Id dela.
+# Altera apenas os campos especificados e mantém os não especificados.
+def alterar_peca(id, tipo="", tamanho="", padrao="", cor="", data="", situacao="", preco=""):
+    peca = retorna_peca_por_id(id) # Retorna um erro se não existir
 
-def vender_peca(id, nome_comprador, preco):
-    # atualizar situação da peça
-    return
-
-
-def doar_peca(id, doado_para):
-    # atualizar situação da peça
-    return
+    # se algum campo não for especificado, usar a informação já encontrada na peça.
+    if tipo == "":
+        tipo = peca["tipo"]
+    if tamanho == "":
+        tamanho = peca["tamanho"]
+    if padrao == "":
+        padrao = peca["padrão"]
+    if cor == "":
+        cor = peca["cor"]
+    if data == "":
+        data = peca["data"]
+    if situacao == "":
+        situacao = peca["situação"]
+    if preco == "":
+        preco = peca["preço"]
     
+    # Pega o índice da peça na lista pecas para poder alterá-la.
+    index_peca = pecas.index(peca) # Sempre funciona, pois a peça passada sempre existirá em pecas.
+    pecas[index_peca] = {
+        "id": id,
+        "tipo": tipo,
+        "tamanho": tamanho,
+        "padrão": padrao,
+        "cor": cor,
+        "data": data,
+        "situação": situacao,
+        "preço": preco
+    }
+    print(f"Peça de id {id} alterada com sucesso!")
 
+# Remove a peça por id, se o id não existir, não será possível encontrar a peça e um erro será jogado.
+def remover_peca(id):
+    peca = retorna_peca_por_id(id)
+    pecas.remove(peca) # Remove o dicionário peca da lista pecas.
+    print(f"Atenção: Peça de id {id} foi removida do Guarda Roupa Virtual.")
+
+# vender_para = nome do comprador.
+def vender_peca(id, vender_para, preco):
+    return
+
+# doar_para = nome da instituição ou pessoa que recebeu a doação.
+# doar_peca remove a peça do guarda roupa.
+def doar_peca(id, doar_para):
+    peca = retorna_peca_por_id(id) # Impede a execução se o id não for encontrado.
+    if peca["situação"] != SITUACAO_DOACAO:
+        raise Exception("Peça não disponível para doação. Tente alterar a situação da peça antes em 'Alterar peça'.")
+    
+    # adiciona informações da peça doada ao historico_pecas_doadas.
+    historico_pecas_doadas.append({
+        "id": id,
+        "tipo": peca["tipo"],
+        "tamanho": peca["tamanho"],
+        "padrão": peca["padrão"],
+        "cor": peca["cor"],
+        "data_doação": datetime.datetime.today().date(), # Data de hoje no formato YYYY-MM-DD
+        "data_guarda_roupa": peca["data"],
+        "doado_para": doar_para
+    })
+
+    # remove peça do guarda roupa (pecas)
+    remover_peca(id)
+
+    
 def main():
     # TODO: Criar interface para interagir com o usuário
     # Lembrar de usar Try catch para inserir_estilo()
 
-    inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_DOACAO, 0.0)
+    inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_FICAR, 0.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_INFERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 270.0)
@@ -257,13 +352,20 @@ def main():
     inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 3330.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 15.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_VENDA, 0.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2022, 2, 12), SITUACAO_VENDA, 0.0)
 
     # print_pecas()
     # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
     # print(estilos)
-    listar_pecas_tamanho_padrao(padrao=PADRAO_FEMININO, tamanho=TAMANHO_M)
+    # listar_pecas_tamanho_padrao(padrao=PADRAO_FEMININO, tamanho=TAMANHO_M)
+    # doar_peca(1, "Coração de Jesus")
+    # doar_peca(9, "César")
+    # doar_peca(10, "Lar Criança Feliz")
+    listar_pecas()
+    alterar_peca(3, data=date(2002,6,15), preco=5.21)
+    remover_peca(4)
+    listar_pecas()
 
 
 if __name__ == "__main__":
