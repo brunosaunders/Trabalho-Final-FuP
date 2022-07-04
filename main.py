@@ -37,6 +37,7 @@ SITUACAO_FICAR = "ficar"
 pecas = []
 estilos = {}
 historico_pecas_doadas = []
+historico_pecas_vendidas = []
 
 """"
 Estrutura de pecas
@@ -242,7 +243,15 @@ def listar_pecas_doadas():
 
 
 def listar_pecas_vendidas():
-    return
+    if len(historico_pecas_vendidas) > 0:
+        print("\nPeças vendidas:")
+        print(f"{'Comprador':^35} {'Tipo':^10} {'Tamanho':^10} {'Padrão':^6} {'Cor':^13} {'Preço':^10}  {'Data de Venda'}  {'Data de Cadastro'}")
+        
+        for peca in historico_pecas_vendidas:
+            print(f"{peca['vendido_para']:35s}  {peca['tipo']:10s}  {peca['tamanho']:^6}  {peca['padrão']:10s}  {peca['cor']:8s} {peca['preço']:10}   {peca['data_venda']}     {peca['data_guarda_roupa']}")
+    else:
+        print("\nPeças vendidas:\nNenhuma peça foi vendida até o momento >:(")
+        return
 
 def interface_usuario():
     """
@@ -257,8 +266,8 @@ def interface_usuario():
     5 -> Listar peças para doação # Israel
     6 -> Listar estilos # Israel
     7 -> Listar peças doadas # Bruno (done)
-    8 -> Listar peças vendidas # Edson
-    9 -> Vender peça # Edson (histórico de vendas)
+    8 -> Listar peças vendidas # Edson (done)
+    9 -> Vender peça # Edson (histórico de vendas) (done)
     10 -> Doar peça # Bruno (histórico de doações) (done)
     11 -> Alterar peça (done)
     12 -> Alterar estilo
@@ -314,8 +323,26 @@ def remover_peca(id):
     print(f"Atenção: Peça de id {id} foi removida do Guarda Roupa Virtual.")
 
 # vender_para = nome do comprador.
-def vender_peca(id, vender_para, preco):
-    return
+def vender_peca(id, vender_para):
+    peca = retorna_peca_por_id(id)
+    if peca["situação"] != SITUACAO_VENDA:
+        raise Exception("Peça não disponível para venda. Tente alterar a situação da peça antes em 'Alterar peça'.")
+    
+    # adiciona informações da peça doada ao historico_pecas_doadas.
+    historico_pecas_vendidas.append({
+        "id": id,
+        "tipo": peca["tipo"],
+        "tamanho": peca["tamanho"],
+        "padrão": peca["padrão"],
+        "cor": peca["cor"],
+        "data_venda": datetime.datetime.today().date(), # Data de hoje no formato YYYY-MM-DD
+        "data_guarda_roupa": peca["data"],
+        "vendido_para": vender_para,
+        "preço": peca["preço"]
+    })
+
+    # remove peça do guarda roupa (pecas)
+    remover_peca(id)
 
 # doar_para = nome da instituição ou pessoa que recebeu a doação.
 # doar_peca remove a peça do guarda roupa.
@@ -366,6 +393,10 @@ def main():
     alterar_peca(3, data=date(2002,6,15), preco=5.21)
     remover_peca(4)
     listar_pecas()
+
+    # vender_peca(8, "Genivaldo Borges")
+    # vender_peca(2, "Zé do Bar")
+    # listar_pecas_vendidas()
 
 
 if __name__ == "__main__":
