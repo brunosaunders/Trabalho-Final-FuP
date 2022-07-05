@@ -399,7 +399,7 @@ def interface_usuario():
     0 -> Cadastrar Peça
     1 -> Cadastrar Estilo
 
-    2 -> Pesquisar estilo por nome # Edson (done)
+    2 -> Pesquisar estilo por nome # Edson (done) ---> TODO: listar peças de cada estilo
     3 -> Listar peças por tamanho e padrão # Bruno (done)
     4 -> Listar peças para venda # Israel (done)
     5 -> Listar peças para doação # Israel (done)
