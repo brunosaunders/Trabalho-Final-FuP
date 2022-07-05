@@ -219,6 +219,68 @@ def listar_pecas_tamanho_padrao(tamanho="", padrao=""):
 
 def listar_pecas_situacao(situacao):
     return # TODO: Se roupas à venda, mostrar em ordem de preço crescente, se doação, em ordem de aquisição.
+# Função para listar peças para venda
+def listar_pecas_para_venda():
+    lista_venda = []                                
+    lista_venda_ordenada = [] 
+    lista_precos = []
+    # Estrutura de repetição para checar cada peça. Se a situação da peça for para venda, armazena essa peça em uma lista. 
+    # Armazena, nessa mesma estrutura de repetição os preços de cada peça para venda em uma lista.  
+    for i in range(len(pecas)): 
+        if pecas[i]["situação"] == SITUACAO_VENDA:
+            lista_venda.append(pecas[i]) 
+            lista_precos.append(pecas[i]["preço"])
+    # Ordenação, com o método de lista sorted, para organizar a lista de preços em ordem crescente  
+    lista_precos_ordenada = sorted(lista_precos)
+    # Estrutura de repetição para procurar a peça com os preços da lista organizada 
+    for preco in lista_precos_ordenada:
+        j = 0
+        # While para procurar a peça, com estrutura condicional para não repetir a mesma peça 
+        while j < len(lista_venda):
+            if lista_venda[j]["preço"] == preco:
+                # Se a peça não tivar na lista_venda_ordenada ela é adicionada nessa lista
+                if lista_venda[j] not in lista_venda_ordenada: 
+                    lista_venda_ordenada.append(lista_venda[j])
+                    break 
+            j += 1
+    # Estrutura condicional: Se não houver nenhuma peça para venda, imprime uma mensagem, senão chama a função print_pecas_filtradas. 
+    if len(lista_venda_ordenada) == 0:
+        print("Não foram encontradas peças para venda")
+        return 
+    print("Listando peças para venda com ordem crecente de preços:")
+    print_pecas_filtradas(lista_venda_ordenada)
+
+
+# Função listar peças para doação 
+def listar_pecas_para_doacao():
+    lista_doacao = [] 
+    lista_datas = []
+    lista_doacao_ordenada = []
+    # Estrutura de repetição para checar cada peça. Se a situação da peça for para doação, armazena essa peça em uma lista
+    # Armazea, a mesma estrutura de repetição as datas de cada peça para doação 
+    for i in range(len(pecas)):
+        if pecas[i]["situação"] == SITUACAO_DOACAO:
+            lista_doacao.append(pecas[i])
+            lista_datas.append(pecas[i]["data"]) 
+    # Método sorted de listas para organizar as datas da mais recente para a mais antiga
+    lista_datas_ordenada = sorted(lista_datas,reverse = True)
+    # Estrutura de repetição para procurar a peça com cada data da lista organizada de datas  
+    for datas in lista_datas_ordenada:
+        j = 0 
+        # While para procurar a peça, com estrutura condicional para não repetir a mesma peça 
+        while j < len(lista_doacao):
+            if lista_doacao[j]["data"] == datas:
+                # Se a peça não tivar na lista_doacao_ordenada ela é adicionada nessa lista
+                if lista_doacao[j] not in lista_doacao_ordenada: 
+                    lista_doacao_ordenada.append(lista_doacao[j])
+                    break 
+            j += 1
+    # Estrutura condicional: Se não houver nenhuma peça para venda, imprime uma mensagem, senão chama a função print_pecas_filtradas.
+    if len(lista_doacao_ordenada) == 0:
+        print('Não foram encontradas peças para doação')
+        return 
+    print('Listando peças para doação:')
+    print_pecas_filtradas(lista_doacao_ordenada)
 
 
 def selecionar_estilo():
@@ -310,8 +372,8 @@ def interface_usuario():
 
     2 -> Pesquisar estilo por nome # Edson (done)
     3 -> Listar peças por tamanho e padrão # Bruno (done)
-    4 -> Listar peças para venda # Israel
-    5 -> Listar peças para doação # Israel
+    4 -> Listar peças para venda # Israel (done)
+    5 -> Listar peças para doação # Israel (done)
     6 -> Listar estilos # Israel
     7 -> Listar peças doadas # Bruno (done)
     8 -> Listar peças vendidas # Edson (done)
@@ -427,9 +489,9 @@ def main():
     inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 3330.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 15.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_VENDA, 0.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2022, 2, 12), SITUACAO_VENDA, 0.0)
-
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
+    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2021, 5, 10), SITUACAO_DOACAO, 0.0)
+    listar_pecas_para_doacao()
     # print_pecas()
     # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
     # print(estilos)
@@ -437,10 +499,11 @@ def main():
     # doar_peca(1, "Coração de Jesus")
     # doar_peca(9, "César")
     # doar_peca(10, "Lar Criança Feliz")
-    listar_pecas()
-    alterar_peca(3, data=date(2002,6,15), preco=5.21)
-    remover_peca(4)
-    listar_pecas()
+    # listar_pecas_para_venda()
+    # listar_pecas()
+    #alterar_peca(3, data=date(2002,6,15), preco=5.21)
+    #remover_peca(4)
+    #listar_pecas()
 
     # vender_peca(8, "Genivaldo Borges")
     # vender_peca(2, "Zé do Bar")
