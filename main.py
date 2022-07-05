@@ -66,8 +66,8 @@ estilos = {
     }
 }
 
-Estrutura de pecas_doadas
-pecas_doadas = [
+Estrutura de historico_pecas_doadas
+historico_pecas_doadas = [
     {
         "id": 1,
         "tipo": "calçado",
@@ -77,6 +77,21 @@ pecas_doadas = [
         "data_doação": date(),
         "data_guarda_roupa": date(),
         "doado_para": "Lar Carla Alcântara"
+    }
+]
+
+Estrutura de historico_pecas_vendidas
+historico_pecas_vendidas = [
+    {
+        "id": 1,
+        "tipo": "calçado",
+        "tamanho": "m",
+        "padrão": "masculino",
+        "cor": "azul",
+        "data_doação": date(),
+        "data_guarda_roupa": date(),
+        "vendido_para": "José Almeida Campos",
+        "preço": 52.90
     }
 ]
 """
@@ -282,17 +297,26 @@ def listar_pecas_para_doacao():
     print('Listando peças para doação:')
     print_pecas_filtradas(lista_doacao_ordenada)
 
-
+# Seleciona um estilo do guarda roupa para ser usado, e incrementa o seu contador em 1
 def selecionar_estilo():
     nomes = list(estilos.keys()) # Retorna uma lista com todas as chaves do dicionário 'estilos'
     estilo = ""
     mudar = True # Inicia como True para entrar no loop
 
+    # Caso no qual nenhum estilo foi cadastrado
+    if len(nomes) == 0:
+        print("Você ainda não cadastrou nenhum estilo!")
+        return
+
+    # Enquanto o usuário quiser mudar sua opção de estilo, executar o que se segue
     while mudar:
+        print("\nQual estilo deseja usar?")
+        # TODO: listar as peças de cada estilo
+
         # Enumera os estilos cadastrados e recebe a escolha do usuário
         for i in range(len(nomes)):
             print("%d - %s" %((i+1), nomes[i]))
-
+        
         selecao = input("\nSelecione um estilo: ")
 
         # Recebe e trata o input do usuário aceitando o nome do estilo ou o número equivalente.
@@ -303,36 +327,41 @@ def selecionar_estilo():
             if selecao >= 0 and selecao < len(nomes):
                 estilo = nomes[selecao]
             else:
-               print("Estilo inválido!")
+               print("Entrada inválida, tente novamente.")
                continue
-
+        
+        # Se o input for uma string, verificar se está em nomes (se é uma chave do dict estilos)
         except ValueError as e:
             if selecao in nomes:
                 estilo = selecao
             else:
-                print("Estilo não cadastrado!")
+                print("Estilo não cadastrado, tente novamente.")
                 continue
-
+        
+        # Se algo der errado, printar entrada inválida
         except Exception as e:
-            print("%s\n" %e)
+            print("Entrada inválida, tente novamente.")
             continue
+
+        print("\nVocê escolheu o estilo %s" %estilo)
 
         # Checa se o usuário quer mudar o estilo
         while True:
-            print("Você escolheu o estilo %s" %estilo)
-            mudar = input("Deseja mudar o estilo? [s/n] ")
+            resposta = input("Deseja confirmar escolha do estilo %s? [s/n] " %estilo)
 
-            if mudar == "s" or mudar == "sim":
-                mudar = True
-                break
-            elif mudar == "n" or mudar == "não":
-                estilos[estilo]["contador"] += 1
+            if resposta == "s" or resposta == "sim":
                 mudar = False
                 break
+            elif resposta == "n" or resposta == "não":
+                estilos[estilo]["contador"] += 1
+                mudar = True
+                break
             else:
-                print('Resposta inválida! Digite "s" para sim ou "n" para não.')
-
-    return estilo
+                print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+    
+    # Incrementa 1 ao contador do estilo escolhido
+    estilos[estilo]["contador"] += 1
+    print("\nEstilo %s escolhido com sucesso!" %estilo)
 
 
 
@@ -491,7 +520,7 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 15.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2021, 5, 10), SITUACAO_DOACAO, 0.0)
-    listar_pecas_para_doacao()
+    # listar_pecas_para_doacao()
     # print_pecas()
     # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
     # print(estilos)
@@ -509,9 +538,9 @@ def main():
     # vender_peca(2, "Zé do Bar")
     # listar_pecas_vendidas()
 
-    # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
-    # inserir_estilo("esportivo", [1,2,3], [4,5,6], [7,8,9])
-    # print(selecionar_estilo())
+    inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
+    inserir_estilo("esportivo", [1,2,3], [4,5,6], [7,8,9])
+    selecionar_estilo()
 
 
 if __name__ == "__main__":
