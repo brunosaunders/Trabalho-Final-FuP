@@ -120,10 +120,8 @@ def criar_estilo(nome_estilo):
         ]
     }
 
-
-def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
-    peca = retorna_peca_por_id(id_peca)
-
+# Retorna o índice linha da matriz peças em cada estilo
+def indice_peca_em_estilos(peca: dict):
     # Peças do tipo superior ocuparão a linha de índice 0 da matriz peças que está em estilos.
     if peca["tipo"] == TIPO_SUPERIOR:
         peca_index = 0
@@ -135,6 +133,12 @@ def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
         peca_index = 2
     else:
         raise Exception("Erro: Essa peça possui um tipo inválido")
+    
+    return peca_index
+
+def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
+    peca = retorna_peca_por_id(id_peca)
+    peca_index = indice_peca_em_estilos(peca)
     
     # Se estilo não existe, crie um
     if nome_estilo not in estilos:
@@ -470,11 +474,40 @@ def alterar_peca(id, tipo="", tamanho="", padrao="", cor="", data="", situacao="
     }
     print(f"Peça de id {id} alterada com sucesso!")
 
+
+# Conta o número de peças que existem em um estilo.
+def conta_numero_de_pecas_em_estilo(nome_estilo):
+    count_pecas = 0
+
+    # Itera sobre cada linha da matriz peças em um dado estilo.
+    for linha in estilos[nome_estilo]["peças"]:
+        count_pecas += len(linha)
+
+    return count_pecas
+
+# Remove um estilo do dicionário estilos.
+def remover_estilo(nome_estilo):
+    estilos.pop(nome_estilo)
+    return
+
 # Remove a peça por id, se o id não existir, não será possível encontrar a peça e um erro será jogado.
+# Remove a peça de TODOS os estilos que ela fizer parte.
+# Exclui o estilo que a peça fazia parte se o estilo não tiver mais nenhuma peça.
 def remover_peca(id):
     peca = retorna_peca_por_id(id)
     pecas.remove(peca) # Remove o dicionário peca da lista pecas.
     print(f"Atenção: Peça de id {id} foi removida do Guarda Roupa Virtual.")
+
+    # Para saber em qual índice da matriz remover a peça de estilos.
+    index_peca = indice_peca_em_estilos(peca)
+    for nome_estilo in peca["estilos"]:
+        estilos[nome_estilo]["peças"][index_peca].remove(peca)
+        print(f"Atenção: Peça de id {id} foi removida do estilo {nome_estilo}.")
+
+        # verifica se o estilo ainda possui pelo menos uma peça, se não possuir, o estilo é excluído.
+        if conta_numero_de_pecas_em_estilo(nome_estilo) == 0:
+            remover_estilo(nome_estilo)
+            print(f"Atenção: Estilo {nome_estilo} foi removido por ausência de peças.")
 
 # vender_para = nome do comprador.
 def vender_peca(id, vender_para):
@@ -537,13 +570,13 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2021, 5, 10), SITUACAO_DOACAO, 0.0)
     
     listar_pecas()
-    print(pecas[2]["estilos"])
+    
     adicionar_peca_a_estilo(3, "casual")
     adicionar_peca_a_estilo(3, "romântico")
-    print(pecas[2]["estilos"])
-    print(estilos["casual"]["peças"])
-    print(estilos["romântico"]["peças"])
-
+    adicionar_peca_a_estilo(6, "casual")
+    adicionar_peca_a_estilo(7, "romântico")
+    remover_peca(3)
+    remover_peca(7)
 
 if __name__ == "__main__":
     main()
