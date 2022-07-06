@@ -51,6 +51,7 @@ pecas = [
         "data": date(),
         "situação": "venda",
         "preço": 39.99
+        "estilos": ["casual", "esportivo", "clássico"]
     },
 ]
 
@@ -104,36 +105,50 @@ def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
     peca = {
         "id": id, "tipo": tipo, "tamanho": tamanho,
         "padrão": padrao, "cor": cor, "data": data, 
-        "situação": situacao, "preço": preco
+        "situação": situacao, "preço": preco, "estilos": []
     }
     pecas.append(peca)
 
 
-# Cria um novo estilo com 3 peças de cada tipo, se alguma peça não existir, será jogado um erro,
-# Se alguma lista de id tiver peça de tipo diferente do especificado, será jogado um erro.
-def inserir_estilo(nome, calcados_id:list, inferiores_id:list, superiores_id:list):
-    calcados = retorna_3pecas_mesmo_tipo(calcados_id, TIPO_CALCADO)
-    inferiores = retorna_3pecas_mesmo_tipo(inferiores_id, TIPO_INFERIOR)
-    superiores = retorna_3pecas_mesmo_tipo(superiores_id, TIPO_SUPERIOR)
-        
-    estilos[nome] = {"contador": 0, "peças": [superiores, inferiores, calcados]}
+def criar_estilo(nome_estilo):
+    estilos[nome_estilo] = {
+        "contador": 0,
+        "peças": [
+            [], # Peças tipo Superior
+            [], # Peças tipo Inferior
+            []  # Peças tipo calçado
+        ]
+    }
 
 
-# Com uma lista de ids, seleciona 3 peças e assegura que possuem o mesmo tipo especificado na função
-def retorna_3pecas_mesmo_tipo(id_list:list, tipo):
-    if len(id_list) != 3:
-        raise Exception("Erro: Lista de ids com tamanho diferente de 3.")
+def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
+    peca = retorna_peca_por_id(id_peca)
 
-    pecas = []
-
-    for id in id_list:
-        peca = retorna_peca_por_id(id)
-        if checa_tipo_peca(peca, tipo) == False:
-            raise Exception(f"Erro: Peça de id-{id} não é uma peça do tipo {tipo}!")
-        
-        pecas.append(peca)
+    # Peças do tipo superior ocuparão a linha de índice 0 da matriz peças que está em estilos.
+    if peca["tipo"] == TIPO_SUPERIOR:
+        peca_index = 0
+    # Peças do tipo inferior ocuparão a linha de índice 1 da matriz peças que está em estilos.
+    elif peca["tipo"] == TIPO_INFERIOR:
+        peca_index = 1
+    # Peças do tipo calçado ocuparão a linha de índice 2 da matriz peças que está em estilos.
+    elif peca["tipo"] == TIPO_CALCADO:
+        peca_index = 2
+    else:
+        raise Exception("Erro: Essa peça possui um tipo inválido")
     
-    return pecas
+    # Se estilo não existe, crie um
+    if nome_estilo not in estilos:
+        criar_estilo(nome_estilo)
+    
+    # Verifica se a peça já foi adicionada ao estilo
+    if peca not in estilos[nome_estilo]["peças"][peca_index]:
+        # Adiciona a peça ao estilo especificado na matriz de peças de acordo com o seu tipo
+        estilos[nome_estilo]["peças"][peca_index].append(peca)
+        
+        # Adiciona o estilo à peça
+        peca["estilos"].append(nome_estilo)
+    else:
+        print(f"Não foi possível adicionar peça de id {id_peca} ao estilo {nome_estilo}, pois a peça já pertence ao estilo.")
 
 
 # retorna a peça pelo id. ATENÇÃO: se a peça não for encontrada, um erro será jogado
@@ -520,27 +535,14 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_G, PADRAO_UNISSEX, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 15.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_VERMELHO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_LARANJA, date(2021, 5, 10), SITUACAO_DOACAO, 0.0)
-    # listar_pecas_para_doacao()
-    # print_pecas()
-    # inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
-    # print(estilos)
-    # listar_pecas_tamanho_padrao(padrao=PADRAO_FEMININO, tamanho=TAMANHO_M)
-    # doar_peca(1, "Coração de Jesus")
-    # doar_peca(9, "César")
-    # doar_peca(10, "Lar Criança Feliz")
-    # listar_pecas_para_venda()
-    # listar_pecas()
-    #alterar_peca(3, data=date(2002,6,15), preco=5.21)
-    #remover_peca(4)
-    #listar_pecas()
-
-    # vender_peca(8, "Genivaldo Borges")
-    # vender_peca(2, "Zé do Bar")
-    # listar_pecas_vendidas()
-
-    inserir_estilo("casual", [1,2,3], [4,5,6], [7,8,9])
-    inserir_estilo("esportivo", [1,2,3], [4,5,6], [7,8,9])
-    selecionar_estilo()
+    
+    listar_pecas()
+    print(pecas[2]["estilos"])
+    adicionar_peca_a_estilo(3, "casual")
+    adicionar_peca_a_estilo(3, "romântico")
+    print(pecas[2]["estilos"])
+    print(estilos["casual"]["peças"])
+    print(estilos["romântico"]["peças"])
 
 
 if __name__ == "__main__":
