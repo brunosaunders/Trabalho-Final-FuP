@@ -424,7 +424,7 @@ def print_lista_estilos(lista_estilos):
 def listar_por_estilo():
     lista_estilos_disponiveis = list(estilos.keys())
 
-    if len(lista_estilos_disponiveis == 0):
+    if len(lista_estilos_disponiveis) == 0:
         print("\nNenhum estilo foi cadastrado ainda :/ ")
         return
 
