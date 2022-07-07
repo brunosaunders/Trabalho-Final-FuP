@@ -196,12 +196,15 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     
-    adicionar_peca_a_estilo(pecas[0]["id"],"clássico")
-    adicionar_peca_a_estilo(pecas[1]["id"],"clássico")
-    adicionar_peca_a_estilo(pecas[2]["id"],"romântico")
-    adicionar_peca_a_estilo(pecas[3]["id"],"romântico")
+    # adicionar_peca_a_estilo(pecas[0]["id"],"clássico")
+    # adicionar_peca_a_estilo(pecas[1]["id"],"clássico")
+    # adicionar_peca_a_estilo(pecas[2]["id"],"romântico")
+    # adicionar_peca_a_estilo(pecas[3]["id"],"romântico")
+    listar_pecas()
     listar_por_estilo()
-    salvar_estilos()
+    # salvar_estilos()
+    carregar_estilos()
+    listar_por_estilo()
     # interface_usuario()
 
 

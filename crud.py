@@ -18,44 +18,15 @@ def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
     pecas.append(peca)
 
 
-def criar_estilo(nome_estilo):
+def criar_estilo(nome_estilo, contador=0):
     estilos[nome_estilo] = {
-        "contador": 0,
+        "contador": contador,
         "peças": [
             [], # Peças tipo Superior
             [], # Peças tipo Inferior
             []  # Peças tipo calçado
         ]
     }
-
-
-# Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
-# Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
-def salvar_estilos():
-    with open("estilos.txt", "w") as file:
-
-        # Header do arquivo
-        file.write("estilos,contador,[id_peças]\n")
-
-        for estilo in estilos:
-            linha = ""
-
-            linha += f"{estilo},"
-            linha += f"{estilos[estilo]['contador']},"
-            
-            # Acessa a matriz de peças no estilo
-            for i in range(len(estilos[estilo]["peças"])):
-                for j in range(len(estilos[estilo]["peças"][i])):
-
-                    # Pega o id de cada peça da matriz peças
-                    peca_id = estilos[estilo]["peças"][i][j]["id"]
-
-                    linha += f"{peca_id},"
-
-            # Remove a última vírgula à direita.
-            linha.strip(",")
-            # Escreve a linha no arquivo, saltando a linha.
-            file.write(linha + "\n")
 
 
 # -------------------- UPDATE -------------------- #
@@ -509,3 +480,66 @@ def listar_pecas_vendidas():
   
     else:
         print("\nPeças vendidas:\nNenhuma peça foi vendida até o momento >:(")
+
+
+
+# -------------------- ARQUIVOS -------------------- #
+
+
+# Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
+# Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
+def salvar_estilos():
+    with open("estilos.txt", "w") as file: # Fecha o arquivo ao sair da identação
+
+        # Header do arquivo
+        file.write("estilos,contador,[id_peças]\n")
+
+        for estilo in estilos:
+            linha = ""
+
+            linha += f"{estilo},"
+            linha += f"{estilos[estilo]['contador']},"
+            
+            # Acessa a matriz de peças no estilo
+            for i in range(len(estilos[estilo]["peças"])):
+                for j in range(len(estilos[estilo]["peças"][i])):
+
+                    # Pega o id de cada peça da matriz peças
+                    peca_id = estilos[estilo]["peças"][i][j]["id"]
+
+                    linha += f"{peca_id},"
+
+            # Remove a última vírgula à direita.
+            linha = linha.strip(",")
+
+            # Escreve a linha no arquivo, saltando a linha.
+            file.write(linha + "\n")
+
+
+# Lê o arquivo estilos.txt e carrega seus dados no dicionário estilos (variável global)
+# Carregar_estilos deve ser chamado após carregar_pecas
+def carregar_estilos():
+    with open("estilos.txt", "r") as file:
+
+        linhas = file.read().split("\n") # Cria lista ao separar a string por "enters"
+        linhas.pop() # Remove linha vazia
+
+        # Itera sobre cada linha do arquivo
+        for linha in linhas[1:]: # Não pega o Header
+            valores = linha.split(",") # Lista de valores
+
+            estilo = valores[0]
+            contador = valores[1]
+
+            # Cria o estilo no dicionário estilos com seu contador
+            criar_estilo(estilo, contador)
+
+            # Itera sobre o restante dos valores (ids de peças contidas no estilo)
+            for peca_id in valores[2:]:
+                
+                # id está como string, precisa ser convertido
+                peca_id = int(peca_id)
+
+                # Adiciona as peças ao estilo
+                # IMPORTANTE: as peças devem estar carregadas em pecas
+                adicionar_peca_a_estilo(peca_id, estilo)
