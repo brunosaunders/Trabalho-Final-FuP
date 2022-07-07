@@ -196,6 +196,7 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     
+    print(historico_pecas_vendidas)
     listar_pecas_vendidas()
     carregar_historico_pecas_vendidas()
     listar_pecas_vendidas()

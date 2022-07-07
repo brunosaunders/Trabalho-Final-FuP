@@ -491,15 +491,18 @@ def listar_pecas_doadas():
 
 
 def listar_pecas_vendidas():
-    if len(historico_pecas_vendidas) > 0:
-        print("\nPeças vendidas:")
-        print(f"{'Comprador':^35} {'Tipo':^10} {'Tamanho':^10} {'Padrão':^6} {'Cor':^13} {'Preço':^10}  {'Data de Venda'}  {'Data de Cadastro'}")
-        
-        for peca in historico_pecas_vendidas:
-            print(f"{peca['vendido_para']:35s}  {peca['tipo']:10s}  {peca['tamanho']:^6}  {peca['padrão']:10s}  {peca['cor']:8s} {peca['preço']:10}   {peca['data_venda']}     {peca['data_guarda_roupa']}")
-  
-    else:
-        print("\nPeças vendidas:\nNenhuma peça foi vendida até o momento >:(")
+
+    # Sem vendas
+    if len(historico_pecas_vendidas) == 0:
+        print("\nNenhuma peça foi vendida até o momento >:(")
+        return
+
+    print("\nPeças vendidas:")
+    print(f"{'Comprador':^35} {'Tipo':^10} {'Tamanho':^10} {'Padrão':^6} {'Cor':^13} {'Preço':^7} {'Data de Venda'}  {'Data de Cadastro'}")
+    
+    # Printa informações de cada venda
+    for peca in historico_pecas_vendidas:
+        print(f"{peca['vendido_para']:35s}  {peca['tipo']:10s}  {peca['tamanho']:^6}  {peca['padrão']:10s}  {peca['cor']:8s} {peca['preço']:7.2f}   {peca['data_venda']}      {peca['data_guarda_roupa']}")
 
 
 
@@ -604,10 +607,10 @@ def carregar_historico_pecas_vendidas():
             tamanho = valores[2]
             padrao = valores[3]
             cor = valores[4]
-            data_venda = valores[5]
-            data_guarda_roupa = valores[6]
+            data_venda = datetime.fromisoformat(valores[5]).date() # Transforma Str em um objeto datetime
+            data_guarda_roupa = datetime.fromisoformat(valores[6]).date()
             vendido_para = valores[7]
-            preco = valores[8]
+            preco = float(valores[8])
 
             # Cria peça para poder registrar a venda (mas não adiciona a peça ao guarda-roupa)
             peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_VENDA, preco)
