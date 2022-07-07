@@ -29,6 +29,35 @@ def criar_estilo(nome_estilo):
     }
 
 
+# Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
+# Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
+def salvar_estilos():
+    with open("estilos.txt", "w") as file:
+
+        # Header do arquivo
+        file.write("estilos,contador,[id_peças]\n")
+
+        for estilo in estilos:
+            linha = ""
+
+            linha += f"{estilo},"
+            linha += f"{estilos[estilo]['contador']},"
+            
+            # Acessa a matriz de peças no estilo
+            for i in range(len(estilos[estilo]["peças"])):
+                for j in range(len(estilos[estilo]["peças"][i])):
+
+                    # Pega o id de cada peça da matriz peças
+                    peca_id = estilos[estilo]["peças"][i][j]["id"]
+
+                    linha += f"{peca_id},"
+
+            # Remove a última vírgula à direita.
+            linha.strip(",")
+            # Escreve a linha no arquivo, saltando a linha.
+            file.write(linha + "\n")
+
+
 # -------------------- UPDATE -------------------- #
 
 

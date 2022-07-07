@@ -1,0 +1,3 @@
+estilos,contador,[id_peças]
+clássico,0,1,2,
+romântico,0,4,3,
