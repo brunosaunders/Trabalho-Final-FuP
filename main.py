@@ -186,7 +186,7 @@ def interface_usuario():
 
     
 def main():
-    inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_DOACAO, 0.0)
+    inserir_peca(TIPO_CALCADO, TAMANHO_M, PADRAO_MASCULINO, COR_CINZA, date(2022, 6, 22), SITUACAO_VENDA, 121.7)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_CALCADO, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
@@ -196,15 +196,9 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     
-    # adicionar_peca_a_estilo(pecas[0]["id"],"clássico")
-    # adicionar_peca_a_estilo(pecas[1]["id"],"clássico")
-    # adicionar_peca_a_estilo(pecas[2]["id"],"romântico")
-    # adicionar_peca_a_estilo(pecas[3]["id"],"romântico")
-    listar_pecas()
-    listar_por_estilo()
-    # salvar_estilos()
-    carregar_estilos()
-    listar_por_estilo()
+    listar_pecas_vendidas()
+    carregar_historico_pecas_vendidas()
+    listar_pecas_vendidas()
     # interface_usuario()
 
 
