@@ -424,35 +424,36 @@ def print_lista_estilos(lista_estilos):
 def listar_por_estilo():
     lista_estilos_disponiveis = list(estilos.keys())
 
-    if len(lista_estilos_disponiveis) != 0:
-        lista_contadores = []
-        lista_estilos_organizada = [] 
+    if len(lista_estilos_disponiveis == 0):
+        print("\nNenhum estilo foi cadastrado ainda :/ ")
+        return
 
-        # Estrutura de repetição para pegar cada estilo disponível e adicionar em uma lista os contadores de cada estilo
-        for nome in lista_estilos_disponiveis: 
-            lista_contadores.append(estilos[nome]["contador"])
+    lista_contadores = []
+    lista_estilos_organizada = [] 
 
-        # Com o método de lista, organiza os contadores em ordem crescente
-        lista_contadores_crescente = sorted(lista_contadores) 
+    # Estrutura de repetição para pegar cada estilo disponível e adicionar em uma lista os contadores de cada estilo
+    for nome in lista_estilos_disponiveis: 
+        lista_contadores.append(estilos[nome]["contador"])
 
-        # Estrutura de repetição para pôr em uma lista organizada cada estilo de acordo com a ordem crescente do contador
-        for j in lista_contadores_crescente:
-            for nome in lista_estilos_disponiveis:
-                if estilos[nome]["contador"] == j:
+    # Com o método de lista, organiza os contadores em ordem crescente
+    lista_contadores_crescente = sorted(lista_contadores) 
 
-                    # Se um estilo não estiver ainda na lista organizada ele é posto nela 
-                    if estilos[nome] not in lista_estilos_organizada:
-                        lista_estilos_organizada.append(nome) 
+    # Estrutura de repetição para pôr em uma lista organizada cada estilo de acordo com a ordem crescente do contador
+    for j in lista_contadores_crescente:
+        for nome in lista_estilos_disponiveis:
+            if estilos[nome]["contador"] == j:
 
-        lista_estilos_sem_rep = []
-        
-        for estilo in (lista_estilos_organizada):
-            if estilo not in lista_estilos_sem_rep:
-                lista_estilos_sem_rep.append(estilo)
+                # Se um estilo não estiver ainda na lista organizada ele é posto nela 
+                if estilos[nome] not in lista_estilos_organizada:
+                    lista_estilos_organizada.append(nome) 
 
-        print_lista_estilos(lista_estilos_sem_rep)
-    return
+    lista_estilos_sem_rep = []
     
+    for estilo in (lista_estilos_organizada):
+        if estilo not in lista_estilos_sem_rep:
+            lista_estilos_sem_rep.append(estilo)
+
+    print_lista_estilos(lista_estilos_sem_rep)
 
 
 # Lista todas as peças doadas
