@@ -442,6 +442,7 @@ def print_lista_estilos(lista_estilos):
 
 # Função para listar as peças por estilo.
 def listar_por_estilo():
+    # Forma a lista de estilos disponíveis 
     lista_estilos_disponiveis = list(estilos.keys())
 
     if len(lista_estilos_disponiveis) == 0:

@@ -10,6 +10,103 @@ from crud import *
 
 # Cadastrar peça - Israel
 def comando1():
+    lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
+    lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
+    lista_padrao = [PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
+    lista_tamanho = [TAMANHO_G,TAMANHO_M,TAMANHO_P]
+    lista_situacao = [SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA]
+    lista_estilos = list(estilos.keys())
+
+    print("Ponha o tipo da peça: 'calçado', 'inferior' ou 'superior'")
+    while True:
+        try:
+            tipo = input()
+            tipo_tratado = tipo.lower()
+            if tipo_tratado in lista_tipo:
+                break
+            else:
+                print("Ponha o tipo 'calçado', 'inferior' ou 'superior'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    print("Ponha o tamanho da peça: 'p', 'm' ou 'g'")
+    while True:
+        try:
+            tamanho = input()
+            tamanho_tratado = tamanho.lower()
+            if tamanho_tratado in lista_tamanho:               
+                break
+            else:
+                print("Ponha o tamanho: 'p', 'm' ou 'g'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    print("Ponha o padrão da peça: 'feminino', 'masculino' ou 'unissex'")    
+    while True:
+        try:
+            padrao = input()
+            padrao_tratado = padrão.lower()
+            if padrao_tratado in lista_padrao:
+                break
+            else:
+                print("Ponha o padrão: 'feminino', 'masculino' ou 'unissex'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+   
+    print("Ponha a cor da peça ")
+    while True:
+        try:
+            cor = input()
+            cor_tratado = padrão.lower()
+            if cor_tratado in lista_cores:
+                break
+            else:
+                print("Ponha a cor: 'vermelho', 'azul', 'amarelo', 'rosa', 'branco', 'cinza', 'verde', 'preto', 'roxo', 'violeta' ou 'laranja' ")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    print("Ponha a situação da peça: 'venda', 'doação' ou 'ficar'") 
+    while True:
+        try:
+            situacao = input()
+            situacao_tratado = padrão.lower()
+            if situacao_tratado in lista_situacao:
+                break
+            else:
+                print("Ponha a situação: 'venda', 'doação' ou 'ficar'")   
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    if situacao_tratado == "venda":
+        print("Ponha o preço da peça:")
+        while True:
+            try:
+                preco_novo = float(input()) 
+                break
+            except ValueError:
+                print("Ponha um número real para representar o preço:")
+    
+    print("Ponha os estilos em que a peça está inserida: ")
+    while True:
+        
+
+    
+    if len(pecas) != 0:
+        id_novo = pecas[len(pecas)-1]["id"] + 1 
+    else:
+        id_novo = 1  
+    pecas = {
+        "id": id_novo,
+        "tipo": tipo_tratado,
+        "tamanho": tamanho_tratado,
+        "padrão": padrao_tratado,
+        "cor": cor_tratado,
+        "data": date.today(),
+        "situação": situacao_tratado,
+        "preço": preco_novo
+        "estilos": []
+    }
+
     return
 
 
