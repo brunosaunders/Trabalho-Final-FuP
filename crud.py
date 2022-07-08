@@ -6,21 +6,29 @@ from utils import *
 # -------------------- CREATE -------------------- #
 
 
-def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
-    # Integridade das peças é garantida na interface do usuário.
-
-    id = len(pecas) + 1
+# Cria um dicionário peça e o retorna
+def criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco):
     peca = {
         "id": id, "tipo": tipo, "tamanho": tamanho,
         "padrão": padrao, "cor": cor, "data": data, 
         "situação": situacao, "preço": preco, "estilos": []
     }
-    pecas.append(peca)
+    return peca
 
 
-def criar_estilo(nome_estilo):
+# Responsável por REGISTRAR uma peça no guarda-roupa
+def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
+    # Integridade das peças é garantida na interface do usuário.
+
+    id = len(pecas) + 1
+
+    peca = criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
+    pecas.append(peca) # Registra a peça em pecas
+
+
+def criar_estilo(nome_estilo, contador=0):
     estilos[nome_estilo] = {
-        "contador": 0,
+        "contador": contador,
         "peças": [
             [], # Peças tipo Superior
             [], # Peças tipo Inferior
@@ -120,6 +128,22 @@ def remover_peca(id):
             print(f"Atenção: Estilo {nome_estilo} foi removido por ausência de peças.")
 
 
+# adiciona informações da peça doada ao historico_pecas_vendidas.
+def registrar_peca_vendida(peca:dict, vender_para, data_venda=datetime.today().date()):
+    # adiciona informações da peça doada ao historico_pecas_vendidas.
+    historico_pecas_vendidas.append({
+        "id": id,
+        "tipo": peca["tipo"],
+        "tamanho": peca["tamanho"],
+        "padrão": peca["padrão"],
+        "cor": peca["cor"],
+        "data_venda": data_venda, # Data de hoje no formato YYYY-MM-DD.
+        "data_guarda_roupa": peca["data"],
+        "vendido_para": vender_para,
+        "preço": peca["preço"]
+    })
+
+
 # vender_para = nome do comprador.
 # vende_peca remove a peça do guarda roupa.
 def vender_peca(id, vender_para):
@@ -128,28 +152,14 @@ def vender_peca(id, vender_para):
         raise Exception("Peça não disponível para venda. Tente alterar a situação da peça antes em 'Alterar peça'.")
     
     # adiciona informações da peça doada ao historico_pecas_vendidas.
-    historico_pecas_vendidas.append({
-        "id": id,
-        "tipo": peca["tipo"],
-        "tamanho": peca["tamanho"],
-        "padrão": peca["padrão"],
-        "cor": peca["cor"],
-        "data_venda": datetime.datetime.today().date(), # Data de hoje no formato YYYY-MM-DD.
-        "data_guarda_roupa": peca["data"],
-        "vendido_para": vender_para,
-        "preço": peca["preço"]
-    })
+    registrar_peca_vendida(peca, vender_para)
 
     # remove peça do guarda roupa (pecas).
     remover_peca(id)
 
-# doar_para = nome da instituição ou pessoa que recebeu a doação.
-# doar_peca remove a peça do guarda roupa.
-def doar_peca(id, doar_para):
-    peca = retorna_peca_por_id(id) # Impede a execução se o id não for encontrado.
-    if peca["situação"] != SITUACAO_DOACAO:
-        raise Exception("Peça não disponível para doação. Tente alterar a situação da peça antes em 'Alterar peça'.")
-    
+
+def registrar_peca_doada(peca:dict, doar_para):
+
     # adiciona informações da peça doada ao historico_pecas_doadas.
     historico_pecas_doadas.append({
         "id": id,
@@ -161,6 +171,16 @@ def doar_peca(id, doar_para):
         "data_guarda_roupa": peca["data"],
         "doado_para": doar_para
     })
+
+# doar_para = nome da instituição ou pessoa que recebeu a doação.
+# doar_peca remove a peça do guarda roupa.
+def doar_peca(id, doar_para):
+    peca = retorna_peca_por_id(id) # Impede a execução se o id não for encontrado.
+    if peca["situação"] != SITUACAO_DOACAO:
+        raise Exception("Peça não disponível para doação. Tente alterar a situação da peça antes em 'Alterar peça'.")
+    
+    # adiciona informações da peça doada ao historico_pecas_doadas.
+    registrar_peca_doada(peca, doar_para)
 
     # remove peça do guarda roupa (pecas)
     remover_peca(id)
@@ -405,46 +425,55 @@ def listar_pecas_para_doacao():
 
 # Função para listar as peças organizadas por estilo
 def print_lista_estilos(lista_estilos):
+
     #Estrutura de repetição para percorrer cada elemento da lista de estilos organizada
-    for nome_estilo in lista_estilos: 
+    for nome_estilo in lista_estilos:
+
         # Imprime o estilo das peças que serão impressas 
-        print("  Peças do Estilo ",nome_estilo)
+        print("\nPeças do estilo ",nome_estilo)
         print("  Id     Tipo    Tamanho    Padrão       Cor        Data      Situação     Preço")
+
         #  Estrutura de repetição para percorrer cada linha da matriz peças
         for j in range(len(estilos[nome_estilo]["peças"])):
             if len(estilos[nome_estilo]["peças"][j]) != 0:
                 for i in range(len(estilos[nome_estilo]["peças"][j])):
                     print_peca(estilos[nome_estilo]["peças"][j][i])       
-        print(" ")
-        print(" ")
 
 
 # Função para listar as peças por estilo.
 def listar_por_estilo():
-    lista_estilos_disponiveis = list(estilos.keys()) 
-    if len(lista_estilos_disponiveis) != 0:
-        lista_contadores = []
-        lista_estilos_organizada = [] 
-        # Estrutura de repetição para pegar cada estilo disponível e adicionar em uma lista os contadores de cada estilo
-        for nome in lista_estilos_disponiveis: 
-            lista_contadores.append(estilos[nome]["contador"])
-        # Com o método de lista, organiza os contadores em ordem crescente
-        lista_contadores_crescente = sorted(lista_contadores) 
-        # Estrutura de repetição para pôr em uma lista organizada cada estilo de acordo com a ordem crescente do contador
-        for j in lista_contadores_crescente:
-            for nome in lista_estilos_disponiveis:
-                if estilos[nome]["contador"] == j:
-                    # Se um estilo não estiver ainda na lista organizada ele é posto nela 
-                    if estilos[nome] not in lista_estilos_organizada:
-                        lista_estilos_organizada.append(nome) 
-        lista_estilos_sem_rep = []
-        for estilo in (lista_estilos_organizada):
-            if estilo not in lista_estilos_sem_rep:
-                lista_estilos_sem_rep.append(estilo)
+    lista_estilos_disponiveis = list(estilos.keys())
 
-        print_lista_estilos(lista_estilos_sem_rep)
-    return
+    if len(lista_estilos_disponiveis) == 0:
+        print("\nNenhum estilo foi cadastrado ainda :/ ")
+        return
+
+    lista_contadores = []
+    lista_estilos_organizada = [] 
+
+    # Estrutura de repetição para pegar cada estilo disponível e adicionar em uma lista os contadores de cada estilo
+    for nome in lista_estilos_disponiveis: 
+        lista_contadores.append(estilos[nome]["contador"])
+
+    # Com o método de lista, organiza os contadores em ordem crescente
+    lista_contadores_crescente = sorted(lista_contadores) 
+
+    # Estrutura de repetição para pôr em uma lista organizada cada estilo de acordo com a ordem crescente do contador
+    for j in lista_contadores_crescente:
+        for nome in lista_estilos_disponiveis:
+            if estilos[nome]["contador"] == j:
+
+                # Se um estilo não estiver ainda na lista organizada ele é posto nela 
+                if estilos[nome] not in lista_estilos_organizada:
+                    lista_estilos_organizada.append(nome) 
+
+    lista_estilos_sem_rep = []
     
+    for estilo in (lista_estilos_organizada):
+        if estilo not in lista_estilos_sem_rep:
+            lista_estilos_sem_rep.append(estilo)
+
+    print_lista_estilos(lista_estilos_sem_rep)
 
 
 # Lista todas as peças doadas
@@ -462,12 +491,131 @@ def listar_pecas_doadas():
 
 
 def listar_pecas_vendidas():
-    if len(historico_pecas_vendidas) > 0:
-        print("\nPeças vendidas:")
-        print(f"{'Comprador':^35} {'Tipo':^10} {'Tamanho':^10} {'Padrão':^6} {'Cor':^13} {'Preço':^10}  {'Data de Venda'}  {'Data de Cadastro'}")
-        
-        for peca in historico_pecas_vendidas:
-            print(f"{peca['vendido_para']:35s}  {peca['tipo']:10s}  {peca['tamanho']:^6}  {peca['padrão']:10s}  {peca['cor']:8s} {peca['preço']:10}   {peca['data_venda']}     {peca['data_guarda_roupa']}")
-  
-    else:
-        print("\nPeças vendidas:\nNenhuma peça foi vendida até o momento >:(")
+
+    # Sem vendas
+    if len(historico_pecas_vendidas) == 0:
+        print("\nNenhuma peça foi vendida até o momento >:(")
+        return
+
+    print("\nPeças vendidas:")
+    print(f"{'Comprador':^35} {'Tipo':^10} {'Tamanho':^10} {'Padrão':^6} {'Cor':^13} {'Preço':^7} {'Data de Venda'}  {'Data de Cadastro'}")
+    
+    # Printa informações de cada venda
+    for peca in historico_pecas_vendidas:
+        print(f"{peca['vendido_para']:35s}  {peca['tipo']:10s}  {peca['tamanho']:^6}  {peca['padrão']:10s}  {peca['cor']:8s} {peca['preço']:7.2f}   {peca['data_venda']}      {peca['data_guarda_roupa']}")
+
+
+
+# -------------------- ARQUIVOS -------------------- #
+
+
+# Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
+# Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
+def salvar_estilos():
+    with open("estilos.txt", "w") as file: # Fecha o arquivo ao sair da identação
+
+        # Header do arquivo
+        file.write("estilos,contador,[id_peças]\n")
+
+        for estilo in estilos:
+            linha = ""
+
+            linha += f"{estilo},"
+            linha += f"{estilos[estilo]['contador']},"
+            
+            # Acessa a matriz de peças no estilo
+            for i in range(len(estilos[estilo]["peças"])):
+                for j in range(len(estilos[estilo]["peças"][i])):
+
+                    # Pega o id de cada peça da matriz peças
+                    peca_id = estilos[estilo]["peças"][i][j]["id"]
+
+                    linha += f"{peca_id},"
+
+            # Remove a última vírgula à direita.
+            linha = linha.strip(",")
+
+            # Escreve a linha no arquivo, saltando a linha.
+            file.write(linha + "\n")
+
+
+# Lê o arquivo estilos.txt e carrega seus dados no dicionário estilos (variável global)
+# Carregar_estilos deve ser chamado após carregar_pecas
+def carregar_estilos():
+    with open("estilos.txt", "r") as file:
+
+        linhas = file.read().split("\n") # Cria lista ao separar a string por "enters"
+        linhas.pop() # Remove linha vazia
+
+        # Itera sobre cada linha do arquivo
+        for linha in linhas[1:]: # Não pega o Header
+            valores = linha.split(",") # Lista de valores
+
+            estilo = valores[0]
+            contador = valores[1]
+
+            # Cria o estilo no dicionário estilos com seu contador
+            criar_estilo(estilo, contador)
+
+            # Itera sobre o restante dos valores (ids de peças contidas no estilo)
+            for peca_id in valores[2:]:
+                
+                # id está como string, precisa ser convertido
+                peca_id = int(peca_id)
+
+                # Adiciona as peças ao estilo
+                # IMPORTANTE: as peças devem estar carregadas em pecas
+                adicionar_peca_a_estilo(peca_id, estilo)
+            
+
+def salvar_historico_pecas_vendidas():
+
+    # Abre o arquivo e fecha automaticamente
+    with open("historico_vendas.txt", "w") as file:
+
+        # Header
+        file.write("id,tipo,tamanho,padrão,cor,data_doação,data_guarda_roupa,vendido_para,preço\n")
+
+        # Salva cada venda ao arquivo
+        for venda in historico_pecas_vendidas:
+            linha = ""
+
+            # itera sobre as chaves do dicionário de venda para adicionar os valores de cada atributo da venda
+            for atributo in venda:
+                linha += f"{venda[atributo]},"
+            
+            linha = linha.strip(",") # Remove a última vírgula da linha
+
+            file.write(linha + "\n") # Escreve os dados no arquivo e salta uma linha
+
+
+def carregar_historico_pecas_vendidas():
+
+    with open("historico_vendas.txt", "r") as file:
+
+        # Lê o arquivo e retorna uma lista com todas as linhas de dados
+        linhas = file.read().split("\n")[1:] # [1:] para descartar a primeira linha (Header)
+        linhas.pop() # Eliminar linha vazia no final
+
+        for linha in linhas:
+
+            valores = linha.split(",")
+            
+            # Guarda os valores da venda em variáveis explícitas
+            id = int(valores[0])
+            tipo = valores[1]
+            tamanho = valores[2]
+            padrao = valores[3]
+            cor = valores[4]
+            data_venda = datetime.fromisoformat(valores[5]).date() # Transforma Str em um objeto datetime
+            data_guarda_roupa = datetime.fromisoformat(valores[6]).date()
+            vendido_para = valores[7]
+            preco = float(valores[8])
+
+            # Cria peça para poder registrar a venda (mas não adiciona a peça ao guarda-roupa)
+            peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_VENDA, preco)
+
+            registrar_peca_vendida(peca, vendido_para, data_venda)
+
+
+    return
