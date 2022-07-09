@@ -201,9 +201,9 @@ def print_pecas_filtradas(pecas_filtradas:list):
 # Lista todas as peças.
 def listar_pecas():
     if len(pecas) == 0:
-        print("Nenhum peça foi cadastrada ainda.")
+        print("\nNenhuma peça foi cadastrada ainda.")
         return
-        
+
     print("\nTodas as peças:")
     print_pecas_filtradas(pecas)
 
@@ -426,26 +426,32 @@ def listar_pecas_para_doacao():
     print('Listando peças para doação:')
     print_pecas_filtradas(lista_doacao_ordenada)
 
+# Printa informações da peça juntamente com seu estilo
+def print_peca_em_estilo(nome_estilo, peca):
+    print(f"{nome_estilo:15s} | {peca['id']:04d} |  {peca['tipo']:8s}   |    {peca['tamanho']}    |  {peca['padrão']:9s}  |  {peca['cor']:8s} | {peca['data']} |   {peca['situação']:6s} | {peca['preço']:7.2f}")
+
 
 # Função para listar as peças organizadas por estilo
 def print_lista_estilos(lista_estilos):
 
+    # Header
+    print(f"{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
+
     #Estrutura de repetição para percorrer cada elemento da lista de estilos organizada
     for nome_estilo in lista_estilos:
-
-        # Imprime o estilo das peças que serão impressas 
-        print("\nPeças do estilo ",nome_estilo)
-        print("  Id     Tipo    Tamanho    Padrão       Cor        Data      Situação     Preço")
 
         #  Estrutura de repetição para percorrer cada linha da matriz peças
         for j in range(len(estilos[nome_estilo]["peças"])):
             if len(estilos[nome_estilo]["peças"][j]) != 0:
                 for i in range(len(estilos[nome_estilo]["peças"][j])):
-                    print_peca(estilos[nome_estilo]["peças"][j][i])       
+                    peca = estilos[nome_estilo]["peças"][j][i]
+
+                    # Printa informações de cada peça em um dado estilo
+                    print_peca_em_estilo(nome_estilo, peca)       
 
 
 # Função para listar as peças por estilo.
-def listar_por_estilo():
+def listar_estilos():
     lista_estilos_disponiveis = list(estilos.keys())
 
     if len(lista_estilos_disponiveis) == 0:
