@@ -435,7 +435,7 @@ def print_peca_em_estilo(nome_estilo, peca):
 def print_lista_estilos(lista_estilos):
 
     # Header
-    print(f"{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
+    print(f"\n{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
 
     #Estrutura de repetição para percorrer cada elemento da lista de estilos organizada
     for nome_estilo in lista_estilos:

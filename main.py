@@ -1,3 +1,4 @@
+from cmath import e
 from datetime import date
 from models import *
 from crud import *
@@ -45,7 +46,60 @@ def comando7():
 
 # Listar peças por tamanho e padrão - Bruno
 def comando8():
-    return
+
+    # Ordenando os comandos para chamá-los com o input do usuário
+    padrao = ["", PADRAO_FEMININO, PADRAO_MASCULINO, PADRAO_UNISSEX]
+    tamanho = ["", TAMANHO_P, TAMANHO_M, TAMANHO_G]
+
+    while True:
+        print("Para filtar por tamanho digite: ")
+        print("1 -> Tamanho P")
+        print("2 -> Tamanho M")
+        print("3 -> Tamanho G")
+        print("0 -> Não filtrar por tamanho")
+
+        try:
+            resposta_tamanho = int(input("\nSeu comando: "))
+        except:
+            # Usuário digitou algo que não pode ser convertido pra int
+            print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+            continue
+        
+        # Usuário digitou um número válido
+        if resposta_tamanho in [0,1,2,3]:
+            break
+
+        # Usuário digitou um número fora do intervalo
+        print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+    
+    while True:
+        print("Para filtrar por padrão digite: ")
+        print("1 -> Padrão Feminino")
+        print("2 -> Padrão Masculino")
+        print("3 -> Padrão Unissex")
+        print("0 -> Não filtrar por padrão")
+
+        try:
+            resposta_padrao = int(input("\nSeu comando: "))
+        except:
+            # Usuário digitou algo que não pode ser convertido pra ints
+            print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+            continue
+        
+        # Usuário digitou um número válido
+        if resposta_padrao in [0,1,2,3]:
+            break
+
+        # Usuário digitou um número fora do intervalo
+        print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+    
+    # Com as respostas, chama listar_pecas_tamanho_padrao para expor o resultado ao usuário
+    try:
+        listar_pecas_tamanho_padrao(tamanho[resposta_tamanho], padrao[resposta_padrao])
+
+    # Se algo der errado, printa a mensagem de erro
+    except Exception as e:
+        print(f"\n{e}")
 
 
 # Listar estilos - Bruno
@@ -181,7 +235,7 @@ def interface_usuario():
         else:
             print("ATENÇÃO: Digite apenas um número do menu")
         
-        input("Digite qualquer coisa para continuar: ")
+        input("\nDigite qualquer coisa para continuar: ")
 
     
 def main():
@@ -195,8 +249,12 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     
-    adicionar_peca_a_estilo(1, "sensual")
+    adicionar_peca_a_estilo(1, "praia")
     adicionar_peca_a_estilo(3, "casual")
+    adicionar_peca_a_estilo(3, "esportivo")
+    adicionar_peca_a_estilo(5, "praia")
+    adicionar_peca_a_estilo(4, "praia")
+    adicionar_peca_a_estilo(4, "esportivo")
     adicionar_peca_a_estilo(3, "esportivo")
     interface_usuario()
 
