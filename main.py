@@ -1,3 +1,4 @@
+from cmath import e
 from datetime import date
 from models import *
 from crud import *
@@ -40,16 +41,70 @@ def comando6():
 
 # Listar todas as peças - Bruno
 def comando7():
-    return
+    listar_pecas()
 
 
 # Listar peças por tamanho e padrão - Bruno
 def comando8():
-    return
+
+    # Ordenando os comandos para chamá-los com o input do usuário
+    padrao = ["", PADRAO_FEMININO, PADRAO_MASCULINO, PADRAO_UNISSEX]
+    tamanho = ["", TAMANHO_P, TAMANHO_M, TAMANHO_G]
+
+    while True:
+        print("Para filtar por tamanho digite: ")
+        print("1 -> Tamanho P")
+        print("2 -> Tamanho M")
+        print("3 -> Tamanho G")
+        print("0 -> Não filtrar por tamanho")
+
+        try:
+            resposta_tamanho = int(input("\nSeu comando: "))
+        except:
+            # Usuário digitou algo que não pode ser convertido pra int
+            print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+            continue
+        
+        # Usuário digitou um número válido
+        if resposta_tamanho in [0,1,2,3]:
+            break
+
+        # Usuário digitou um número fora do intervalo
+        print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+    
+    while True:
+        print("Para filtrar por padrão digite: ")
+        print("1 -> Padrão Feminino")
+        print("2 -> Padrão Masculino")
+        print("3 -> Padrão Unissex")
+        print("0 -> Não filtrar por padrão")
+
+        try:
+            resposta_padrao = int(input("\nSeu comando: "))
+        except:
+            # Usuário digitou algo que não pode ser convertido pra ints
+            print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+            continue
+        
+        # Usuário digitou um número válido
+        if resposta_padrao in [0,1,2,3]:
+            break
+
+        # Usuário digitou um número fora do intervalo
+        print("\nAtenção: Insira apenas 0,1,2 ou 3.")
+    
+    # Com as respostas, chama listar_pecas_tamanho_padrao para expor o resultado ao usuário
+    try:
+        listar_pecas_tamanho_padrao(tamanho[resposta_tamanho], padrao[resposta_padrao])
+
+    # Se algo der errado, printa a mensagem de erro
+    except Exception as e:
+        print(f"\n{e}")
 
 
 # Listar estilos - Bruno
 def comando9():
+    listar_estilos()
     return
 
 
@@ -104,26 +159,23 @@ def comando0():
 
 
 def menu_comandos():
+    # Guarda comandos em string para particioná-la e iterar sobre os comandos
+    comandos = "Cadastrar uma peça|Alterar uma peça|Remover uma peça|Cadastrar um estilo|Alterar um estilo|Remover um estilo|Listar todas as peças|Listar peças por tamanho e padrão|Listar estilos|Pesquisar estilo por nome|Listar peças para venda|Listar peças para doação|Vender uma peça|Doar uma peça|Listar peças vendidas|Listar peças doadas|Salvar alterações|Carregar arquivos|Finalizar programa"
+    comandos = comandos.split('|') # Transforma a string em uma lista de strings
+
+    # Número de linhas de comandos printadas
+    linhas_comandos = len(comandos)//3
+
     print("\nDigite: ")
-    print(" 1 --> Cadastrar uma peça")
-    print(" 2 --> Alterar uma peça")
-    print(" 3 --> Remover uma peça")
-    print(" 4 --> Cadastrar um estilo")
-    print(" 5 --> Alterar um estilo")
-    print(" 6 --> Remover um estilo")
-    print(" 7 --> Listar todas as peças")
-    print(" 8 --> Listar peças por tamanho e padrão")
-    print(" 9 --> Listar estilos")
-    print("10 --> Pesquisar estilo por nome")
-    print("11 --> Listar peças para venda")
-    print("12 --> Listar peças para doação")
-    print("13 --> Vender uma peça")
-    print("14 --> Doar uma peça")
-    print("15 --> Listar peças vendidas")
-    print("16 --> Listar peças doadas")
-    print("17 --> Salvar alterações")
-    print("18 --> Carregar arquivos")
-    print(" 0 --> Finalizar programa")
+    for i in range(linhas_comandos):
+
+        # Se primeira linha, printar 4 colunas de comandos
+        if i == 0:
+            print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {(linhas_comandos*2)+i+1:2d} --> {comandos[(linhas_comandos*2)+i]:24s} | {0} --> {comandos[(linhas_comandos*3)+i]}")
+            continue
+
+        # Printar 3 colunas de comandos
+        print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {(linhas_comandos*2)+i+1:2d} --> {comandos[(linhas_comandos*2)+i]:24s} |")
     
 
 def interface_usuario():
@@ -178,11 +230,12 @@ def interface_usuario():
             comando18()
         elif comando == 0:
             comando0()
+            print("\nGuarda-Roupa Virtual encerrado")
+            return
         else:
             print("ATENÇÃO: Digite apenas um número do menu")
         
-    # Saiu do while, acabou o programa
-    print("\nGuarda-Roupa Virtual encerrado")
+        input("\nDigite qualquer coisa para continuar: ")
 
     
 def main():
@@ -196,12 +249,14 @@ def main():
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     
-    print(historico_pecas_vendidas)
-    listar_pecas_vendidas()
-    carregar_historico_pecas_vendidas()
-    listar_pecas_vendidas()
-    # interface_usuario()
-
+    adicionar_peca_a_estilo(1, "praia")
+    adicionar_peca_a_estilo(3, "casual")
+    adicionar_peca_a_estilo(3, "esportivo")
+    adicionar_peca_a_estilo(5, "praia")
+    adicionar_peca_a_estilo(4, "praia")
+    adicionar_peca_a_estilo(4, "esportivo")
+    adicionar_peca_a_estilo(3, "esportivo")
+    interface_usuario()
 
 if __name__ == "__main__":
     main()
