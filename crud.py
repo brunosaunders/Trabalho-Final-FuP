@@ -192,7 +192,7 @@ def doar_peca(id, doar_para):
 # Printa todas as peças passadas em uma lista, em formato organizado e com cabeçalho.
 def print_pecas_filtradas(pecas_filtradas:list):
     # Header
-    print("  Id     Tipo    Tamanho    Padrão       Cor        Data      Situação     Preço")
+    print(" Id  |   Tipo   | Tamanho |  Padrão   |    Cor     |    Data     | Situação |   Preço")
 
     for peca in pecas_filtradas:
         print_peca(peca)
@@ -210,7 +210,7 @@ def listar_pecas():
 
 # Printa uma única peça.
 def print_peca(peca:dict):
-    print(f"{peca['id']:4d}   {peca['tipo']:8s}     {peca['tamanho']}     {peca['padrão']:9s}    {peca['cor']:8s}  {peca['data']}     {peca['situação']:6s}   {peca['preço']:7.2f}")
+    print(f"{peca['id']:04d} | {peca['tipo']:8s} |    {peca['tamanho']}    | {peca['padrão']:9s} |   {peca['cor']:8s} | {peca['data']}  |   {peca['situação']:6s} |  {peca['preço']:7.2f}")
 
 
 # Lista peças de mesmo tamanho.

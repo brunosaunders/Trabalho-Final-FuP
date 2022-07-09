@@ -198,7 +198,7 @@ def main():
     adicionar_peca_a_estilo(1, "sensual")
     adicionar_peca_a_estilo(3, "casual")
     adicionar_peca_a_estilo(3, "esportivo")
-    listar_estilos()
+    interface_usuario()
 
 if __name__ == "__main__":
     main()
