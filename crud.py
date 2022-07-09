@@ -200,6 +200,10 @@ def print_pecas_filtradas(pecas_filtradas:list):
 
 # Lista todas as peças.
 def listar_pecas():
+    if len(pecas) == 0:
+        print("Nenhum peça foi cadastrada ainda.")
+        return
+        
     print("\nTodas as peças:")
     print_pecas_filtradas(pecas)
 
