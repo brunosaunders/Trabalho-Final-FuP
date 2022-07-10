@@ -44,7 +44,7 @@ pecas = [
         "id": 0,
         "tipo": "calçado",
         "tamanho": "p",
-        "padrão": "unissex,
+        "padrão": "unissex",
         "cor": "amarelo",
         "data": date(),
         "situação": "venda",

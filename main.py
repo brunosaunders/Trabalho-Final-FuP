@@ -11,11 +11,153 @@ from crud import *
 
 # Cadastrar peça - Israel
 def comando1():
-    return
+    # Definindo listas das variáveis já disponíveis
+    lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
+    lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
+    lista_padrao = [PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
+    lista_tamanho = [TAMANHO_G,TAMANHO_M,TAMANHO_P]
+    lista_situacao = [SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA]
+    lista_estilos = list(estilos.keys())
+    estilos_peca_nova = []
+    lista_num_estilos = []
+
+    # Cadastro do tipo da peça
+    print("Ponha o tipo da peça: 'calçado', 'inferior' ou 'superior'")
+    while True:
+        try:
+            tipo = input()
+            tipo_tratado = tipo.lower()
+            if tipo_tratado in lista_tipo:
+                break
+            else:
+                print("Ponha o tipo 'calçado', 'inferior' ou 'superior'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    # Cadastro do tamanho da peça
+    print("\nPonha o tamanho da peça: 'p', 'm' ou 'g'")
+    while True:
+        try:
+            tamanho = input()
+            tamanho_tratado = tamanho.lower()
+            if tamanho_tratado in lista_tamanho:               
+                break
+            else:
+                print("Ponha o tamanho: 'p', 'm' ou 'g'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    # Cadastro do padrão da peça
+    print("\nPonha o padrão da peça: 'feminino', 'masculino' ou 'unissex'")    
+    while True:
+        try:
+            padrao = input()
+            padrao_tratado = padrao.lower()
+            if padrao_tratado in lista_padrao:
+                break
+            else:
+                print("Ponha o padrão: 'feminino', 'masculino' ou 'unissex'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+    
+    # Cadastro da cor da peça
+    print("\nPonha a cor da peça ")
+    while True:
+        try:
+            cor = input()
+            cor_tratado = cor.lower()
+            if cor_tratado in lista_cores:
+                break
+            else:
+                print("Ponha a cor: 'vermelho', 'azul', 'amarelo', 'rosa', 'branco', 'cinza', 'verde', 'preto', 'roxo', 'violeta' ou 'laranja' ")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    #Cadastro da situação da peça
+    print("\nPonha a situação da peça: 'venda', 'doação' ou 'ficar'") 
+    while True:
+        try:
+            situacao = input()
+            situacao_tratado = situacao.lower()
+            if situacao_tratado in lista_situacao:
+                break
+            else:
+                print("Ponha a situação: 'venda', 'doação' ou 'ficar'")   
+        except ValueError: 
+            print("Ponha apenas letras")
+    # Se a situação da peça for para venda, perguntar o preço da peça
+    if situacao_tratado == "venda":
+        print("\nPonha o preço da peça:")
+        while True:
+            try:
+                preco_novo = float(input()) 
+                break
+            except ValueError:
+                print("Ponha um número real para representar o preço:")
+    
+    #Cadastro dos estilos da peça
+    print("\nQuantos estilos a peça está inserida: ")
+    while True:
+        try:
+            n = int(input())
+            if n >= 0:
+                break 
+            else:
+                print("Ponha um número maior que ou igual a zero:")
+        except:
+            print("Ponha um número:")
+    for j in range(n):
+        for i in range(len(lista_estilos)):
+            print("Digite %d para esolher o estilo "%(i+1), lista_estilos[i])
+        print("digite 0 se a peça não faz parte desses estilos")
+        while True:
+            try:
+                num_estilo =int(input())
+                for i in range(len(lista_estilos)):
+                    if num_estilo == i+1:
+                        lista_num_estilos.append(num_estilo)
+                        break 
+                    if num_estilo == 0:
+                        comando4()
+                        estilos_peca_nova.append() #Adicionar depois de feita a parte do Edson
+                        break
+                print("Digite um dos números válidos")
+            except ValueError:
+                print("Digite apenas números") 
+        print(" ")
+
+    for i in num_estilo:
+        # Estrutura condicional para tirar possíveis estilos repetidos
+        if lista_estilos[i-1] not in estilos_peca_nova:
+            estilos_peca_nova.append(lista_estilos[i-1])
+
+    if len(pecas) != 0:
+        id_novo = pecas[len(pecas)-1]["id"] + 1 
+    else:
+        id_novo = 1  
+        
+    peca_nova = {
+         "id": id_novo
+        ,"tipo": tipo_tratado
+        ,"tamanho": tamanho_tratado 
+        ,"padrão": padrao_tratado
+        ,"cor": cor_tratado
+        ,"data": date.today()
+        ,"situação": situacao_tratado
+        ,"preço": preco_novo  
+        ,"estilos": estilos_peca_nova } 
+    pecas.append(peca_nova) 
 
 
 # Alterar peça - Israel
 def comando2():
+    print("Ponha o id da peça que deseja alterar:")
+    try:
+        id_peca = int(input())
+    except ValueError:
+        print("Ponha um número")
+    tipo_peca  = 
+    alterar_peca(id_peca,tipo_peca,tamanho_peca,padrao_peca,cor_peca,data_peca,situacao_peca,preco_peca)
     return
 
 
