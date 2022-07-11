@@ -3,6 +3,10 @@ from datetime import date
 from models import *
 from crud import *
 
+# Variável para checar se existem alterações que precisam ser salvas.
+informacao = {
+    "alteradas": False
+}
 
 # ATENÇÃO
 # Implementar os comandos usando as funções já criadas. Testar tudo a fim de encontrar possíveis bugs.
@@ -298,7 +302,24 @@ def comando18():
 
 # Finalizar programa - Bruno
 def comando0():
-    return
+    if informacao["alteradas"]:
+        print("\nALERTA: Você não salvou suas alterações")
+
+        while True:
+            resposta = input("Deseja salvar suas alterações ao sair? [S/N] ")
+
+            if resposta.lower() == "s" or resposta.lower() == "sim":
+                comando17() # Salvar alterações
+                print("\nInformações salvas")
+                return
+            elif resposta.lower() == "n" or resposta.lower() == "não" or resposta.lower() == "nao":
+                print("\nSaindo sem salvar...")
+                return
+            else:
+                print("\nDigite apenas sim ou não")
+
+        
+    
 
 
 def menu_comandos():
@@ -337,16 +358,22 @@ def interface_usuario():
         # Pega o comando do usuário e o executa
         if comando == 1:
             comando1()
+            informacao["alteradas"] = True
         elif comando == 2:
             comando2()
+            informacao["alteradas"] = True
         elif comando == 3:
             comando3()
+            informacao["alteradas"] = True
         elif comando == 4:
             comando4()
+            informacao["alteradas"] = True
         elif comando == 5:
             comando5()
+            informacao["alteradas"] = True
         elif comando == 6:
             comando6()
+            informacao["alteradas"] = True
         elif comando == 7:
             comando7()
         elif comando == 8:
@@ -361,14 +388,17 @@ def interface_usuario():
             comando12()
         elif comando == 13:
             comando13()
+            informacao["alteradas"] = True
         elif comando == 14:
             comando14()
+            informacao["alteradas"] = True
         elif comando == 15:
             comando15()
         elif comando == 16:
             comando16()
         elif comando == 17:
             comando17()
+            informacao["alteradas"] = False # False porque não existe mais alterações não salvas
         elif comando == 18:
             comando18()
         elif comando == 0:
