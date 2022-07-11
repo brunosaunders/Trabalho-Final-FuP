@@ -146,7 +146,7 @@ def comando1():
         ,"situação": situacao_tratado
         ,"preço": preco_novo  
         ,"estilos": estilos_peca_nova } 
-    pecas.append(peca_nova) 
+    pecas.append(peca_nova)
 
 
 # Alterar peça - Israel
@@ -156,8 +156,8 @@ def comando2():
         id_peca = int(input())
     except ValueError:
         print("Ponha um número")
-    tipo_peca  = 
-    alterar_peca(id_peca,tipo_peca,tamanho_peca,padrao_peca,cor_peca,data_peca,situacao_peca,preco_peca)
+    # tipo_peca  = 
+    # alterar_peca(id_peca,tipo_peca,tamanho_peca,padrao_peca,cor_peca,data_peca,situacao_peca,preco_peca)
     return
 
 
