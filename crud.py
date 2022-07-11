@@ -1,7 +1,7 @@
 from datetime import *
 from models import *
 from utils import *
-
+import os
 
 # -------------------- CREATE -------------------- #
 
@@ -13,7 +13,7 @@ def criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco):
         "padrão": padrao, "cor": cor, "data": data, 
         "situação": situacao, "preço": preco, "estilos": []
     }
-    
+
     ids_cadastrados.append(id) # Cadastra o novo id na lista global
     return peca
 
@@ -26,7 +26,7 @@ def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
         peca_id = 1
     else:
         # Pega o último id cadastrado e adiciona 1 para cadastrar a nova peça com id único
-        last_index = len(pecas) - 1
+        last_index = len(ids_cadastrados) - 1
         ultimo_id = ids_cadastrados[last_index]
         peca_id = ultimo_id + 1
 
@@ -636,4 +636,21 @@ def carregar_historico_pecas_vendidas():
             registrar_peca_vendida(peca, vendido_para, data_venda)
 
 
-    return
+def salvar_ids():
+    with open(".ids.txt", "w") as file:
+        for id in ids_cadastrados:
+            file.write(f"{id}\n")
+
+
+def carregar_ids():
+    try:
+        with open(".ids.txt", "r") as file:
+            ids = file.read().split("\n")
+            ids.pop()
+
+            for id in ids:
+                ids_cadastrados.append(int(id))
+                
+    # Se o arquivo não existir, não faz nada
+    except IOError:
+        return
