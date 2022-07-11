@@ -436,7 +436,12 @@ def main():
     doar_peca(8, "Bruno")
     doar_peca(10, "Alex")
     doar_peca(11, "Flávia")
-    interface_usuario()
+    listar_pecas()
+    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    listar_pecas()
+    # interface_usuario()
 
 if __name__ == "__main__":
     main()

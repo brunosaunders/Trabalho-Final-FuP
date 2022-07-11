@@ -13,16 +13,24 @@ def criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco):
         "padrão": padrao, "cor": cor, "data": data, 
         "situação": situacao, "preço": preco, "estilos": []
     }
+    
+    ids_cadastrados.append(id) # Cadastra o novo id na lista global
     return peca
 
 
 # Responsável por REGISTRAR uma peça no guarda-roupa
 def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
-    # Integridade das peças é garantida na interface do usuário.
 
-    id = len(pecas) + 1
+    # Se a lista de peças estiver vazia, o id da nova peça será 1
+    if len(ids_cadastrados) == 0:
+        peca_id = 1
+    else:
+        # Pega o último id cadastrado e adiciona 1 para cadastrar a nova peça com id único
+        last_index = len(pecas) - 1
+        ultimo_id = ids_cadastrados[last_index]
+        peca_id = ultimo_id + 1
 
-    peca = criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
+    peca = criar_peca(peca_id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
     pecas.append(peca) # Registra a peça em pecas
 
 
