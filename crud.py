@@ -1,7 +1,7 @@
 from datetime import *
 from models import *
 from utils import *
-
+import os
 
 # -------------------- CREATE -------------------- #
 
@@ -13,16 +13,24 @@ def criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco):
         "padrão": padrao, "cor": cor, "data": data, 
         "situação": situacao, "preço": preco, "estilos": []
     }
+
+    ids_cadastrados.append(id) # Cadastra o novo id na lista global
     return peca
 
 
 # Responsável por REGISTRAR uma peça no guarda-roupa
 def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
-    # Integridade das peças é garantida na interface do usuário.
 
-    id = len(pecas) + 1
+    # Se a lista de peças estiver vazia, o id da nova peça será 1
+    if len(ids_cadastrados) == 0:
+        peca_id = 1
+    else:
+        # Pega o último id cadastrado e adiciona 1 para cadastrar a nova peça com id único
+        last_index = len(ids_cadastrados) - 1
+        ultimo_id = ids_cadastrados[last_index]
+        peca_id = ultimo_id + 1
 
-    peca = criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
+    peca = criar_peca(peca_id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
     pecas.append(peca) # Registra a peça em pecas
 
 
@@ -522,7 +530,7 @@ def listar_pecas_vendidas():
 # Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
 # Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
 def salvar_estilos():
-    with open("estilos.txt", "w") as file: # Fecha o arquivo ao sair da identação
+    with open(".estilos.txt", "w") as file: # Fecha o arquivo ao sair da identação
 
         # Header do arquivo
         file.write("estilos,contador,[id_peças]\n")
@@ -551,37 +559,44 @@ def salvar_estilos():
 
 # Lê o arquivo estilos.txt e carrega seus dados no dicionário estilos (variável global)
 # Carregar_estilos deve ser chamado após carregar_pecas
+# Se arquivo oculto existir, carrega-o
 def carregar_estilos():
-    with open("estilos.txt", "r") as file:
+    try:
+        with open(".estilos.txt", "r") as file:
 
-        linhas = file.read().split("\n") # Cria lista ao separar a string por "enters"
-        linhas.pop() # Remove linha vazia
+            linhas = file.read().split("\n") # Cria lista ao separar a string por "enters"
+            linhas.pop() # Remove linha vazia
 
-        # Itera sobre cada linha do arquivo
-        for linha in linhas[1:]: # Não pega o Header
-            valores = linha.split(",") # Lista de valores
+            # Itera sobre cada linha do arquivo
+            for linha in linhas[1:]: # Não pega o Header
+                valores = linha.split(",") # Lista de valores
 
-            estilo = valores[0]
-            contador = valores[1]
+                estilo = valores[0]
+                contador = valores[1]
 
-            # Cria o estilo no dicionário estilos com seu contador
-            criar_estilo(estilo, contador)
+                # Cria o estilo no dicionário estilos com seu contador
+                criar_estilo(estilo, contador)
 
-            # Itera sobre o restante dos valores (ids de peças contidas no estilo)
-            for peca_id in valores[2:]:
-                
-                # id está como string, precisa ser convertido
-                peca_id = int(peca_id)
+                # Itera sobre o restante dos valores (ids de peças contidas no estilo)
+                for peca_id in valores[2:]:
+                    
+                    # id está como string, precisa ser convertido
+                    peca_id = int(peca_id)
 
-                # Adiciona as peças ao estilo
-                # IMPORTANTE: as peças devem estar carregadas em pecas
-                adicionar_peca_a_estilo(peca_id, estilo)
+                    # Adiciona as peças ao estilo
+                    # IMPORTANTE: as peças devem estar carregadas em pecas
+                    adicionar_peca_a_estilo(peca_id, estilo)
+
+    # Se arquivo não existir, não faz nada
+    except IOError:
+        return
             
 
+# Salva o histórico de pecas em um arquivo oculto
 def salvar_historico_pecas_vendidas():
 
     # Abre o arquivo e fecha automaticamente
-    with open("historico_vendas.txt", "w") as file:
+    with open(".historico_vendas.txt", "w") as file:
 
         # Header
         file.write("id,tipo,tamanho,padrão,cor,data_doação,data_guarda_roupa,vendido_para,preço\n")
@@ -599,33 +614,59 @@ def salvar_historico_pecas_vendidas():
             file.write(linha + "\n") # Escreve os dados no arquivo e salta uma linha
 
 
+# Carrega o histórico de peças de arquivo oculto existir
 def carregar_historico_pecas_vendidas():
 
-    with open("historico_vendas.txt", "r") as file:
+    try:
+        with open(".historico_vendas.txt", "r") as file:
 
-        # Lê o arquivo e retorna uma lista com todas as linhas de dados
-        linhas = file.read().split("\n")[1:] # [1:] para descartar a primeira linha (Header)
-        linhas.pop() # Eliminar linha vazia no final
+            # Lê o arquivo e retorna uma lista com todas as linhas de dados
+            linhas = file.read().split("\n")[1:] # [1:] para descartar a primeira linha (Header)
+            linhas.pop() # Eliminar linha vazia no final
 
-        for linha in linhas:
+            for linha in linhas:
 
-            valores = linha.split(",")
-            
-            # Guarda os valores da venda em variáveis explícitas
-            id = int(valores[0])
-            tipo = valores[1]
-            tamanho = valores[2]
-            padrao = valores[3]
-            cor = valores[4]
-            data_venda = datetime.fromisoformat(valores[5]).date() # Transforma Str em um objeto datetime
-            data_guarda_roupa = datetime.fromisoformat(valores[6]).date()
-            vendido_para = valores[7]
-            preco = float(valores[8])
+                valores = linha.split(",")
+                
+                # Guarda os valores da venda em variáveis explícitas
+                id = int(valores[0])
+                tipo = valores[1]
+                tamanho = valores[2]
+                padrao = valores[3]
+                cor = valores[4]
+                data_venda = datetime.fromisoformat(valores[5]).date() # Transforma Str em um objeto datetime
+                data_guarda_roupa = datetime.fromisoformat(valores[6]).date()
+                vendido_para = valores[7]
+                preco = float(valores[8])
 
-            # Cria peça para poder registrar a venda (mas não adiciona a peça ao guarda-roupa)
-            peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_VENDA, preco)
+                # Cria peça para poder registrar a venda (mas não adiciona a peça ao guarda-roupa)
+                peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_VENDA, preco)
 
-            registrar_peca_vendida(peca, vendido_para, data_venda)
+                registrar_peca_vendida(peca, vendido_para, data_venda)
+
+    # Se não existir o arquivo, não faz nada
+    except IOError:
+        return
 
 
-    return
+# Salva os ids em arquivo oculto
+def salvar_ids():
+    with open(".ids.txt", "w") as file:
+        for id in ids_cadastrados:
+            file.write(f"{id}\n")
+
+
+# Carrega os ids se arquivo oculto existir
+def carregar_ids():
+    try:
+        with open(".ids.txt", "r") as file:
+            ids = file.read().split("\n")
+            ids.pop()
+
+            # 
+            for id in ids:
+                ids_cadastrados.append(int(id))
+
+    # Se o arquivo não existir, não faz nada
+    except IOError:
+        return

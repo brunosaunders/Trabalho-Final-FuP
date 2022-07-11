@@ -36,6 +36,7 @@ pecas = []
 estilos = {}
 historico_pecas_doadas = []
 historico_pecas_vendidas = []
+ids_cadastrados = [] # Lista de inteiros não nulos e não negativos
 
 """"
 Estrutura de pecas
