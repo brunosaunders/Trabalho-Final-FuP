@@ -158,7 +158,7 @@ def vender_peca(id, vender_para):
     remover_peca(id)
 
 
-def registrar_peca_doada(peca:dict, doar_para):
+def registrar_peca_doada(peca:dict, doar_para, data_doada=datetime.today().date()):
 
     # adiciona informações da peça doada ao historico_pecas_doadas.
     historico_pecas_doadas.append({
@@ -167,7 +167,7 @@ def registrar_peca_doada(peca:dict, doar_para):
         "tamanho": peca["tamanho"],
         "padrão": peca["padrão"],
         "cor": peca["cor"],
-        "data_doação": datetime.datetime.today().date(), # Data de hoje no formato YYYY-MM-DD.
+        "data_doação": data_doada, # Data de hoje no formato YYYY-MM-DD.
         "data_guarda_roupa": peca["data"],
         "doado_para": doar_para
     })
