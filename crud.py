@@ -136,14 +136,11 @@ def remover_peca(id):
 
     # Para saber em qual índice da matriz remover a peça de estilos.
     index_peca = indice_peca_em_estilos(peca)
+
+    # Remove a peça de todos os estilos que ela estiver
     for nome_estilo in peca["estilos"]:
         estilos[nome_estilo]["peças"][index_peca].remove(peca)
         print(f"Atenção: Peça de id {id} foi removida do estilo {nome_estilo}.")
-
-        # verifica se o estilo ainda possui pelo menos uma peça, se não possuir, o estilo é excluído.
-        if conta_numero_de_pecas_em_estilo(nome_estilo) == 0:
-            remover_estilo(nome_estilo)
-            print(f"Atenção: Estilo {nome_estilo} foi removido por ausência de peças.")
 
 
 # adiciona informações da peça doada ao historico_pecas_vendidas.
@@ -451,12 +448,16 @@ def print_peca_em_estilo(nome_estilo, peca):
 
 # Função para listar as peças organizadas por estilo
 def print_lista_estilos(lista_estilos):
-
+    estilos_sem_pecas = []
     # Header
     print(f"\n{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
 
     #Estrutura de repetição para percorrer cada elemento da lista de estilos organizada
     for nome_estilo in lista_estilos:
+
+        # Se o estilo não possuir peça alguma, salve em estilos_sem_pecas
+        if conta_numero_de_pecas_em_estilo(nome_estilo) == 0:
+            estilos_sem_pecas.append(nome_estilo)
 
         #  Estrutura de repetição para percorrer cada linha da matriz peças
         for j in range(len(estilos[nome_estilo]["peças"])):
@@ -465,7 +466,13 @@ def print_lista_estilos(lista_estilos):
                     peca = estilos[nome_estilo]["peças"][j][i]
 
                     # Printa informações de cada peça em um dado estilo
-                    print_peca_em_estilo(nome_estilo, peca)       
+                    print_peca_em_estilo(nome_estilo, peca)
+
+    # Printa os estilos sem peças
+    if len(estilos_sem_pecas) != 0:
+        print("\nEstilos sem peças: ", end="")
+        for estilo in estilos_sem_pecas:
+            print(estilo, end=" ")    
 
 
 # Função para listar as peças por estilo.
