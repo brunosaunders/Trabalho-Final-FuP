@@ -113,6 +113,12 @@ def alterar_estilo():
 
 # Remove um estilo do dicionário estilos.
 def remover_estilo(nome_estilo):
+
+    # Procura as peças que estão no estilo removido, se alguma estiver, retira o estilo de dentro da peça
+    for peca in pecas:
+        if nome_estilo in peca["estilos"]:
+            peca["estilos"].remove(nome_estilo)
+            
     estilos.pop(nome_estilo)
 
 
@@ -734,7 +740,7 @@ def carregar_historico_pecas_doadas():
                 doado_para = valores[7]
 
                 # Cria peça para poder registrar a doação (mas não adiciona a peça ao guarda-roupa)
-                peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_DOACAO, preco)
+                peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_DOACAO, 0.0)
 
                 registrar_peca_doada(peca, doado_para, data_doacao)
 
