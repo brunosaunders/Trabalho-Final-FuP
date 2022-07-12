@@ -635,6 +635,7 @@ def comando16():
 def comando17():
     try:
         salvar_alteracoes()
+        print("Alterações salvas com sucesso!")
     except Exception as e:
         print("\nErro ao salvar alterações:", e)
 
@@ -643,6 +644,7 @@ def comando17():
 def comando18():
     try:
         carregar_arquivos()
+        print("Arquivos carregados com sucesso!")
     except Exception as e:
         print("\nErro ao carregar arquivos:", e)
 

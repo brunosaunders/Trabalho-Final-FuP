@@ -315,7 +315,6 @@ def selecionar_estilo():
     # Enquanto o usuário quiser mudar sua opção de estilo, executar o que se segue
     while mudar:
         print("\nQual estilo deseja usar?")
-        # TODO: listar as peças de cada estilo
 
         # Enumera os estilos cadastrados e recebe a escolha do usuário
         for i in range(len(nomes)):
@@ -347,7 +346,7 @@ def selecionar_estilo():
             print("Entrada inválida, tente novamente.")
             continue
 
-        print("\nVocê escolheu o estilo %s" %estilo)
+        print("\nVocê escolheu o estilo %s\n" %estilo)
 
         # Checa se o usuário quer mudar o estilo
         while True:
@@ -365,7 +364,14 @@ def selecionar_estilo():
     
     # Incrementa 1 ao contador do estilo escolhido
     estilos[estilo]["contador"] += 1
-    print("\nEstilo %s escolhido com sucesso!" %estilo)
+
+    print("\nEssas são as opções de peças desse estilo:")
+
+     # Lista as peças que estão no estilo escolhido e separadas por tipo
+    for tipo in estilos[estilo]["peças"]:
+        if len(tipo) > 0:
+            print("\nPeças do tipo %s\n" %tipo[0]["tipo"])
+            print_pecas_filtradas(tipo)
 
 
 # Função para listar peças para venda
@@ -557,20 +563,20 @@ def listar_pecas_vendidas():
 # Salva todas as alterações feitas.
 # TODO: Ir adicionando aqui as funções de salvamento conforme são implementadas.
 def salvar_alteracoes():
+    salvar_ids()
+    salvar_pecas()
     salvar_estilos()
     salvar_historico_pecas_vendidas()
     salvar_historico_pecas_doadas()
-    salvar_ids()
-    salvar_pecas()
 
 # Salva todas as alterações feitas.
 # TODO: Ir adicionando aqui as funções de carregamento conforme são implementadas.
 def carregar_arquivos():
+    carregar_ids()
+    carregar_pecas()
     carregar_estilos()
     carregar_historico_pecas_vendidas()
     carregar_historico_pecas_doadas()
-    carregar_ids()
-    carregar_peca()
 
 # Salva as peças em um arquivo.txt separado por vírgula
 # Guarda o id, tipo, tamanho, padrão, cor, data, situação, preço e estilos da peça 
@@ -593,7 +599,7 @@ def salvar_pecas():
 
             file.write(linha + "\n")
             
-def carregar_peca():
+def carregar_pecas():
     try:
         with open(".pecas.txt","r") as file:
 
@@ -666,7 +672,7 @@ def carregar_estilos():
                 valores = linha.split(",") # Lista de valores
 
                 estilo = valores[0]
-                contador = valores[1]
+                contador = int(valores[1])
 
                 # Cria o estilo no dicionário estilos com seu contador
                 criar_estilo(estilo, contador)
