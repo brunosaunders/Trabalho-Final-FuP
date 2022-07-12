@@ -449,24 +449,29 @@ def print_peca_em_estilo(nome_estilo, peca):
 # Função para listar as peças organizadas por estilo
 def print_lista_estilos(lista_estilos):
     estilos_sem_pecas = []
-    # Header
-    print(f"\n{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
 
-    #Estrutura de repetição para percorrer cada elemento da lista de estilos organizada
     for nome_estilo in lista_estilos:
-
         # Se o estilo não possuir peça alguma, salve em estilos_sem_pecas
         if conta_numero_de_pecas_em_estilo(nome_estilo) == 0:
             estilos_sem_pecas.append(nome_estilo)
 
-        #  Estrutura de repetição para percorrer cada linha da matriz peças
-        for j in range(len(estilos[nome_estilo]["peças"])):
-            if len(estilos[nome_estilo]["peças"][j]) != 0:
-                for i in range(len(estilos[nome_estilo]["peças"][j])):
-                    peca = estilos[nome_estilo]["peças"][j][i]
+    # Se forem diferentes, existe pelo menos 1 estilo com peças dentro e devemos printá-las
+    if len(lista_estilos) != len(estilos_sem_pecas):
 
-                    # Printa informações de cada peça em um dado estilo
-                    print_peca_em_estilo(nome_estilo, peca)
+        # Header
+        print(f"\n{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
+
+        #Estrutura de repetição para percorrer cada elemento da lista de estilos organizada
+        for nome_estilo in lista_estilos:
+
+            #  Estrutura de repetição para percorrer cada linha da matriz peças
+            for j in range(len(estilos[nome_estilo]["peças"])):
+                if len(estilos[nome_estilo]["peças"][j]) != 0:
+                    for i in range(len(estilos[nome_estilo]["peças"][j])):
+                        peca = estilos[nome_estilo]["peças"][j][i]
+
+                        # Printa informações de cada peça em um dado estilo
+                        print_peca_em_estilo(nome_estilo, peca)
 
     # Printa os estilos sem peças
     if len(estilos_sem_pecas) != 0:
