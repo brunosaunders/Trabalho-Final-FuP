@@ -561,6 +561,7 @@ def salvar_alteracoes():
     salvar_historico_pecas_vendidas()
     salvar_historico_pecas_doadas()
     salvar_ids()
+    salvar_pecas()
 
 # Salva todas as alterações feitas.
 # TODO: Ir adicionando aqui as funções de carregamento conforme são implementadas.
@@ -569,6 +570,7 @@ def carregar_arquivos():
     carregar_historico_pecas_vendidas()
     carregar_historico_pecas_doadas()
     carregar_ids()
+    carregar_peca()
 
 # Salva as peças em um arquivo.txt separado por vírgula
 # Guarda o id, tipo, tamanho, padrão, cor, data, situação, preço e estilos da peça 
@@ -576,18 +578,18 @@ def salvar_pecas():
     with open(".pecas.txt","w") as file:
 
         # Header do arquivo
-        file.write("id,tipo,tamanho,padrão,cor,data,situação,preço,[estilos]")
+        file.write("id,tipo,tamanho,padrão,cor,data,situação,preço,[estilos]\n")
 
         # Estrutura de repetição para pegar cada peça da lista pecas
         for peca in pecas:
             linha = ""
 
             # Pega cada chave do dicionario e adiciona seus valores no acumulador linha
-            for variaveis in pecas[0]:
-                linha += f"{variaveis}" + ","
+            for variavel in peca:
+                linha += f"{peca[variavel]}" + ","
 
             # Retira a última virgula 
-            linha.strip(",") 
+            linha = linha.strip(",") 
 
             file.write(linha + "\n")
             
