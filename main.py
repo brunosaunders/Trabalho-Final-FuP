@@ -221,6 +221,8 @@ def comando4():
             else:
                 print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
 
+    print("\nEstilo criado com sucesso!")
+
 
 # Alterar estilo - Edson
 def comando5():
@@ -325,12 +327,34 @@ def comando12():
 
 # Vender peça - Edson
 def comando13():
-    return
+    # Vende a peça passada pelo usuário e trata possíveis erros no processo.
+    try:
+        id_peca = int(input("\nDigite o id da peça: "))
+        vender_para = input("Digite o nome do comprador da peça: ")
+        vender_peca(id_peca, vender_para)
+        print("\nPeça vendida com sucesso!")
+    # Informa o caso do ID passado não ser inteiro.
+    except ValueError:
+        print("\nValor de ID inválido. Tente novamente!")
+    # Informa os casos de erro gerais, como o ID inexistente.
+    except Exception as e:
+        print("\n%s" %e)
 
 
 # Doar peça - Edson
 def comando14():
-    return
+    # Doa a peça passada pelo usuário e trata possíveis erros no processo.
+    try:
+        id_peca = int(input("\nDigite o id da peça: "))
+        doar_para = input("Digite o nome do comprador da peça: ")
+        doar_peca(id_peca, doar_para)
+        print("\nPeça doada com sucesso!")
+    # Informa o caso do ID passado não ser inteiro.
+    except ValueError:
+        print("\nValor de ID inválido. Tente novamente!")
+    # Informa os casos de erro gerais, como o ID inexistente.
+    except Exception as e:
+        print("\n%s" %e)
 
 
 # Listar peças vendidas - Edson
