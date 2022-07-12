@@ -33,8 +33,11 @@ def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
     peca = criar_peca(peca_id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
     pecas.append(peca) # Registra a peça em pecas
 
-
+# Cria um estilo se não existir
 def criar_estilo(nome_estilo, contador=0):
+    if nome_estilo in estilos:
+        raise Exception(f"O estilo {nome_estilo} já existe!")
+
     estilos[nome_estilo] = {
         "contador": contador,
         "peças": [
@@ -63,6 +66,7 @@ def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
         
         # Adiciona o estilo à peça
         peca["estilos"].append(nome_estilo)
+        print("\nPeça adicionada com sucesso!")
     else:
         print(f"Não foi possível adicionar peça de id {id_peca} ao estilo {nome_estilo}, pois a peça já pertence ao estilo.")
 
@@ -118,7 +122,7 @@ def remover_estilo(nome_estilo):
     for peca in pecas:
         if nome_estilo in peca["estilos"]:
             peca["estilos"].remove(nome_estilo)
-            
+
     estilos.pop(nome_estilo)
 
 

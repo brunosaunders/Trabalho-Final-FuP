@@ -177,7 +177,7 @@ def comando4():
         nome_estilo = input("\nDigite o nome do estilo: ")
         criar_estilo(nome_estilo)
     except Exception as e:
-        print("\nOcorreu um erro ao cadastrar o estilo:", e)
+        print(f"\nAviso: {e}")
         return
 
     # Checa se o usuário deseja inserir peças ao estilo recém criado.
@@ -196,6 +196,8 @@ def comando4():
             print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
 
     while inserir:
+        # Mostra ao usuário as peças existentes no guarda-roupa
+        listar_pecas()
         # Insere uma peça escolhida pelo usuário no estilo e trata possíveis entradas inválidas.
         try:
             id_peca = int(input("\nDigite o id da peça que deseja inserir no estilo: "))
@@ -221,7 +223,7 @@ def comando4():
             else:
                 print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
 
-    print("\nEstilo criado com sucesso!")
+    print(f"\nEstilo {nome_estilo} criado com sucesso!")
 
 
 # Alterar estilo - Edson
