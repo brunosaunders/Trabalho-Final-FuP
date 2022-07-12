@@ -1,4 +1,0 @@
-id,tipo,tamanho,padrão,cor,data_doação,data_guarda_roupa,vendido_para,preço
-1,calçado,m,masculino,cinza,2022-07-07,2022-06-22,josé,121.7
-2,calçado,p,masculino,branco,2022-07-07,2022-02-12,Antonio,30.0
-4,inferior,p,masculino,branco,2022-07-07,2022-02-12,Phill,30.0

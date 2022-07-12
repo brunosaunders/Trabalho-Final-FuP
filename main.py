@@ -172,7 +172,56 @@ def comando3():
 
 # Cadastrar estilo - Edson
 def comando4():
-    return
+    # Cria um estilo novo com o nome dado pelo usuário e informa possíveis erros no processo.
+    try:
+        nome_estilo = input("\nDigite o nome do estilo: ")
+        criar_estilo(nome_estilo)
+    except Exception as e:
+        print("\nOcorreu um erro ao cadastrar o estilo:", e)
+        return
+
+    # Checa se o usuário deseja inserir peças ao estilo recém criado.
+    inserir = False
+    while True:
+        resposta = input("\nDeseja inserir peças ao estilo? [s/n] ")
+        resposta = resposta.lower()
+
+        if resposta == "s" or resposta == "sim":
+            inserir = True
+            break
+        elif resposta == "n" or resposta == "nao" or resposta == "não":
+            inserir = False
+            break
+        else:
+            print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+
+    while inserir:
+        # Insere uma peça escolhida pelo usuário no estilo e trata possíveis entradas inválidas.
+        try:
+            id_peca = int(input("\nDigite o id da peça que deseja inserir no estilo: "))
+            adicionar_peca_a_estilo(id_peca, nome_estilo)
+        # Informa o caso do ID passado não ser inteiro.
+        except ValueError:
+            print("\nValor de ID inválido. Tente novamente!")
+            continue
+        # Informa os casos de erro gerais, como o ID inexistente.
+        except Exception as e:
+            print("\n%s" %e)
+
+        # Checa se o usuário deseja inserir mais uma peça ao estilo.
+        while True:
+            resposta = input("\nDeseja inserir outra peça ao estilo? [s/n] ")
+            resposta = resposta.lower()
+
+            if resposta == "s" or resposta == "sim":
+                break
+            elif resposta == "n" or resposta == "nao" or resposta == "não":
+                inserir = False
+                break
+            else:
+                print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+
+    print("\nEstilo criado com sucesso!")
 
 
 # Alterar estilo - Edson
@@ -182,7 +231,14 @@ def comando5():
 
 # Remover estilo - Edson
 def comando6():
-    return
+    nome_estilo = input("\nDigite o nome do estilo: ")
+
+    # Remove o estilo entrado pelo usuário se existir no dicionário de estilos.
+    if nome_estilo in estilos.keys():
+        remover_estilo(nome_estilo)
+        print('\nEstilo "%s" foi removido do sistema!' %nome_estilo)
+    else:
+        print('\nEstilo "%s" não está cadastrado!' %nome_estilo)
 
 
 # Listar todas as peças - Bruno
@@ -271,17 +327,39 @@ def comando12():
 
 # Vender peça - Edson
 def comando13():
-    return
+    # Vende a peça passada pelo usuário e trata possíveis erros no processo.
+    try:
+        id_peca = int(input("\nDigite o id da peça: "))
+        vender_para = input("Digite o nome do comprador da peça: ")
+        vender_peca(id_peca, vender_para)
+        print("\nPeça vendida com sucesso!")
+    # Informa o caso do ID passado não ser inteiro.
+    except ValueError:
+        print("\nValor de ID inválido. Tente novamente!")
+    # Informa os casos de erro gerais, como o ID inexistente.
+    except Exception as e:
+        print("\n%s" %e)
 
 
 # Doar peça - Edson
 def comando14():
-    return
+    # Doa a peça passada pelo usuário e trata possíveis erros no processo.
+    try:
+        id_peca = int(input("\nDigite o id da peça: "))
+        doar_para = input("Digite o nome do comprador da peça: ")
+        doar_peca(id_peca, doar_para)
+        print("\nPeça doada com sucesso!")
+    # Informa o caso do ID passado não ser inteiro.
+    except ValueError:
+        print("\nValor de ID inválido. Tente novamente!")
+    # Informa os casos de erro gerais, como o ID inexistente.
+    except Exception as e:
+        print("\n%s" %e)
 
 
 # Listar peças vendidas - Edson
 def comando15():
-    return
+    listar_pecas_vendidas()
 
 
 # Listar peças doadas - Bruno
@@ -292,7 +370,10 @@ def comando16():
 
 # Salvar alterações - Edson
 def comando17():
-    return
+    try:
+        salvar_alteracoes()
+    except Exception as e:
+        print("\nErro ao salvar alterações:", e)
 
 
 # Carregar arquivos - Israel
