@@ -116,16 +116,11 @@ def comando1():
                     else:
                         print("O mês selecionado só vai até 31")
                 if mes == "02": 
-                    if int(ano)%100 == 0 and int(ano)%400 == 0:
+                    if int(ano)%4 == 0:
                         if int(dia) <= 29:
                             break 
                         else:
-                            print("No ano selecionado, o mês de fevereiro só vai até 28")
-                    elif int(ano)%4 == 0:
-                        if int(dia) <= 29:
-                            break 
-                        else:
-                            print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                            print("No ano selecionado, o mês de fevereiro só vai até 29") 
                     else:
                         if int(dia) <= 28:
                             break 
@@ -184,9 +179,10 @@ def comando2():
             peca_para_alteracao = cada_peca 
 
     # Cada parte da data da peça sem alteração
-    # dia_sem_alteracao = peca_para_alteracao["data"].strftime("%d")
-    # mes_sem_alteracao = peca_para_alteracao["data"].strftime("%m")
-    # ano_sem_alteracao = peca_para_alteracao["data"].strftime("%Y")
+    data_sem_alterar = str(peca_para_alteracao["data"])
+    ano_sem_alterar = data_sem_alterar[:4] 
+    mes_sem_alterar = data_sem_alterar[5:7] 
+    dia_sem_alterar = data_sem_alterar[8:]
 
     # Pôr a alteração no tipo da peça
     print("Ponha o tipo da peça alterada: 'calçado', 'inferior' ou 'superior'")
@@ -289,90 +285,94 @@ def comando2():
                         else:
                             print("O mês selecionado só vai até 31")
                     if mes == "02": 
-                        if ano != "":
-                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                        if ano != "": # Se o ano foi alterado
+                            if int(ano)%4 == 0:
                                 if int(dia) <= 29:
                                     break 
                                 else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
-                            elif int(ano)%4 == 0:
-                                if int(dia) <= 29:
-                                    break 
-                                else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                                    print("No ano selecionado, o mês de fevereiro só vai até 29") 
                             else:
                                 if int(dia) <= 28:
                                     break 
                                 else:
                                     print("No ano selecionado, o mês de fevereiro só vai até 28")
-                        else:
-                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                        else: # Se o ano não foi alterado
+                            if int(ano_sem_alterar)%4 == 0:
                                 if int(dia) <= 29:
                                     break 
                                 else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
-                            elif int(ano)%4 == 0:
-                                if int(dia) <= 29:
-                                    break 
-                                else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                                    print("No ano selecionado, o mês de fevereiro só vai até 29") 
                             else:
                                 if int(dia) <= 28:
                                     break 
                                 else:
                                     print("No ano selecionado, o mês de fevereiro só vai até 28")
                 else: # Se o mês não foi alterado 
-                    if mes in mes_com30: 
+                    if mes_sem_alterar in mes_com30: 
                         if int(dia) <= 30:
                             break
                         else:
                             print("O mês selecionado só vai até 30")
-                    if mes in mes_com31: 
+                    if mes_sem_alterar in mes_com31: 
                         if int(dia) <=31:
                             break
                         else:
                             print("O mês selecionado só vai até 31")
-                    if mes == "02": 
-                        if ano != "":
-                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                    if mes_sem_alterar == "02": 
+                        if ano != "": # Se o ano foi alterado 
+                            if int(ano)%4 == 0:
                                 if int(dia) <= 29:
                                     break 
                                 else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
-                            elif int(ano)%4 == 0:
-                                if int(dia) <= 29:
-                                    break 
-                                else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                                    print("No ano selecionado, o mês de fevereiro só vai até 29") 
                             else:
                                 if int(dia) <= 28:
                                     break 
                                 else:
                                     print("No ano selecionado, o mês de fevereiro só vai até 28")
-                        else:
-                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                        else: # Se o ano não foi alterado
+                            if int(ano_sem_alterar)%4 == 0:
                                 if int(dia) <= 29:
                                     break 
                                 else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
-                            elif int(ano)%4 == 0:
-                                if int(dia) <= 29:
-                                    break 
-                                else:
-                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                                    print("No ano selecionado, o mês de fevereiro só vai até 29") 
                             else:
                                 if int(dia) <= 28:
                                     break 
                                 else:
                                     print("No ano selecionado, o mês de fevereiro só vai até 28")
+
+            elif dia == "": # Se o dia não foi alterado
+                break
 
             else:
                 print("Ponha um número de 2 dígitos, maior que zero") 
         except ValueError:
-            print("Ponha um número") 
-    data = ano + "-" + mes + "-" + dia
-    data_nova = datetime.fromisoformat(data).date() 
+            print("Ponha um número")  
 
+    if dia == "" and mes == "" and ano == "": # Se nenhuma data foi alterada
+        data_nova = ""
+    elif dia != "" and mes == "" and ano == "": # Se apenas o dia foi alterado
+        data = ano_sem_alterar + "-" + mes_sem_alterar + "-" + dia
+        data_nova = datetime.fromisoformat(data).date() 
+    elif dia == "" and mes != "" and ano == "": # Se apenas mês o foi alterado
+        data = ano_sem_alterar + "-" + mes + "-" + dia_sem_alterar
+        data_nova = datetime.fromisoformat(data).date()
+    elif dia == "" and mes == "" and ano != "": # Se apenas o ano for alterado
+        data = ano + "-" + mes_sem_alterar + "-" + dia_sem_alterar
+        data_nova = datetime.fromisoformat(data).date()
+    elif dia != "" and mes != "" and ano == "": # Se o dia for alterado e o mês também
+        data = ano_sem_alterar + "-" + mes + "-" + dia
+        data_nova = datetime.fromisoformat(data).date()
+    elif dia != "" and mes == "" and ano != "": # Se o dia for alterado e o ano for alterado
+        data = ano + "-" + mes_sem_alterar + "-" + dia
+        data_nova = datetime.fromisoformat(data).date()
+    elif dia == "" and mes != "" and ano != "": # Se o mês for alterado e o ano for alterado
+        data = ano + "-" + mes + "-" + dia_sem_alterar
+        data_nova = datetime.fromisoformat(data).date()
+    else: # Se o dia, o mês e o ano forem alterados.
+        data = ano + "-" + mes + "-" + dia
+        data_nova = datetime.fromisoformat(data).date()
 
     # Alteração da situação da peça
     print("\nPonha a situação da peça alterada: 'venda', 'doação' ou 'ficar'")
@@ -570,16 +570,19 @@ def comando9():
 
 # Pesquisar estilo por nome - Israel
 def comando10():
+    selecionar_estilo()
     return
 
 
 # Listar peças para venda - Israel
 def comando11():
+    listar_pecas_para_venda()
     return
 
 
 # Listar peças para doação - Israel
 def comando12():
+    listar_pecas_para_doacao()
     return
 
 
