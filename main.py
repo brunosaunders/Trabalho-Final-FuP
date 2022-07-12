@@ -370,7 +370,10 @@ def comando16():
 
 # Salvar alterações - Edson
 def comando17():
-    return
+    try:
+        salvar_alteracoes()
+    except Exception as e:
+        print("\nErro ao salvar alterações:", e)
 
 
 # Carregar arquivos - Israel

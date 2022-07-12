@@ -526,6 +526,21 @@ def listar_pecas_vendidas():
 
 # -------------------- ARQUIVOS -------------------- #
 
+# Salva todas as alterações feitas.
+# TODO: Ir adicionando aqui as funções de salvamento conforme são implementadas.
+def salvar_alteracoes():
+    salvar_estilos()
+    salvar_historico_pecas_vendidas()
+    salvar_historico_pecas_doadas()
+    salvar_ids()
+
+# Salva todas as alterações feitas.
+# TODO: Ir adicionando aqui as funções de carregamento conforme são implementadas.
+def carregar_arquivos():
+    carregar_estilos()
+    carregar_historico_pecas_vendidas()
+    carregar_historico_pecas_doadas()
+    carregar_ids()
 
 # Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
 # Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
@@ -670,3 +685,61 @@ def carregar_ids():
     # Se o arquivo não existir, não faz nada
     except IOError:
         return
+
+
+# Salva o histórico de peças doadas em um arquivo oculto
+def salvar_historico_pecas_doadas():
+
+    # Abre o arquivo e fecha automaticamente
+    with open(".historico_doacoes.txt", "w") as file:
+
+        # Header
+        file.write("id,tipo,tamanho,padrão,cor,data_doação,data_guarda_roupa,doado_para\n")
+
+        # Salva cada doação no arquivo
+        for doacao in historico_pecas_doadas:
+            linha = ""
+
+            # itera sobre as chaves do dicionário de doação para adicionar os valores de cada atributo da doação
+            for atributo in doacao:
+                linha += f"{doacao[atributo]},"
+            
+            linha = linha.strip(",") # Remove a última vírgula da linha
+
+            file.write(linha + "\n") # Escreve os dados no arquivo e salta uma linha
+
+
+# Carrega o histórico de peças doadas de arquivo oculto se existir
+def carregar_historico_pecas_doadas():
+
+    try:
+        with open(".historico_doacoes.txt", "r") as file:
+
+            # Lê o arquivo e retorna uma lista com todas as linhas de dados
+            linhas = file.read().split("\n")[1:] # [1:] para descartar a primeira linha (Header)
+            linhas.pop() # Eliminar linha vazia no final
+
+            for linha in linhas:
+
+                valores = linha.split(",")
+                
+                # Guarda os valores da doação em variáveis explícitas
+                id = int(valores[0])
+                tipo = valores[1]
+                tamanho = valores[2]
+                padrao = valores[3]
+                cor = valores[4]
+                data_doacao = datetime.fromisoformat(valores[5]).date() # Transforma Str em um objeto datetime
+                data_guarda_roupa = datetime.fromisoformat(valores[6]).date()
+                doado_para = valores[7]
+
+                # Cria peça para poder registrar a doação (mas não adiciona a peça ao guarda-roupa)
+                peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_DOACAO, preco)
+
+                registrar_peca_doada(peca, doado_para, data_doacao)
+
+    # Se não existir o arquivo, não faz nada
+    except IOError:
+        return
+
+
