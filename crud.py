@@ -596,7 +596,7 @@ def carregar_peca():
     except IOError:
         # Se não existir o arquivo, não faz nada
         return
-        
+
 # Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
 # Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
 def salvar_estilos():
@@ -789,7 +789,7 @@ def carregar_historico_pecas_doadas():
                 doado_para = valores[7]
 
                 # Cria peça para poder registrar a doação (mas não adiciona a peça ao guarda-roupa)
-                peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_DOACAO, preco)
+                peca = criar_peca(id, tipo, tamanho, padrao, cor, data_guarda_roupa, SITUACAO_DOACAO, 0.0)
 
                 registrar_peca_doada(peca, doado_para, data_doacao)
 
