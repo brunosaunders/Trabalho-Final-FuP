@@ -172,6 +172,7 @@ def comando3():
 
 # Cadastrar estilo - Edson
 def comando4():
+    # Cria um estilo novo com o nome dado pelo usuário e informa possíveis erros no processo.
     try:
         nome_estilo = input("\nDigite o nome do estilo: ")
         criar_estilo(nome_estilo)
@@ -179,6 +180,7 @@ def comando4():
         print("\nOcorreu um erro ao cadastrar o estilo:", e)
         return
 
+    # Checa se o usuário deseja inserir peças ao estilo recém criado.
     inserir = False
     while True:
         resposta = input("\nDeseja inserir peças ao estilo? [s/n] ")
@@ -194,14 +196,19 @@ def comando4():
             print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
 
     while inserir:
+        # Insere uma peça escolhida pelo usuário no estilo e trata possíveis entradas inválidas.
         try:
             id_peca = int(input("\nDigite o id da peça que deseja inserir no estilo: "))
+            adicionar_peca_a_estilo(id_peca, nome_estilo)
+        # Informa o caso do ID passado não ser inteiro.
         except ValueError:
             print("\nValor de ID inválido. Tente novamente!")
             continue
+        # Informa os casos de erro gerais, como o ID inexistente.
+        except Exception as e:
+            print("\n%s" %e)
 
-        adicionar_peca_a_estilo(id_peca, nome_estilo)
-
+        # Checa se o usuário deseja inserir mais uma peça ao estilo.
         while True:
             resposta = input("\nDeseja inserir outra peça ao estilo? [s/n] ")
             resposta = resposta.lower()
@@ -224,6 +231,7 @@ def comando5():
 def comando6():
     nome_estilo = input("\nDigite o nome do estilo: ")
 
+    # Remove o estilo entrado pelo usuário se existir no dicionário de estilos.
     if nome_estilo in estilos.keys():
         remover_estilo(nome_estilo)
         print('\nEstilo "%s" foi removido do sistema!' %nome_estilo)
