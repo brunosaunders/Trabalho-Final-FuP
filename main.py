@@ -13,18 +13,16 @@ informacao = {
 # Se encontrarem algum bug, tentem resolver e alertem sobre ele no grupo.
 
 
+lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
+lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
+lista_padrao = [PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
+lista_tamanho = [TAMANHO_G,TAMANHO_M,TAMANHO_P]
+lista_situacao = [SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA] 
+mes_com30 = ["04","06","09","11"]
+mes_com31 = ["01","03","05","07","08","10","12"]
+
 # Cadastrar peça - Israel
 def comando1():
-    # Definindo listas das variáveis já disponíveis
-    lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
-    lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
-    lista_padrao = [PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
-    lista_tamanho = [TAMANHO_G,TAMANHO_M,TAMANHO_P]
-    lista_situacao = [SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA]
-    lista_estilos = list(estilos.keys())
-    estilos_peca_nova = []
-    lista_num_estilos = []
-
     # Cadastro do tipo da peça
     print("Ponha o tipo da peça: 'calçado', 'inferior' ou 'superior'")
     while True:
@@ -77,6 +75,69 @@ def comando1():
         except ValueError: 
             print("Ponha apenas letras")
 
+    # Cadastro da data da peça 
+    print("\nPonha a data da peça:")
+    print("Insira o ano da peça:")
+    # Cadastro do ano
+    while True:
+        try: 
+            ano = input() 
+            if len(ano) == 4 and int(ano) >=0: 
+                break 
+            else:
+                print("Ponha um número de 4 digitos")
+        except ValueError:
+            print("Ponha um número") 
+    print("\nInsira o mês da peça:")
+    # Cadastro do mês
+    while True:
+        try:
+            mes = input()
+            if len(mes) == 2 and int(mes) <= 12 and int(mes) > 0:
+                break
+            else:
+                print("ponha um número maior que zero de 2 digitos")
+        except ValueError:
+            print("Ponha um número")  
+    print("\nInsira o dia da peça:")
+    # Cadastro do dia considerando se o mês é de 30 dias, 31 dias ou se o ano é bissexto
+    while True:
+        try:
+            dia = input()
+            if len(dia) == 2 and int(dia) >= 1:
+                if mes in mes_com30: 
+                    if int(dia) <= 30:
+                        break
+                    else:
+                        print("O mês selecionado só vai até 30")
+                if mes in mes_com31: 
+                    if int(dia) <=31:
+                        break
+                    else:
+                        print("O mês selecionado só vai até 31")
+                if mes == "02": 
+                    if int(ano)%100 == 0 and int(ano)%400 == 0:
+                        if int(dia) <= 29:
+                            break 
+                        else:
+                            print("No ano selecionado, o mês de fevereiro só vai até 28")
+                    elif int(ano)%4 == 0:
+                        if int(dia) <= 29:
+                            break 
+                        else:
+                            print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                    else:
+                        if int(dia) <= 28:
+                            break 
+                        else:
+                            print("No ano selecionado, o mês de fevereiro só vai até 28")
+            else:
+                print("Ponha um número de 2 dígitos, maior que zero") 
+        except ValueError:
+            print("Ponha um número") 
+    data = ano + "-" + mes + "-" + dia
+    data_nova = datetime.fromisoformat(data).date() 
+
     #Cadastro da situação da peça
     print("\nPonha a situação da peça: 'venda', 'doação' ou 'ficar'") 
     while True:
@@ -89,85 +150,282 @@ def comando1():
                 print("Ponha a situação: 'venda', 'doação' ou 'ficar'")   
         except ValueError: 
             print("Ponha apenas letras")
+
     # Se a situação da peça for para venda, perguntar o preço da peça
     if situacao_tratado == "venda":
         print("\nPonha o preço da peça:")
         while True:
             try:
                 preco_novo = float(input()) 
-                break
+                if preco_novo >= 0:
+                    break
+                else:
+                    print("Ponha um número maior que ou igual a zero:")
             except ValueError:
-                print("Ponha um número real para representar o preço:")
-    
-    #Cadastro dos estilos da peça
-    print("\nQuantos estilos a peça está inserida: ")
-    while True:
-        try:
-            n = int(input())
-            if n >= 0:
-                break 
-            else:
-                print("Ponha um número maior que ou igual a zero:")
-        except:
-            print("Ponha um número:")
-    for j in range(n):
-        for i in range(len(lista_estilos)):
-            print("Digite %d para esolher o estilo "%(i+1), lista_estilos[i])
-        print("digite 0 se a peça não faz parte desses estilos")
-        while True:
-            try:
-                num_estilo =int(input())
-                for i in range(len(lista_estilos)):
-                    if num_estilo == i+1:
-                        lista_num_estilos.append(num_estilo)
-                        break 
-                    if num_estilo == 0:
-                        comando4()
-                        estilos_peca_nova.append() #Adicionar depois de feita a parte do Edson
-                        break
-                print("Digite um dos números válidos")
-            except ValueError:
-                print("Digite apenas números") 
-        print(" ")
-
-    for i in num_estilo:
-        # Estrutura condicional para tirar possíveis estilos repetidos
-        if lista_estilos[i-1] not in estilos_peca_nova:
-            estilos_peca_nova.append(lista_estilos[i-1])
-
-    if len(pecas) != 0:
-        id_novo = pecas[len(pecas)-1]["id"] + 1 
+                print("Ponha um número:") 
     else:
-        id_novo = 1  
-        
-    peca_nova = {
-         "id": id_novo
-        ,"tipo": tipo_tratado
-        ,"tamanho": tamanho_tratado 
-        ,"padrão": padrao_tratado
-        ,"cor": cor_tratado
-        ,"data": date.today()
-        ,"situação": situacao_tratado
-        ,"preço": preco_novo  
-        ,"estilos": estilos_peca_nova } 
-    pecas.append(peca_nova)
+        preco_novo == 0.0
+    # Chamando a função inserir_peca
+    inserir_peca(tipo_tratado,padrao_tratado,cor_tratado,data_nova,situacao_tratado,preco_novo)
 
 
 # Alterar peça - Israel
 def comando2():
+
     print("Ponha o id da peça que deseja alterar:")
     try:
         id_peca = int(input())
     except ValueError:
-        print("Ponha um número")
-    # tipo_peca  = 
-    # alterar_peca(id_peca,tipo_peca,tamanho_peca,padrao_peca,cor_peca,data_peca,situacao_peca,preco_peca)
-    return
+        print("Ponha um número") 
 
+    #Identificando e armazenando em uma variável a peça
+    for cada_peca in pecas: 
+        if cada_peca["id"] == id_peca:
+            peca_para_alteracao = cada_peca 
+
+    # Cada parte da data da peça sem alteração
+    # dia_sem_alteracao = peca_para_alteracao["data"].strftime("%d")
+    # mes_sem_alteracao = peca_para_alteracao["data"].strftime("%m")
+    # ano_sem_alteracao = peca_para_alteracao["data"].strftime("%Y")
+
+    # Pôr a alteração no tipo da peça
+    print("Ponha o tipo da peça alterada: 'calçado', 'inferior' ou 'superior'")
+    print("Caso não deseje alterar o tipo aperte enter.")
+    while True:
+        try:
+            tipo_peca = input()
+            tipo_peca_tratado = tipo_peca.lower()
+            if tipo_peca_tratado in lista_tipo:
+                break
+            else:
+                print("Ponha o tipo 'calçado', 'inferior' ou 'superior'")  
+        except ValueError: 
+            print("Ponha apenas letras") 
+    
+    # Alteração do tamanho da peça
+    print("\nPonha o tamanho da peça alterada: 'p', 'm' ou 'g'")
+    print("Caso não deseje alterar o tamanho aperte enter.")
+    while True:
+        try:
+            tamanho_peca = input()
+            tamanho_peca_tratado = tamanho_peca.lower()
+            if tamanho_peca_tratado in lista_tamanho:               
+                break
+            else:
+                print("Ponha o tamanho: 'p', 'm' ou 'g'")  
+        except ValueError: 
+            print("Ponha apenas letras") 
+
+    # Alteração do padrão da peça  
+    print("\nPonha o padrão da peça alterada: 'feminino', 'masculino' ou 'unissex'") 
+    print("Caso não deseje alterar o padrão aperte enter.")   
+    while True:
+        try:
+            padrao_peca = input()
+            padrao_peca_tratado = padrao_peca.lower()
+            if padrao_peca_tratado in lista_padrao:
+                break
+            else:
+                print("Ponha o padrão: 'feminino', 'masculino' ou 'unissex'")  
+        except ValueError: 
+            print("Ponha apenas letras")
+
+    # Alteração da cor da peça
+    print("\nPonha a cor da peça alterada: ")
+    print("Caso não deseje alterar a cor aperte enter.")
+    while True:
+        try:
+            cor_peca = input()
+            cor_peca_tratado = cor_peca.lower()
+            if cor_peca_tratado in lista_cores or cor_peca_tratado == "":
+                break
+            else:
+                print("Ponha a cor: 'vermelho', 'azul', 'amarelo', 'rosa', 'branco', 'cinza', 'verde', 'preto', 'roxo', 'violeta' ou 'laranja' ")  
+        except ValueError: 
+            print("Ponha apenas letras")
+    
+    # Altera a data da peça
+    print("\nPonha a data da peça alterada:")
+    print("Insira o ano da peça alterada:")
+    print("Caso não deseje alterar a ano da peça aperte enter.")
+    while True:
+        try: 
+            ano = input() 
+            if len(ano) == 4 or ano =="": 
+                break 
+            else:
+                print("Ponha um número de 4 digitos")
+        except ValueError:
+            print("Ponha um número") 
+
+    print("\nInsira o mês da peça:")
+    print("Caso não deseje alterar o mês da peça aperte enter")
+    # alteração do mês
+    while True:
+        try:
+            mes = input()
+            if (len(mes) == 2 and int(mes) <= 12 and int(mes) > 0) or mes == "":
+                break
+            else:
+                print("ponha um número maior que zero de 2 digitos")
+        except ValueError:
+            print("Ponha um número") 
+
+    print("\nInsira o dia da peça:")
+    # alteração do dia considerando se o mês é de 30 dias, 31 dias ou se o ano é bissexto
+    while True:
+        try:
+            dia = input()
+            if len(dia) == 2 and int(dia) >= 1:
+                if mes != "": # Se o mês foi alterado
+                    if mes in mes_com30: 
+                        if int(dia) <= 30:
+                            break
+                        else:
+                            print("O mês selecionado só vai até 30")
+                    if mes in mes_com31: 
+                        if int(dia) <=31:
+                            break
+                        else:
+                            print("O mês selecionado só vai até 31")
+                    if mes == "02": 
+                        if ano != "":
+                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                            elif int(ano)%4 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                            else:
+                                if int(dia) <= 28:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                        else:
+                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                            elif int(ano)%4 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                            else:
+                                if int(dia) <= 28:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                else: # Se o mês não foi alterado 
+                    if mes in mes_com30: 
+                        if int(dia) <= 30:
+                            break
+                        else:
+                            print("O mês selecionado só vai até 30")
+                    if mes in mes_com31: 
+                        if int(dia) <=31:
+                            break
+                        else:
+                            print("O mês selecionado só vai até 31")
+                    if mes == "02": 
+                        if ano != "":
+                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                            elif int(ano)%4 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                            else:
+                                if int(dia) <= 28:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                        else:
+                            if int(ano)%100 == 0 and int(ano)%400 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+                            elif int(ano)%4 == 0:
+                                if int(dia) <= 29:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28") 
+                            else:
+                                if int(dia) <= 28:
+                                    break 
+                                else:
+                                    print("No ano selecionado, o mês de fevereiro só vai até 28")
+
+            else:
+                print("Ponha um número de 2 dígitos, maior que zero") 
+        except ValueError:
+            print("Ponha um número") 
+    data = ano + "-" + mes + "-" + dia
+    data_nova = datetime.fromisoformat(data).date() 
+
+
+    # Alteração da situação da peça
+    print("\nPonha a situação da peça alterada: 'venda', 'doação' ou 'ficar'")
+    print("Caso não deseje alterar a situação aperte enter.") 
+    while True:
+        try:
+            situacao_peca = input()
+            situacao_peca_tratado = situacao_peca.lower()
+            if situacao_peca_tratado in lista_situacao:
+                break
+            else:
+                print("Ponha a situação: 'venda', 'doação' ou 'ficar'")   
+        except ValueError: 
+            print("Ponha apenas letras") 
+
+    preco_peca_novo = 0.0 #Se a peça não for para venda o preço da peça será 0 
+    # Se a situação da peça alterada for para venda, perguntar o preço da peça
+    if situacao_peca_tratado == "venda":
+        print("\nPonha o preço da peça:")
+        print("Caso não deseje alterar o preço digite -1.")
+        while True:
+            try:
+                preco_peca_novo = float(input()) 
+                if preco_peca_novo >= 0:
+                    break
+                elif preco_peca_novo == -1:
+                    break
+                else:
+                    print("Ponha um valor maior que ou igual a zero:")
+            except ValueError:
+                print("Ponha um número real para representar o preço:")
+    # Se o usuário não desejar mudar o preço, envia para a função de modo que não altere o preço
+    if preco_peca_novo == -1:
+        preco_peca_novo == ""
+
+    alterar_peca(id_peca,tipo= tipo_peca_tratado,tamanho= tamanho_peca_tratado, padrao= padrao_peca_tratado,cor=cor_peca_tratado,data=data_nova )
+    return
 
 # Remover peça - Israel
 def comando3():
-    return
+    # Pede ao usuario o id da peça que deseja remover e chama a função remover_peca
+    print("Digite o id da peça que deseja remover:")
+    while True:
+        try:
+            id_para_remover = int(input())
+            if id_para_remover > 0:
+                break
+            else:
+                print("Ponha um id válido")
+        except ValueError:
+            print("Ponha um número") 
+    remover_peca(id_para_remover) 
+    return   
 
 
 # Cadastrar estilo - Edson
