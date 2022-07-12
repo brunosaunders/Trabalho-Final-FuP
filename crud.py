@@ -19,19 +19,25 @@ def criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco):
 
 
 # Responsável por REGISTRAR uma peça no guarda-roupa
-def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco):
+def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco, id= ""):
 
-    # Se a lista de peças estiver vazia, o id da nova peça será 1
-    if len(ids_cadastrados) == 0:
-        peca_id = 1
+    # Se o id não for informado, crie o id
+    if id == "":
+        # Se a lista de peças estiver vazia, o id da nova peça será 1
+        if len(ids_cadastrados) == 0:
+            peca_id = 1
+        else:
+            # Pega o último id cadastrado e adiciona 1 para cadastrar a nova peça com id único
+            last_index = len(ids_cadastrados) - 1
+            ultimo_id = ids_cadastrados[last_index]
+            peca_id = ultimo_id + 1
+    # Se o id for informado, crie a peça com o id informado 
     else:
-        # Pega o último id cadastrado e adiciona 1 para cadastrar a nova peça com id único
-        last_index = len(ids_cadastrados) - 1
-        ultimo_id = ids_cadastrados[last_index]
-        peca_id = ultimo_id + 1
+        peca_id = id
 
     peca = criar_peca(peca_id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
     pecas.append(peca) # Registra a peça em pecas
+
 
 
 def criar_estilo(nome_estilo, contador=0):
@@ -542,6 +548,55 @@ def carregar_arquivos():
     carregar_historico_pecas_doadas()
     carregar_ids()
 
+# Salva as peças em um arquivo.txt separado por vírgula
+# Guarda o id, tipo, tamanho, padrão, cor, data, situação, preço e estilos da peça 
+def salvar_pecas():
+    with open(".pecas.txt","w") as file:
+
+        # Header do arquivo
+        file.write("id,tipo,tamanho,padrão,cor,data,situação,preço,[estilos]")
+
+        # Estrutura de repetição para pegar cada peça da lista pecas
+        for peca in pecas:
+            linha = ""
+
+            # Pega cada chave do dicionario e adiciona seus valores no acumulador linha
+            for variaveis in pecas[0]:
+                linha += f"{variaveis}" + ","
+
+            # Retira a última virgula 
+            linha.strip(",") 
+
+            file.write(linha + "\n")
+            
+def carregar_peca():
+    try:
+        with open(".pecas.txt","r") as file:
+
+        # Lê o arquivo e retorna uma lista com todas as linhas de dados
+            linhas = file.read().split("\n")[1:] # [1:] para descartar a primeira linha (Header)
+            linhas.pop() # Eliminar linha vazia no final
+
+            for linha in linhas:
+
+                valores = linha.split(",")
+                
+                # Guarda os valores da venda em variáveis explícitas
+                id_peca = int(valores[0])
+                tipo = valores[1]
+                tamanho = valores[2]
+                padrao = valores[3]
+                cor = valores[4]
+                data = datetime.fromisoformat(valores[5]).date() # Transforma Str em um objeto datetime
+                situacao = valores[6]
+                preco = float(valores[7])
+
+                inserir_peca(tipo,tamanho,padrao,cor,data,situacao,preco,id = id_peca)
+
+    except IOError:
+        # Se não existir o arquivo, não faz nada
+        return
+        
 # Salva todos os estilos em arquivo estilos.txt separando cada valor por vírgula
 # Guarda nome do estilo, contador e todos os ids de peças, sem diferenciar por tipo
 def salvar_estilos():
