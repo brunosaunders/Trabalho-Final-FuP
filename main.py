@@ -172,7 +172,47 @@ def comando3():
 
 # Cadastrar estilo - Edson
 def comando4():
-    return
+    try:
+        nome_estilo = input("\nDigite o nome do estilo: ")
+        criar_estilo(nome_estilo)
+    except Exception as e:
+        print("\nOcorreu um erro ao cadastrar o estilo:", e)
+        return
+
+    inserir = False
+    while True:
+        resposta = input("\nDeseja inserir peças ao estilo? [s/n] ")
+        resposta = resposta.lower()
+
+        if resposta == "s" or resposta == "sim":
+            inserir = True
+            break
+        elif resposta == "n" or resposta == "nao" or resposta == "não":
+            inserir = False
+            break
+        else:
+            print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+
+    while inserir:
+        try:
+            id_peca = int(input("\nDigite o id da peça que deseja inserir no estilo: "))
+        except ValueError:
+            print("\nValor de ID inválido. Tente novamente!")
+            continue
+
+        adicionar_peca_a_estilo(id_peca, nome_estilo)
+
+        while True:
+            resposta = input("\nDeseja inserir outra peça ao estilo? [s/n] ")
+            resposta = resposta.lower()
+
+            if resposta == "s" or resposta == "sim":
+                break
+            elif resposta == "n" or resposta == "nao" or resposta == "não":
+                inserir = False
+                break
+            else:
+                print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
 
 
 # Alterar estilo - Edson
@@ -182,7 +222,13 @@ def comando5():
 
 # Remover estilo - Edson
 def comando6():
-    return
+    nome_estilo = input("\nDigite o nome do estilo: ")
+
+    if nome_estilo in estilos.keys():
+        remover_estilo(nome_estilo)
+        print('\nEstilo "%s" foi removido do sistema!' %nome_estilo)
+    else:
+        print('\nEstilo "%s" não está cadastrado!' %nome_estilo)
 
 
 # Listar todas as peças - Bruno
@@ -281,7 +327,7 @@ def comando14():
 
 # Listar peças vendidas - Edson
 def comando15():
-    return
+    listar_pecas_vendidas()
 
 
 # Listar peças doadas - Bruno
