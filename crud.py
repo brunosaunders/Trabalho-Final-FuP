@@ -646,10 +646,10 @@ def listar_pecas_para_doacao():
 
     # Estrutura condicional: Se não houver nenhuma peça para venda, imprime uma mensagem, senão chama a função print_pecas_filtradas.
     if len(lista_doacao_ordenada) == 0:
-        print('Não foram encontradas peças para doação')
+        print('\nNão foram encontradas peças para doação')
         return 
 
-    print('Listando peças para doação:')
+    print('\nListando peças para doação:')
     print_pecas_filtradas(lista_doacao_ordenada)
 
 # Printa informações da peça juntamente com seu estilo
