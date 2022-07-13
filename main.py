@@ -102,7 +102,7 @@ def comando1():
                 if len(mes) == 2:
                     break
             else:
-                print("ponha um número maior que zero de 2 digitos")
+                print("ponha um número entre 0 e 12")
         except ValueError:
             print("Ponha um número inteiro")  
     print("\nInsira o dia da peça:")
@@ -139,7 +139,7 @@ def comando1():
                             else:
                                 print(f"\nEm {ano}, fevereiro só vai até 28")
                 else:
-                    print("\nPonha um número de 2 dígitos, maior que zero")  
+                    print("\nPonha um número maior que zero")  
         except ValueError:
             print("\nPonha um número inteiro") 
     data = ano + "-" + mes + "-" + dia
@@ -302,7 +302,7 @@ def comando2():
             elif mes == "":
                 break
             else:
-                print("\nponha um número maior que zero de 2 digitos")
+                print("\nponha um número entre 0 e 12")
         except ValueError:
             print("\nPonha um número") 
 
@@ -392,7 +392,7 @@ def comando2():
                 break
 
             else:
-                print("\nPonha um número de 2 dígitos, maior que zero") 
+                print("\nPonha um número maior que zero") 
         except ValueError:
             print("\nPonha um número")  
 
