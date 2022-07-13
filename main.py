@@ -82,54 +82,57 @@ def comando1():
     while True:
         try: 
             ano = input() 
-            if len(ano) == 4 and int(ano) >=0: 
-                break 
+            if int(ano) >=0:
+                if len(ano) == 4: 
+                    break 
             else:
                 print("Ponha um número de 4 digitos")
         except ValueError:
-            print("Ponha um número") 
+            print("Ponha um número inteiro") 
     print("\nInsira o mês da peça:")
     # Cadastro do mês
     while True:
         try:
             mes = input()
-            if len(mes) == 2 and int(mes) <= 12 and int(mes) > 0:
-                break
+            if int(mes) <= 12 and int(mes) > 0:
+                if len(mes) == 2:
+                    break
             else:
                 print("ponha um número maior que zero de 2 digitos")
         except ValueError:
-            print("Ponha um número")  
+            print("Ponha um número inteiro")  
     print("\nInsira o dia da peça:")
     # Cadastro do dia considerando se o mês é de 30 dias, 31 dias ou se o ano é bissexto
     while True:
+        dia = input()
         try:
-            dia = input()
-            if len(dia) == 2 and int(dia) >= 1:
-                if mes in mes_com30: 
-                    if int(dia) <= 30:
-                        break
-                    else:
-                        print("O mês selecionado só vai até 30")
-                if mes in mes_com31: 
-                    if int(dia) <=31:
-                        break
-                    else:
-                        print("O mês selecionado só vai até 31")
-                if mes == "02": 
-                    if int(ano)%4 == 0:
-                        if int(dia) <= 29:
-                            break 
+            if int(dia) >= 1:
+                if len(dia) == 2:
+                    if mes in mes_com30: 
+                        if int(dia) <= 30:
+                            break
                         else:
-                            print("No ano selecionado, o mês de fevereiro só vai até 29") 
-                    else:
-                        if int(dia) <= 28:
-                            break 
+                            print("O mês selecionado só vai até 30")
+                    if mes in mes_com31: 
+                        if int(dia) <=31:
+                            break
                         else:
-                            print("No ano selecionado, o mês de fevereiro só vai até 28")
-            else:
-                print("Ponha um número de 2 dígitos, maior que zero") 
+                            print("O mês selecionado só vai até 31")
+                    if mes == "02": 
+                        if int(ano)%4 == 0:
+                            if int(dia) <= 29:
+                                break 
+                            else:
+                                print("No ano selecionado, o mês  selecionado só vai até 29") 
+                        else:
+                            if int(dia) <= 28:
+                                break 
+                            else:
+                                print("No ano selecionado, o mês selecionado só vai até 28")
+                else:
+                    print("Ponha um número de 2 dígitos, maior que zero")  
         except ValueError:
-            print("Ponha um número") 
+            print("Ponha um número inteiro")
     data = ano + "-" + mes + "-" + dia
     data_nova = datetime.fromisoformat(data).date() 
 
@@ -159,9 +162,9 @@ def comando1():
             except ValueError:
                 print("Ponha um número:") 
     else:
-        preco_novo == 0.0
+        preco_novo = 0.0
     # Chamando a função inserir_peca
-    inserir_peca(tipo_tratado,padrao_tratado,cor_tratado,data_nova,situacao_tratado,preco_novo)
+    inserir_peca(tipo_tratado,tamanho_tratado,padrao_tratado,cor_tratado,data_nova,situacao_tratado,preco_novo)
 
 
 # Alterar peça - Israel
