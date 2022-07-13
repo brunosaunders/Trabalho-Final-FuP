@@ -756,6 +756,7 @@ def menu_comandos():
         # Se última linha, printar último comando como 0
         if i == linhas_comandos - 1:
             print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {0:2d} --> {comandos[(linhas_comandos*2)+i]:24s} |")
+            continue
 
         # Printar 3 colunas de comandos
         print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {(linhas_comandos*2)+i+1:2d} --> {comandos[(linhas_comandos*2)+i]:24s} |")
