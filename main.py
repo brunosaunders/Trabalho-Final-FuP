@@ -176,7 +176,8 @@ def comando2():
     try:
         id_peca = int(input())
     except ValueError:
-        print("\nPonha um número") 
+        print("\nId inválido!")
+        return 
 
     peca_para_alteracao = "" # Inicializa para comparar depois
     #Identificando e armazenando em uma variável a peça
@@ -196,7 +197,7 @@ def comando2():
     dia_sem_alterar = data_sem_alterar[8:]
 
     # Pôr a alteração no tipo da peça
-    print("\nPonha o tipo da peça alterada: 'calçado', 'inferior' ou 'superior'")
+    print("\nAltere o tipo da peça para: 'calçado', 'inferior' ou 'superior'")
     print("Caso não deseje alterar o tipo aperte enter.")
     while True:
         try:
@@ -210,7 +211,7 @@ def comando2():
             print("\nPonha apenas letras") 
     
     # Alteração do tamanho da peça
-    print("\nPonha o tamanho da peça alterada: 'p', 'm' ou 'g'")
+    print("\nAltere o tamanho da peça para: 'p', 'm' ou 'g'")
     print("Caso não deseje alterar o tamanho aperte enter.")
     while True:
         try:
@@ -224,7 +225,7 @@ def comando2():
             print("\nPonha apenas letras") 
 
     # Alteração do padrão da peça  
-    print("\nPonha o padrão da peça alterada: 'feminino', 'masculino' ou 'unissex'") 
+    print("\nAltere o padrão da peça para: 'feminino', 'masculino' ou 'unissex'") 
     print("Caso não deseje alterar o padrão aperte enter.")   
     while True:
         try:
@@ -238,7 +239,7 @@ def comando2():
             print("\nPonha apenas letras")
 
     # Alteração da cor da peça
-    print("\nPonha a cor da peça alterada: ")
+    print("\nAltere a cor da peça para: 'vermelho', 'azul', 'amarelo', 'rosa', 'branco', 'cinza', 'verde', 'preto', 'roxo', 'violeta' ou 'laranja'")
     print("Caso não deseje alterar a cor aperte enter.")
     while True:
         try:
@@ -252,9 +253,10 @@ def comando2():
             print("Ponha apenas letras")
     
     # Altera a data da peça
-    print("\nPonha a data da peça alterada:")
-    print("Insira o ano da peça alterada:")
+    print("\nAlterar a data da peça:")
     print("Caso não deseje alterar a ano da peça aperte enter.")
+    print("Para que ano deve ser alterada?")
+    
     while True:
         try: 
             ano = input() 
@@ -264,9 +266,10 @@ def comando2():
                 print("\nPonha um número de 4 digitos")
         except ValueError:
             print("\nPonha um número") 
-
-    print("\nInsira o mês da peça:")
+    
     print("Caso não deseje alterar o mês da peça aperte enter")
+    print("\nPara que mês deve ser alterada?")
+
     # alteração do mês
     while True:
         try:
@@ -278,7 +281,8 @@ def comando2():
         except ValueError:
             print("\nPonha um número") 
 
-    print("\nInsira o dia da peça:")
+    print("Caso não deseje alterar o dia da peça aperte enter")
+    print("\nPara que dia deve ser alterada?")
     # alteração do dia considerando se o mês é de 30 dias, 31 dias ou se o ano é bissexto
     while True:
         try:
@@ -386,7 +390,7 @@ def comando2():
         data_nova = datetime.fromisoformat(data).date()
 
     # Alteração da situação da peça
-    print("\nPonha a situação da peça alterada: 'venda', 'doação' ou 'ficar'")
+    print("\nAltere a situação da peça para: 'venda', 'doação' ou 'ficar'")
     print("Caso não deseje alterar a situação aperte enter.") 
     while True:
         try:
@@ -401,8 +405,8 @@ def comando2():
 
     preco_peca_novo = 0.0 #Se a peça não for para venda o preço da peça será 0 
     # Se a situação da peça alterada for para venda, perguntar o preço da peça
-    if situacao_peca_tratado == "venda":
-        print("\nPonha o preço da peça:")
+    if situacao_peca_tratado == SITUACAO_VENDA or (peca_para_alteracao["situação"] == SITUACAO_VENDA and situacao_peca_tratado==""):
+        print("\nAltere o preço da peça para:")
         print("Caso não deseje alterar o preço digite -1.")
         while True:
             try:
