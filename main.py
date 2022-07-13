@@ -12,19 +12,19 @@ informacao = {
 # Implementar os comandos usando as funções já criadas. Testar tudo a fim de encontrar possíveis bugs.
 # Se encontrarem algum bug, tentem resolver e alertem sobre ele no grupo.
 
-
-lista_cores = ["",COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
-lista_tipo = ["",TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
-lista_padrao = ["",PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
-lista_tamanho = ["",TAMANHO_G,TAMANHO_M,TAMANHO_P]
-lista_situacao = ["",SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA] 
 mes_com30 = ["04","06","09","11"]
 mes_com31 = ["01","03","05","07","08","10","12"]
 
 # Cadastrar peça - Israel
 def comando1():
+    lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
+    lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
+    lista_padrao = [PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
+    lista_tamanho = [TAMANHO_G,TAMANHO_M,TAMANHO_P]
+    lista_situacao = [SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA] 
+
     # Cadastro do tipo da peça
-    print("Ponha o tipo da peça: 'calçado', 'inferior' ou 'superior'")
+    print("\nPonha o tipo da peça: 'calçado', 'inferior' ou 'superior'")
     while True:
         try:
             tipo = input()
@@ -63,7 +63,7 @@ def comando1():
             print("Ponha apenas letras")
     
     # Cadastro da cor da peça
-    print("\nPonha a cor da peça ")
+    print("\nPonha a cor da peça: 'vermelho', 'azul', 'amarelo', 'rosa', 'branco', 'cinza', 'verde', 'preto', 'roxo', 'violeta' ou 'laranja'")
     while True:
         try:
             cor = input()
@@ -76,7 +76,6 @@ def comando1():
             print("Ponha apenas letras")
 
     # Cadastro da data da peça 
-    print("\nPonha a data da peça:")
     print("Insira o ano da peça:")
     # Cadastro do ano
     while True:
@@ -109,27 +108,27 @@ def comando1():
                     if int(dia) <= 30:
                         break
                     else:
-                        print("O mês selecionado só vai até 30")
+                        print("\nO mês selecionado só vai até 30")
                 if mes in mes_com31: 
                     if int(dia) <=31:
                         break
                     else:
-                        print("O mês selecionado só vai até 31")
+                        print("\nO mês selecionado só vai até 31")
                 if mes == "02": 
                     if int(ano)%4 == 0:
                         if int(dia) <= 29:
                             break 
                         else:
-                            print("No ano selecionado, o mês de fevereiro só vai até 29") 
+                            print("\nNo ano selecionado, o mês de fevereiro só vai até 29") 
                     else:
                         if int(dia) <= 28:
                             break 
                         else:
-                            print("No ano selecionado, o mês de fevereiro só vai até 28")
+                            print("\nNo ano selecionado, o mês de fevereiro só vai até 28")
             else:
-                print("Ponha um número de 2 dígitos, maior que zero") 
+                print("\nPonha um número de 2 dígitos, maior que zero") 
         except ValueError:
-            print("Ponha um número") 
+            print("\nPonha um número") 
     data = ano + "-" + mes + "-" + dia
     data_nova = datetime.fromisoformat(data).date() 
 
@@ -142,12 +141,12 @@ def comando1():
             if situacao_tratado in lista_situacao:
                 break
             else:
-                print("Ponha a situação: 'venda', 'doação' ou 'ficar'")   
+                print("\nPonha a situação: 'venda', 'doação' ou 'ficar'")   
         except ValueError: 
-            print("Ponha apenas letras")
+            print("\nPonha apenas letras")
 
     # Se a situação da peça for para venda, perguntar o preço da peça
-    if situacao_tratado == "venda":
+    if situacao_tratado == SITUACAO_VENDA:
         print("\nPonha o preço da peça:")
         while True:
             try:
@@ -155,9 +154,9 @@ def comando1():
                 if preco_novo >= 0:
                     break
                 else:
-                    print("Ponha um número maior que ou igual a zero:")
+                    print("\nPonha um número maior que ou igual a zero:")
             except ValueError:
-                print("Ponha um número:") 
+                print("\nPonha um número:") 
     else:
         preco_novo = 0.0
 
@@ -167,6 +166,11 @@ def comando1():
 
 # Alterar peça - Israel
 def comando2():
+    lista_cores = ["",COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
+    lista_tipo = ["",TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
+    lista_padrao = ["",PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
+    lista_tamanho = ["",TAMANHO_G,TAMANHO_M,TAMANHO_P]
+    lista_situacao = ["",SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA] 
 
     if len(pecas) == 0:
         print("\nNão existem peças para serem alteradas")
