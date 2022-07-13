@@ -1,1 +1,2 @@
 estilos,contador,[id_peças]
+casual,0,1,2,3
