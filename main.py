@@ -460,6 +460,7 @@ def comando4():
         try:
             id_peca = int(input("\nDigite o id da peça que deseja inserir no estilo: "))
             adicionar_peca_a_estilo(id_peca, nome_estilo)
+            print("\nPeça adicionada com sucesso!")
         # Informa o caso do ID passado não ser inteiro.
         except ValueError:
             print("\nValor de ID inválido. Tente novamente!")
@@ -486,7 +487,7 @@ def comando4():
 
 # Alterar estilo - Edson
 def comando5():
-    return
+    alterar_estilo()
 
 
 # Remover estilo - Edson

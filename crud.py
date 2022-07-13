@@ -72,7 +72,6 @@ def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
         
         # Adiciona o estilo à peça
         peca["estilos"].append(nome_estilo)
-        print("\nPeça adicionada com sucesso!")
     else:
         print(f"Não foi possível adicionar peça de id {id_peca} ao estilo {nome_estilo}, pois a peça já pertence ao estilo.")
 
@@ -113,10 +112,138 @@ def alterar_peca(id, tipo="", tamanho="", padrao="", cor="", data="", situacao="
     print(f"Peça de id {id} alterada com sucesso!")
 
 
-# TODO: Falta implementar Alterar Estilo
 def alterar_estilo():
-    return
+    # Checa se existem estilos cadastrados
+    if len(estilos) == 0:
+        print("\nVocê ainda não cadastrou nenhum estilo!")
+        return
 
+    lista_nomes = list(estilos.keys()) # Lista de nomes de estilos
+    nome_estilo = "" # Nome do estilo que será alterado
+
+    while True:
+        # Enumera os estilos cadastrados e recebe a escolha do usuário
+        for i in range(len(lista_nomes)):
+            print("%d - %s" %((i+1), lista_nomes[i]))
+        
+        selecao = input("\nSelecione um estilo para alterar: ")
+
+        # Recebe e trata o input do usuário aceitando o nome do estilo ou o número equivalente.
+        try:
+            selecao = int(selecao)
+            selecao -= 1
+
+            if selecao >= 0 and selecao < len(lista_nomes):
+                nome_estilo = lista_nomes[selecao]
+                break
+            else:
+                print("\nEntrada inválida, tente novamente.")
+                continue
+        
+        # Se o input for uma string, verifica se está se é uma chave do dict estilos
+        except ValueError as e:
+            if selecao in lista_nomes:
+                nome_estilo = selecao
+            else:
+                print("\nEstilo não cadastrado, tente novamente.")
+                continue
+        
+        # Se algo der errado, printar entrada inválida
+        except Exception as e:
+            print("\nEntrada inválida, tente novamente.")
+            continue
+
+    # Checa se o usuário deseja remover alguma peça do estilo
+    remover_peca = False
+    while True:
+        resposta = input("\nDeseja remover peças do estilo %s? [s/n] " %nome_estilo)
+        resposta = resposta.lower()
+
+        if resposta == "s" or resposta == "sim":
+            remover_peca = True
+            break
+        elif resposta == "n" or resposta == "não" or resposta == "nao":
+            remover_peca = False
+            break
+        else:
+            print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+
+    while remover_peca:
+        # Lista as peças que estão no estilo
+        pecas_estilo = []
+        for tipo in estilos[nome_estilo]["peças"]:
+            for peca in tipo:
+                pecas_estilo.append(peca)
+        print_pecas_filtradas(pecas_estilo)
+    
+        # Remove uma peça escolhida pelo usuário e trata possíveis entradas inválidas.
+        try:
+            id_peca = int(input("\nDigite o id da peça que deseja remover do estilo: "))
+            remover_peca_do_estilo(id_peca, nome_estilo)
+            print("\nPeça removida com sucesso!")
+        # Informa o caso do ID passado não ser inteiro.
+        except ValueError:
+            print("\nValor de ID inválido. Tente novamente!")
+            continue
+        # Informa os casos de erro gerais, como o ID inexistente.
+        except Exception as e:
+            print(f'\nErro ao remover peça do estilo: {e}. Tente novamente!')
+            continue
+
+        # Checa se o usuário deseja remover mais uma peça do estilo.
+        while True:
+            resposta = input("\nDeseja remover outra peça do estilo? [s/n] ")
+            resposta = resposta.lower()
+
+            if resposta == "s" or resposta == "sim":
+                break
+            elif resposta == "n" or resposta == "nao" or resposta == "não":
+                remover_peca = False
+                break
+            else:
+                print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+
+    # Checa se o usuário deseja mudar o nome do estilo
+    mudar_nome = False
+    while True:
+        resposta = input("\nDeseja mudar o nome do estilo %s? [s/n] " %nome_estilo)
+        resposta = resposta.lower()
+
+        if resposta == "s" or resposta == "sim":
+            mudar_nome = True
+            break
+        elif resposta == "n" or resposta == "não" or resposta == "nao":
+            mudar_nome = False
+            break
+        else:
+            print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+ 
+    # Faz a mudança do nome do estilo
+    if mudar_nome:
+        novo_nome = ""
+
+        while True:
+            novo_nome = input("\nDigite o novo nome do estilo: ")
+
+            # Trata o caso de já existir um estilo com o novo nome
+            if novo_nome in lista_nomes:
+                print("\nJá existe um estilo com esse nome. Tente novamente!")
+                continue
+            else:
+                break
+    
+        # Cria uma nova chave no dicionário identica à já existente, mas com o nome novo, e remove a já existente.
+        estilos[novo_nome] = estilos.pop(nome_estilo)
+
+        # Procura as peças que estão no estilo mudado, retira o nome antigo e coloca o novo.
+        for peca in pecas:
+            if nome_estilo in peca["estilos"]:
+                peca["estilos"].remove(nome_estilo)
+                peca["estilos"].append(novo_nome)
+
+    print("\nEstilo alterado com sucesso!")
+            
+    
 
 # -------------------- DELETE -------------------- #
 
@@ -147,6 +274,24 @@ def remover_peca(id):
     for nome_estilo in peca["estilos"]:
         estilos[nome_estilo]["peças"][index_peca].remove(peca)
         print(f"Atenção: Peça de id {id} foi removida do estilo {nome_estilo}.")
+
+
+def remover_peca_do_estilo(id_peca, nome_estilo):
+    peca = retorna_peca_por_id(id_peca)
+    peca_index = indice_peca_em_estilos(peca)
+
+    # Verifica se a peça pertence ao estilo
+    if peca in estilos[nome_estilo]["peças"][peca_index]:
+        # Remove a peça do estilo especificado na matriz de peças de acordo com o seu tipo
+        for i in range(len(estilos[nome_estilo]["peças"][peca_index])):
+            if peca == estilos[nome_estilo]["peças"][peca_index][i]:
+                estilos[nome_estilo]["peças"][peca_index].pop(i)
+                break
+        
+        # Remove o estilo da peça
+        peca["estilos"].remove(nome_estilo)
+    else:
+        print(f"Não foi possível remover a peça de id {id_peca} do estilo {nome_estilo}, pois a peça não pertence ao estilo.")
 
 
 # adiciona informações da peça doada ao historico_pecas_vendidas.
@@ -356,7 +501,6 @@ def selecionar_estilo():
                 mudar = False
                 break
             elif resposta == "n" or resposta == "não":
-                estilos[estilo]["contador"] += 1
                 mudar = True
                 break
             else:
@@ -561,7 +705,6 @@ def listar_pecas_vendidas():
 # -------------------- ARQUIVOS -------------------- #
 
 # Salva todas as alterações feitas.
-# TODO: Ir adicionando aqui as funções de salvamento conforme são implementadas.
 def salvar_alteracoes():
     salvar_ids()
     salvar_pecas()
@@ -570,7 +713,6 @@ def salvar_alteracoes():
     salvar_historico_pecas_doadas()
 
 # Salva todas as alterações feitas.
-# TODO: Ir adicionando aqui as funções de carregamento conforme são implementadas.
 def carregar_arquivos():
     carregar_ids()
     carregar_pecas()
