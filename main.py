@@ -15,7 +15,7 @@ informacao = {
 mes_com30 = ["04","06","09","11"]
 mes_com31 = ["01","03","05","07","08","10","12"]
 
-# Cadastrar peça - Israel
+# Cadastrar peça
 def comando1():
     lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
     lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
@@ -177,7 +177,7 @@ def comando1():
     inserir_peca(tipo_tratado, tamanho_tratado, padrao_tratado, cor_tratado, data_nova, situacao_tratado, preco_novo)
 
 
-# Alterar peça - Israel
+# Alterar peça
 def comando2():
     lista_cores = ["",COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
     lista_tipo = ["",TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
@@ -457,7 +457,7 @@ def comando2():
     alterar_peca(id_peca,tipo= tipo_peca_tratado,tamanho= tamanho_peca_tratado, padrao= padrao_peca_tratado,cor=cor_peca_tratado,data=data_nova, preco=preco_peca_novo, situacao=situacao_peca_tratado)
     return
 
-# Remover peça - Israel
+# Remover peça
 def comando3():
     # Pede ao usuario o id da peça que deseja remover e chama a função remover_peca
     print("Digite o id da peça que deseja remover:")
@@ -474,7 +474,7 @@ def comando3():
     return   
 
 
-# Cadastrar estilo - Edson
+# Cadastrar estilo
 def comando4():
     # Cria um estilo novo com o nome dado pelo usuário e informa possíveis erros no processo.
     try:
@@ -531,12 +531,12 @@ def comando4():
     print(f"\nEstilo {nome_estilo} criado com sucesso!")
 
 
-# Alterar estilo - Edson
+# Alterar estilo
 def comando5():
     alterar_estilo()
 
 
-# Remover estilo - Edson
+# Remover estilo
 def comando6():
     lista_estilos = list(estilos.keys())
     nome_estilo = ""
@@ -575,12 +575,12 @@ def comando6():
     print('\nEstilo "%s" foi removido do sistema com sucesso!' %nome_estilo)
 
 
-# Listar todas as peças - Bruno
+# Listar todas as peças
 def comando7():
     listar_pecas()
 
 
-# Listar peças por tamanho e padrão - Bruno
+# Listar peças por tamanho e padrão
 def comando8():
 
     # Ordenando os comandos para chamá-los com o input do usuário
@@ -638,31 +638,31 @@ def comando8():
         print(f"\n{e}")
 
 
-# Listar estilos - Bruno
+# Listar estilos
 def comando9():
     listar_estilos()
     return
 
 
-# Pesquisar estilo por nome - Israel
+# Pesquisar estilo por nome
 def comando10():
     selecionar_estilo()
     return
 
 
-# Listar peças para venda - Israel
+# Listar peças para venda
 def comando11():
     listar_pecas_para_venda()
     return
 
 
-# Listar peças para doação - Israel
+# Listar peças para doação
 def comando12():
     listar_pecas_para_doacao()
     return
 
 
-# Vender peça - Edson
+# Vender peça
 def comando13():
     # Vende a peça passada pelo usuário e trata possíveis erros no processo.
     try:
@@ -681,7 +681,7 @@ def comando13():
         print("\n%s" %e)
 
 
-# Doar peça - Edson
+# Doar peça
 def comando14():
     # Doa a peça passada pelo usuário e trata possíveis erros no processo.
     try:
@@ -700,18 +700,18 @@ def comando14():
         print("\n%s" %e)
 
 
-# Listar peças vendidas - Edson
+# Listar peças vendidas
 def comando15():
     listar_pecas_vendidas()
 
 
-# Listar peças doadas - Bruno
+# Listar peças doadas
 def comando16():
     listar_pecas_doadas()
     return
 
 
-# Salvar alterações - Edson
+# Salvar alterações
 def comando17():
     try:
         salvar_alteracoes()
@@ -720,7 +720,7 @@ def comando17():
         print("\nErro ao salvar alterações:", e)
 
 
-# Finalizar programa - Bruno
+# Finalizar programa
 def comando0():
     if informacao["alteradas"]:
         print("\nALERTA: Você não salvou suas alterações")
