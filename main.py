@@ -13,11 +13,11 @@ informacao = {
 # Se encontrarem algum bug, tentem resolver e alertem sobre ele no grupo.
 
 
-lista_cores = [COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
-lista_tipo = [TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
-lista_padrao = [PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
-lista_tamanho = [TAMANHO_G,TAMANHO_M,TAMANHO_P]
-lista_situacao = [SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA] 
+lista_cores = ["",COR_AMARELO,COR_AZUL,COR_BRANCO,COR_CINZA,COR_LARANJA,COR_PRETO,COR_ROSA,COR_ROXO,COR_VERDE,COR_VERMELHO,COR_VIOLETA]
+lista_tipo = ["",TIPO_CALCADO,TIPO_INFERIOR,TIPO_SUPERIOR]
+lista_padrao = ["",PADRAO_UNISSEX,PADRAO_MASCULINO,PADRAO_FEMININO]
+lista_tamanho = ["",TAMANHO_G,TAMANHO_M,TAMANHO_P]
+lista_situacao = ["",SITUACAO_DOACAO,SITUACAO_FICAR,SITUACAO_VENDA] 
 mes_com30 = ["04","06","09","11"]
 mes_com31 = ["01","03","05","07","08","10","12"]
 
@@ -159,7 +159,7 @@ def comando1():
             except ValueError:
                 print("Ponha um número:") 
     else:
-        preco_novo == 0.0
+        preco_novo = 0.0
 
     # Chamando a função inserir_peca
     inserir_peca(tipo_tratado, tamanho, padrao_tratado, cor_tratado, data_nova, situacao_tratado, preco_novo)
@@ -172,11 +172,11 @@ def comando2():
         print("\nNão existem peças para serem alteradas")
         return
 
-    print("Ponha o id da peça que deseja alterar:")
+    print("\nPonha o id da peça que deseja alterar:")
     try:
         id_peca = int(input())
     except ValueError:
-        print("Ponha um número") 
+        print("\nPonha um número") 
 
     peca_para_alteracao = "" # Inicializa para comparar depois
     #Identificando e armazenando em uma variável a peça
@@ -196,7 +196,7 @@ def comando2():
     dia_sem_alterar = data_sem_alterar[8:]
 
     # Pôr a alteração no tipo da peça
-    print("Ponha o tipo da peça alterada: 'calçado', 'inferior' ou 'superior'")
+    print("\nPonha o tipo da peça alterada: 'calçado', 'inferior' ou 'superior'")
     print("Caso não deseje alterar o tipo aperte enter.")
     while True:
         try:
@@ -417,9 +417,9 @@ def comando2():
                 print("\nPonha um número real para representar o preço:")
     # Se o usuário não desejar mudar o preço, envia para a função de modo que não altere o preço
     if preco_peca_novo == -1:
-        preco_peca_novo == ""
+        preco_peca_novo = ""
 
-    alterar_peca(id_peca,tipo= tipo_peca_tratado,tamanho= tamanho_peca_tratado, padrao= padrao_peca_tratado,cor=cor_peca_tratado,data=data_nova )
+    alterar_peca(id_peca,tipo= tipo_peca_tratado,tamanho= tamanho_peca_tratado, padrao= padrao_peca_tratado,cor=cor_peca_tratado,data=data_nova, preco=preco_peca_novo, situacao=situacao_peca_tratado)
     return
 
 # Remover peça - Israel

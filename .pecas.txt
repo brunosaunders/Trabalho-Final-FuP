@@ -1,0 +1,2 @@
+id,tipo,tamanho,padrão,cor,data,situação,preço,[estilos]
+1,inferior,m,masculino,vermelho,1997-05-13,doação,0.0
