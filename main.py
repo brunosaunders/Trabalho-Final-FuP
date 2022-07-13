@@ -161,7 +161,7 @@ def comando1():
     else:
         preco_novo == 0.0
     # Chamando a função inserir_peca
-    inserir_peca(tipo_tratado,padrao_tratado,cor_tratado,data_nova,situacao_tratado,preco_novo)
+    inserir_peca(tipo_tratado, tamanho, padrao_tratado, cor_tratado, data_nova, situacao_tratado, preco_novo)
 
 
 # Alterar peça - Israel
@@ -185,7 +185,7 @@ def comando2():
 
     # Verifica se alguma peça foi encontrada, caso não, retorna
     if peca_para_alteracao == "":
-        print("\nPeça de id {id_peca} não encontrado!")
+        print(f"\nPeça de id {id_peca} não encontrado!")
         return
 
     # Cada parte da data da peça sem alteração
