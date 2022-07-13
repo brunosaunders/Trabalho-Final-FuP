@@ -538,16 +538,41 @@ def comando5():
 
 # Remover estilo - Edson
 def comando6():
+    lista_estilos = list(estilos.keys())
+    nome_estilo = ""
 
-    listar_estilos()
-    nome_estilo = input("\nDigite o nome do estilo que deseja remover: ")
+    # Enumera os estilos cadastrados e recebe a escolha do usuário
+    for i in range(len(lista_estilos)):
+        print("%d - %s" %((i+1), lista_estilos[i]))
 
-    # Remove o estilo entrado pelo usuário se existir no dicionário de estilos.
-    if nome_estilo in estilos.keys():
-        remover_estilo(nome_estilo)
-        print('\nEstilo "%s" foi removido do sistema!' %nome_estilo)
-    else:
-        print('\nEstilo "%s" não está cadastrado!' %nome_estilo)
+    selecao = input("\nSelecione um estilo: ")
+
+    # Recebe e trata o input do usuário aceitando o nome do estilo ou o número equivalente.
+    try:
+        selecao = int(selecao)
+        selecao -= 1
+
+        if selecao >= 0 and selecao < len(lista_estilos):
+            nome_estilo = lista_estilos[selecao]
+        else:
+            print("\nEstilo inválido!")
+            return
+
+    # Se o input for uma string, verificar se está em nomes (se é uma chave do dict estilos)
+    except ValueError as e:
+        if selecao in lista_estilos:
+            nome_estilo = selecao
+        else:
+            print('\nEstilo "%s" não está cadastrado!' %nome_estilo)
+            return
+
+    # Se algo der errado, informar problema
+    except Exception as e:
+        print("\nErro ao cadastrar estilo:",e)
+        return
+
+    remover_estilo(nome_estilo)
+    print('\nEstilo "%s" foi removido do sistema com sucesso!' %nome_estilo)
 
 
 # Listar todas as peças - Bruno
