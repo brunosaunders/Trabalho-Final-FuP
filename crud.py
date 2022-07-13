@@ -203,8 +203,8 @@ def alterar_estilo():
             continue
         # Informa os casos de erro gerais, como o ID inexistente.
         except Exception as e:
-            print(f'\nErro ao remover peça do estilo: {e}. Tente novamente!')
-            continue
+            print(f'\n{e}')
+            return
 
         # Checa se o usuário deseja remover mais uma peça do estilo.
         while True:

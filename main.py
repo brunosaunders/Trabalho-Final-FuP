@@ -511,7 +511,9 @@ def comando5():
 
 # Remover estilo - Edson
 def comando6():
-    nome_estilo = input("\nDigite o nome do estilo: ")
+
+    listar_estilos()
+    nome_estilo = input("\nDigite o nome do estilo que deseja remover: ")
 
     # Remove o estilo entrado pelo usuário se existir no dicionário de estilos.
     if nome_estilo in estilos.keys():
@@ -785,14 +787,7 @@ def interface_usuario():
 
     
 def main():
-    carregar_arquivos()
-    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    # inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    
+    carregar_arquivos() # Carrega arquivos ao executar o programa
     interface_usuario()
 
 if __name__ == "__main__":
