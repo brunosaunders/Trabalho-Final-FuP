@@ -1,1 +1,2 @@
 id,tipo,tamanho,padrão,cor,data_doação,data_guarda_roupa,vendido_para,preço
+<built-in function id>,calçado,g,unissex,branco,2022-07-13,1997-12-01,José,59.0

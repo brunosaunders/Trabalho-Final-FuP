@@ -353,7 +353,7 @@ def remover_peca_do_estilo(id_peca, nome_estilo):
 def registrar_peca_vendida(peca:dict, vender_para, data_venda=datetime.today().date()):
     # adiciona informações da peça doada ao historico_pecas_vendidas.
     historico_pecas_vendidas.append({
-        "id": id,
+        "id": peca["id"],
         "tipo": peca["tipo"],
         "tamanho": peca["tamanho"],
         "padrão": peca["padrão"],
@@ -383,7 +383,7 @@ def registrar_peca_doada(peca:dict, doar_para, data_doada=datetime.today().date(
 
     # adiciona informações da peça doada ao historico_pecas_doadas.
     historico_pecas_doadas.append({
-        "id": id,
+        "id": peca["id"],
         "tipo": peca["tipo"],
         "tamanho": peca["tamanho"],
         "padrão": peca["padrão"],
