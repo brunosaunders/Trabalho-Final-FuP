@@ -538,16 +538,41 @@ def comando5():
 
 # Remover estilo - Edson
 def comando6():
+    lista_estilos = list(estilos.keys())
+    nome_estilo = ""
 
-    listar_estilos()
-    nome_estilo = input("\nDigite o nome do estilo que deseja remover: ")
+    # Enumera os estilos cadastrados e recebe a escolha do usuário
+    for i in range(len(lista_estilos)):
+        print("%d - %s" %((i+1), lista_estilos[i]))
 
-    # Remove o estilo entrado pelo usuário se existir no dicionário de estilos.
-    if nome_estilo in estilos.keys():
-        remover_estilo(nome_estilo)
-        print('\nEstilo "%s" foi removido do sistema!' %nome_estilo)
-    else:
-        print('\nEstilo "%s" não está cadastrado!' %nome_estilo)
+    selecao = input("\nSelecione um estilo: ")
+
+    # Recebe e trata o input do usuário aceitando o nome do estilo ou o número equivalente.
+    try:
+        selecao = int(selecao)
+        selecao -= 1
+
+        if selecao >= 0 and selecao < len(lista_estilos):
+            nome_estilo = lista_estilos[selecao]
+        else:
+            print("\nEstilo inválido!")
+            return
+
+    # Se o input for uma string, verificar se está em nomes (se é uma chave do dict estilos)
+    except ValueError as e:
+        if selecao in lista_estilos:
+            nome_estilo = selecao
+        else:
+            print('\nEstilo "%s" não está cadastrado!' %nome_estilo)
+            return
+
+    # Se algo der errado, informar problema
+    except Exception as e:
+        print("\nErro ao cadastrar estilo:",e)
+        return
+
+    remover_estilo(nome_estilo)
+    print('\nEstilo "%s" foi removido do sistema com sucesso!' %nome_estilo)
 
 
 # Listar todas as peças - Bruno
@@ -695,15 +720,6 @@ def comando17():
         print("\nErro ao salvar alterações:", e)
 
 
-# Carregar arquivos - Israel
-def comando18():
-    try:
-        carregar_arquivos()
-        print("Arquivos carregados com sucesso!")
-    except Exception as e:
-        print("\nErro ao carregar arquivos:", e)
-
-
 # Finalizar programa - Bruno
 def comando0():
     if informacao["alteradas"]:
@@ -728,7 +744,7 @@ def comando0():
 
 def menu_comandos():
     # Guarda comandos em string para particioná-la e iterar sobre os comandos
-    comandos = "Cadastrar uma peça|Alterar uma peça|Remover uma peça|Cadastrar um estilo|Alterar um estilo|Remover um estilo|Listar todas as peças|Listar peças por tamanho e padrão|Listar estilos|Pesquisar estilo por nome|Listar peças para venda|Listar peças para doação|Vender uma peça|Doar uma peça|Listar peças vendidas|Listar peças doadas|Salvar alterações|Carregar arquivos|Finalizar programa"
+    comandos = "Cadastrar uma peça|Alterar uma peça|Remover uma peça|Cadastrar um estilo|Alterar um estilo|Remover um estilo|Listar todas as peças|Listar peças por tamanho e padrão|Listar estilos|Pesquisar estilo por nome|Listar peças para venda|Listar peças para doação|Vender uma peça|Doar uma peça|Listar peças vendidas|Listar peças doadas|Salvar alterações|Finalizar programa"
     comandos = comandos.split('|') # Transforma a string em uma lista de strings
 
     # Número de linhas de comandos printadas
@@ -737,10 +753,9 @@ def menu_comandos():
     print("\nDigite: ")
     for i in range(linhas_comandos):
 
-        # Se primeira linha, printar 4 colunas de comandos
-        if i == 0:
-            print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {(linhas_comandos*2)+i+1:2d} --> {comandos[(linhas_comandos*2)+i]:24s} | {0} --> {comandos[(linhas_comandos*3)+i]}")
-            continue
+        # Se última linha, printar último comando como 0
+        if i == linhas_comandos - 1:
+            print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {0:2d} --> {comandos[(linhas_comandos*2)+i]:24s} |")
 
         # Printar 3 colunas de comandos
         print(f"{i+1:2d} --> {comandos[i]:19s} | {linhas_comandos+i+1:2d} --> {comandos[linhas_comandos+i]:33s} | {(linhas_comandos*2)+i+1:2d} --> {comandos[(linhas_comandos*2)+i]:24s} |")
@@ -801,8 +816,6 @@ def interface_usuario():
         elif comando == 17:
             comando17()
             informacao["alteradas"] = False # False porque não existe mais alterações não salvas
-        elif comando == 18:
-            comando18()
         elif comando == 0:
             comando0()
             print("\nGuarda-Roupa Virtual encerrado")
