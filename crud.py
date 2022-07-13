@@ -669,6 +669,7 @@ def print_lista_estilos(lista_estilos):
     # Se forem diferentes, existe pelo menos 1 estilo com peças dentro e devemos printá-las
     if len(lista_estilos) != len(estilos_sem_pecas):
 
+        print("\nEstilos em ordem crescente de escolhas (do menor para o maior):")
         # Header
         print(f"\n{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
 

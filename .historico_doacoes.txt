@@ -1,1 +1,2 @@
 id,tipo,tamanho,padrão,cor,data_doação,data_guarda_roupa,doado_para
+1,inferior,m,masculino,vermelho,2022-07-13,1997-05-13,sim
