@@ -14,7 +14,6 @@ def criar_peca(id, tipo, tamanho, padrao, cor, data, situacao, preco):
         "situação": situacao, "preço": preco, "estilos": []
     }
 
-    ids_cadastrados.append(id) # Cadastra o novo id na lista global
     return peca
 
 
@@ -37,6 +36,10 @@ def inserir_peca(tipo, tamanho, padrao, cor, data:date, situacao, preco, id= "")
 
     peca = criar_peca(peca_id, tipo, tamanho, padrao, cor, data, situacao, preco) # retorna uma peça
     pecas.append(peca) # Registra a peça em pecas
+
+    # Se id não estiver em ids_cadastrados, adicione-o
+    if peca_id not in ids_cadastrados:
+        ids_cadastrados.append(peca_id) # Cadastra o novo id na lista global
 
 
 # Cria um estilo se não existir
