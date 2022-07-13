@@ -460,6 +460,7 @@ def comando4():
         try:
             id_peca = int(input("\nDigite o id da peça que deseja inserir no estilo: "))
             adicionar_peca_a_estilo(id_peca, nome_estilo)
+            print("\nPeça adicionada com sucesso!")
         # Informa o caso do ID passado não ser inteiro.
         except ValueError:
             print("\nValor de ID inválido. Tente novamente!")
@@ -486,7 +487,7 @@ def comando4():
 
 # Alterar estilo - Edson
 def comando5():
-    return
+    alterar_estilo()
 
 
 # Remover estilo - Edson
@@ -635,13 +636,18 @@ def comando16():
 def comando17():
     try:
         salvar_alteracoes()
+        print("Alterações salvas com sucesso!")
     except Exception as e:
         print("\nErro ao salvar alterações:", e)
 
 
 # Carregar arquivos - Israel
 def comando18():
-    return
+    try:
+        carregar_arquivos()
+        print("Arquivos carregados com sucesso!")
+    except Exception as e:
+        print("\nErro ao carregar arquivos:", e)
 
 
 # Finalizar programa - Bruno
@@ -756,12 +762,12 @@ def interface_usuario():
 
     
 def main():
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
-    inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
+    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
+    # inserir_peca(TIPO_INFERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
+    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
+    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_DOACAO, 0.0)
+    # inserir_peca(TIPO_SUPERIOR, TAMANHO_P, PADRAO_MASCULINO, COR_BRANCO, date(2022, 2, 12), SITUACAO_VENDA, 30.0)
     
     interface_usuario()
 
