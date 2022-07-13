@@ -125,6 +125,7 @@ def alterar_estilo():
     nome_estilo = "" # Nome do estilo que será alterado
 
     while True:
+        print("\nEstilos: ")
         # Enumera os estilos cadastrados e recebe a escolha do usuário
         for i in range(len(lista_nomes)):
             print("%d - %s" %((i+1), lista_nomes[i]))
@@ -140,16 +141,16 @@ def alterar_estilo():
                 nome_estilo = lista_nomes[selecao]
                 break
             else:
-                print("\nEntrada inválida, tente novamente.")
-                continue
+                print("\nEntrada inválida")
+                return
         
         # Se o input for uma string, verifica se está se é uma chave do dict estilos
         except ValueError as e:
             if selecao in lista_nomes:
                 nome_estilo = selecao
             else:
-                print("\nEstilo não cadastrado, tente novamente.")
-                continue
+                print("\nEstilo não cadastrado")
+                return
         
         # Se algo der errado, printar entrada inválida
         except Exception as e:
@@ -177,6 +178,12 @@ def alterar_estilo():
         for tipo in estilos[nome_estilo]["peças"]:
             for peca in tipo:
                 pecas_estilo.append(peca)
+        
+        # Testa se tem peças no estilo
+        if len(pecas_estilo) == 0:
+            print(f"Não existem peças no estilo {nome_estilo}")
+            return
+
         print_pecas_filtradas(pecas_estilo)
     
         # Remove uma peça escolhida pelo usuário e trata possíveis entradas inválidas.
