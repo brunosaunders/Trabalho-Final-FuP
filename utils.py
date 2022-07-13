@@ -23,7 +23,7 @@ def retorna_peca_por_id(id):
     for item in pecas:
         if item["id"] == id:
             return item
-    raise Exception(f"Erro: id {id} não existente!")
+    raise Exception(f"Peça de id {id} não está cadastrada!")
 
 
 # Retorna True se o tipo da peça for o mesmo que o passado na função e False se diferente
