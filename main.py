@@ -167,16 +167,26 @@ def comando1():
 # Alterar peça - Israel
 def comando2():
 
+    if len(pecas) == 0:
+        print("\nNão existem peças para serem alteradas")
+        return
+
     print("Ponha o id da peça que deseja alterar:")
     try:
         id_peca = int(input())
     except ValueError:
         print("Ponha um número") 
 
+    peca_para_alteracao = "" # Inicializa para comparar depois
     #Identificando e armazenando em uma variável a peça
     for cada_peca in pecas: 
         if cada_peca["id"] == id_peca:
             peca_para_alteracao = cada_peca 
+
+    # Verifica se alguma peça foi encontrada, caso não, retorna
+    if peca_para_alteracao == "":
+        print("\nPeça de id {id_peca} não encontrado!")
+        return
 
     # Cada parte da data da peça sem alteração
     data_sem_alterar = str(peca_para_alteracao["data"])
