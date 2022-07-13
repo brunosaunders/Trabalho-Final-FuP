@@ -203,8 +203,8 @@ def alterar_estilo():
             continue
         # Informa os casos de erro gerais, como o ID inexistente.
         except Exception as e:
-            print(f'\nErro ao remover peça do estilo: {e}. Tente novamente!')
-            continue
+            print(f'\n{e}')
+            return
 
         # Checa se o usuário deseja remover mais uma peça do estilo.
         while True:
@@ -353,7 +353,7 @@ def remover_peca_do_estilo(id_peca, nome_estilo):
 def registrar_peca_vendida(peca:dict, vender_para, data_venda=datetime.today().date()):
     # adiciona informações da peça doada ao historico_pecas_vendidas.
     historico_pecas_vendidas.append({
-        "id": id,
+        "id": peca["id"],
         "tipo": peca["tipo"],
         "tamanho": peca["tamanho"],
         "padrão": peca["padrão"],
@@ -383,7 +383,7 @@ def registrar_peca_doada(peca:dict, doar_para, data_doada=datetime.today().date(
 
     # adiciona informações da peça doada ao historico_pecas_doadas.
     historico_pecas_doadas.append({
-        "id": id,
+        "id": peca["id"],
         "tipo": peca["tipo"],
         "tamanho": peca["tamanho"],
         "padrão": peca["padrão"],
@@ -646,10 +646,10 @@ def listar_pecas_para_doacao():
 
     # Estrutura condicional: Se não houver nenhuma peça para venda, imprime uma mensagem, senão chama a função print_pecas_filtradas.
     if len(lista_doacao_ordenada) == 0:
-        print('Não foram encontradas peças para doação')
+        print('\nNão foram encontradas peças para doação')
         return 
 
-    print('Listando peças para doação:')
+    print('\nListando peças para doação:')
     print_pecas_filtradas(lista_doacao_ordenada)
 
 # Printa informações da peça juntamente com seu estilo
@@ -669,6 +669,7 @@ def print_lista_estilos(lista_estilos):
     # Se forem diferentes, existe pelo menos 1 estilo com peças dentro e devemos printá-las
     if len(lista_estilos) != len(estilos_sem_pecas):
 
+        print("\nEstilos em ordem crescente de escolhas (do menor para o maior):")
         # Header
         print(f"\n{'Estilos':^16}|  Id  |     Tipo    | Tamanho |    Padrão   |    Cor    |    Data    | Situação |   Preço")
 
