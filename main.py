@@ -597,6 +597,9 @@ def comando13():
         vender_para = input("Digite o nome do comprador da peça: ")
         vender_peca(id_peca, vender_para)
         print("\nPeça vendida com sucesso!")
+
+        # Informações alteradas apenas se a venda deu certo
+        informacao["alteradas"] = True
     # Informa o caso do ID passado não ser inteiro.
     except ValueError:
         print("\nValor de ID inválido. Tente novamente!")
@@ -613,6 +616,9 @@ def comando14():
         doar_para = input("Digite o nome do comprador da peça: ")
         doar_peca(id_peca, doar_para)
         print("\nPeça doada com sucesso!")
+
+        # Informações alteradas apenas se a doação deu certo
+        informacao["alteradas"] = True
     # Informa o caso do ID passado não ser inteiro.
     except ValueError:
         print("\nValor de ID inválido. Tente novamente!")
@@ -738,10 +744,8 @@ def interface_usuario():
             comando12()
         elif comando == 13:
             comando13()
-            informacao["alteradas"] = True
         elif comando == 14:
             comando14()
-            informacao["alteradas"] = True
         elif comando == 15:
             comando15()
         elif comando == 16:
