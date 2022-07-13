@@ -75,6 +75,8 @@ def adicionar_peca_a_estilo(id_peca: int, nome_estilo: str):
         
         # Adiciona o estilo à peça
         peca["estilos"].append(nome_estilo)
+
+        print(f"\nPeça de id {id_peca} adicionada ao estilo {nome_estilo}!")
     else:
         print(f"Não foi possível adicionar peça de id {id_peca} ao estilo {nome_estilo}, pois a peça já pertence ao estilo.")
 
@@ -125,6 +127,7 @@ def alterar_estilo():
     nome_estilo = "" # Nome do estilo que será alterado
 
     while True:
+        print("\nEstilos: ")
         # Enumera os estilos cadastrados e recebe a escolha do usuário
         for i in range(len(lista_nomes)):
             print("%d - %s" %((i+1), lista_nomes[i]))
@@ -140,16 +143,16 @@ def alterar_estilo():
                 nome_estilo = lista_nomes[selecao]
                 break
             else:
-                print("\nEntrada inválida, tente novamente.")
-                continue
+                print("\nEntrada inválida")
+                return
         
         # Se o input for uma string, verifica se está se é uma chave do dict estilos
         except ValueError as e:
             if selecao in lista_nomes:
                 nome_estilo = selecao
             else:
-                print("\nEstilo não cadastrado, tente novamente.")
-                continue
+                print("\nEstilo não cadastrado")
+                return
         
         # Se algo der errado, printar entrada inválida
         except Exception as e:
@@ -158,6 +161,8 @@ def alterar_estilo():
 
     # Checa se o usuário deseja remover alguma peça do estilo
     remover_peca = False
+    alterou = False # Saber se o estilo foi alterado
+
     while True:
         resposta = input("\nDeseja remover peças do estilo %s? [s/n] " %nome_estilo)
         resposta = resposta.lower()
@@ -177,6 +182,12 @@ def alterar_estilo():
         for tipo in estilos[nome_estilo]["peças"]:
             for peca in tipo:
                 pecas_estilo.append(peca)
+        
+        # Testa se tem peças no estilo
+        if len(pecas_estilo) == 0:
+            print(f"Não existem peças no estilo {nome_estilo}")
+            return
+
         print_pecas_filtradas(pecas_estilo)
     
         # Remove uma peça escolhida pelo usuário e trata possíveis entradas inválidas.
@@ -184,6 +195,8 @@ def alterar_estilo():
             id_peca = int(input("\nDigite o id da peça que deseja remover do estilo: "))
             remover_peca_do_estilo(id_peca, nome_estilo)
             print("\nPeça removida com sucesso!")
+            alterou = True
+
         # Informa o caso do ID passado não ser inteiro.
         except ValueError:
             print("\nValor de ID inválido. Tente novamente!")
@@ -237,6 +250,7 @@ def alterar_estilo():
     
         # Cria uma nova chave no dicionário identica à já existente, mas com o nome novo, e remove a já existente.
         estilos[novo_nome] = estilos.pop(nome_estilo)
+        alterou = True
 
         # Procura as peças que estão no estilo mudado, retira o nome antigo e coloca o novo.
         for peca in pecas:
@@ -244,7 +258,45 @@ def alterar_estilo():
                 peca["estilos"].remove(nome_estilo)
                 peca["estilos"].append(novo_nome)
 
-    print("\nEstilo alterado com sucesso!")
+    while True:
+        resposta = input("\nDeseja adicionar uma peça ao estilo %s? [s/n] " %nome_estilo)
+        resposta = resposta.lower()
+
+        if resposta == "s" or resposta == "sim":
+            adicionar_peca = True
+            break
+        elif resposta == "n" or resposta == "não" or resposta == "nao":
+            adicionar_peca = False
+            break
+        else:
+            print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+    
+    while adicionar_peca:
+        try:
+            listar_pecas()
+            id = int(input("\ndigite o id da peça que deseja adicionar: "))
+        except:
+            print("\nId inválido.")
+            break
+
+        try:
+            adicionar_peca_a_estilo(id, nome_estilo)
+            alterou = True
+        except Exception as e:
+            print(e)
+        
+        resposta = input("\nDeseja adicionar outra peça ao estilo %s? [s/n] " %nome_estilo)
+        resposta = resposta.lower()
+
+        if resposta == "s" or resposta == "sim":
+            adicionar_peca = True
+        elif resposta == "n" or resposta == "não" or resposta == "nao":
+            break
+        else:
+            print('\nResposta inválida! Digite "s" para sim ou "n" para não.')
+
+    if alterou:
+        print("\nEstilo alterado com sucesso!")
             
     
 
