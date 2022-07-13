@@ -1,1 +1,0 @@
-estilos,contador,[id_peças]

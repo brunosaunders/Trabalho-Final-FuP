@@ -1,7 +1,0 @@
-id,tipo,tamanho,padrão,cor,data,situação,preço,[estilos]
-19,superior,p,masculino,branco,2022-02-12,doação,0.0,[]
-20,superior,p,masculino,branco,2022-02-12,doação,0.0,[]
-21,inferior,p,masculino,branco,2022-02-12,venda,30.0,[]
-22,superior,p,masculino,branco,2022-02-12,doação,0.0,[]
-23,superior,p,masculino,branco,2022-02-12,doação,0.0,[]
-24,superior,p,masculino,branco,2022-02-12,venda,30.0,[]
