@@ -1,4 +1,4 @@
 id,tipo,tamanho,padrão,cor,data,situação,preço,[estilos]
-1,inferior,m,masculino,vermelho,1997-05-13,doação,0.0,[]
-2,calçado,g,unissex,branco,1997-12-01,venda,59.0,[]
-3,calçado,m,masculino,laranja,2021-06-05,ficar,0.0,[]
+1,inferior,m,masculino,vermelho,1997-05-13,doação,0.0,['casual']
+2,calçado,g,unissex,branco,1997-12-01,venda,59.0,['casual']
+3,calçado,m,masculino,laranja,2021-06-05,ficar,0.0,['casual']
